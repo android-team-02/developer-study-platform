@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="peach">#FAB5B7</color>
+    <color name="salomie">#FEDC94</color>
+    <color name="perfume">#D0C8FB</color>
+    <color name="alto">#DCDADB</color>
+    <color name="tropicalBlue">#B7CEF7</color>
+    <color name="frenchPass">#BEE2FC</color>
 </resources>
