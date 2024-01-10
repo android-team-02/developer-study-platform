@@ -9,4 +9,7 @@
     <string name="all_back_end">Back-End</string>
     <string name="all_ai">AI</string>
     <string name="all_etc">기타</string>
+    <string name="home_icon_person_description">사람 모양의 아이콘</string>
+    <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
+    <string name="home_move_study_detail_description">스터디 상세 화면으로 이동</string>
 </resources>
