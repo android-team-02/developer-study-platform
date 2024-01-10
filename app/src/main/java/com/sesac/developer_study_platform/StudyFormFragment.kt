@@ -2,6 +2,8 @@ package com.sesac.developer_study_platform
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,7 +46,13 @@ class StudyFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setImage()
         setCategory()
+        setContent()
+
+    }
+
+    private fun setImage() {
         binding.sivImageInput.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
@@ -59,5 +67,23 @@ class StudyFormFragment : Fragment() {
                 Log.e("버튼 텍스트 이름", button.text.toString())
             }
         }
+    }
+
+    private fun setContent() {
+        binding.etStudyContentInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val lineCount = binding.etStudyContentInput.lineCount
+                val inputText = binding.etStudyContentInput.layout
+                if (lineCount > 4) {
+                    for (i in 0 until lineCount - 4) {
+                        val lastLineStartText = inputText.getLineStart(lineCount - 1)
+                        val lastLineEndText = inputText.getLineEnd(lineCount - 1)
+                        binding.etStudyContentInput.text.delete(lastLineStartText, lastLineEndText)
+                    }
+                }
+            }
+        })
     }
 }
