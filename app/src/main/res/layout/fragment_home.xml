@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_name"
+        app:titleTextAppearance="@style/Widget.Material3.Toolbar.TitleTextAppearance"
+        app:titleTextColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_my_study"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="@string/all_my_study"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/tv_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/home_detail"
+        android:textColor="@color/manatee"
+        android:textSize="11sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_my_study"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_study_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_my_study" />
+
+    <TextView
+        android:id="@+id/tv_search_study_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="@string/home_search_study_category"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_study_list" />
+
+    <TextView
+        android:id="@+id/iv_android"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_android"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="@string/all_android"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintEnd_toStartOf="@id/iv_ios"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_search_study_category" />
+
+    <TextView
+        android:id="@+id/iv_ios"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_ios"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="@string/all_ios"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_android"
+        app:layout_constraintTop_toBottomOf="@id/tv_search_study_category" />
+
+    <TextView
+        android:id="@+id/iv_front_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_front_end"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="@string/all_front_end"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintEnd_toStartOf="@id/iv_back_end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_android" />
+
+    <TextView
+        android:id="@+id/iv_back_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_back_end"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="@string/all_back_end"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_front_end"
+        app:layout_constraintTop_toBottomOf="@id/iv_ios" />
+
+    <TextView
+        android:id="@+id/iv_ai"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_ai"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="@string/all_ai"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintEnd_toStartOf="@id/iv_etc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_front_end" />
+
+    <TextView
+        android:id="@+id/iv_etc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_etc"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="@string/all_etc"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_ai"
+        app:layout_constraintTop_toBottomOf="@id/iv_back_end" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
