@@ -208,6 +208,67 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_study_content_input" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_language"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/study_form_language_label"
+                app:boxBackgroundColor="@color/gallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_study_language">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_language_dropdown"
+                    style="@style/DropDownHintStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:text="@string/study_form_language_hint"
+                    app:dropDownBackgroundTint="@color/gallery"
+                    app:simpleItems="@array/study_form_language" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_study_total_people"
+                style="@style/StudyQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/study_form_total_people"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_language" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_total_people"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/study_form_total_people_label"
+                app:boxBackgroundColor="@color/gallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_study_total_people">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_total_people_dropdown"
+                    style="@style/DropDownHintStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:text="@string/study_form_total_people_hint"
+                    app:dropDownBackgroundTint="@color/gallery"
+                    app:simpleItems="@array/study_form_language" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
