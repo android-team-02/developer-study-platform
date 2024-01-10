@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,6 +50,10 @@ class StudyFormFragment : Fragment() {
         setImage()
         setCategory()
         setContent()
+        setLanguageDropdownConnect()
+        setLanguageSelected()
+        setTotalDropdownConnect()
+        setTotalPeopleSelected()
 
     }
 
@@ -64,7 +69,7 @@ class StudyFormFragment : Fragment() {
             button.setOnClickListener {
                 buttonList.forEach { it.isSelected = false }
                 button.isSelected = true
-                Log.e("버튼 텍스트 이름", button.text.toString())
+                Log.e("Selected Button", button.text.toString())
             }
         }
     }
@@ -86,4 +91,37 @@ class StudyFormFragment : Fragment() {
             }
         })
     }
+
+    private fun setLanguageDropdownConnect() {
+        val arrayAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.itme_dropdown,
+            resources.getStringArray(R.array.study_form_language)
+        )
+        binding.actvLanguageDropdown.setAdapter(arrayAdapter)
+    }
+
+    private fun setLanguageSelected() {
+        binding.actvLanguageDropdown.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            Log.e("selected Language", selectedItem)
+        }
+    }
+
+    private fun setTotalDropdownConnect() {
+        val arrayAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.itme_dropdown,
+            resources.getStringArray(R.array.study_form_total_people)
+        )
+        binding.actvTotalPeopleDropdown.setAdapter(arrayAdapter)
+    }
+
+    private fun setTotalPeopleSelected() {
+        binding.actvTotalPeopleDropdown.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            Log.e("selected TotalPeople", selectedItem)
+        }
+    }
+
 }
