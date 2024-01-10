@@ -26,21 +26,32 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <!-- 스터디 만들기에서 많이 사용하는 텍스트 스타일 -->
+    <style name="StudyCustomTextStyle">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    
+    <!-- 스터디 만들기 드롭다운 힌트 스타일 -->
+    <style name="DropDownHintStyle">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/manatee</item>
+    </style>
+
     <!-- 스터디 만들기 답변-->
     <style name="StudyAnswer">
         <item name="android:padding">@dimen/space_small</item>
-        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:textAppearance">@style/StudyCustomTextStyle</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/manatee</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <!-- 스터디 만들기 AppCompatButton Style-->
     <style name="StudyAppCompatButton">
         <item name="android:background">@drawable/selector_study_category_bg</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textAppearance">@style/StudyCustomTextStyle</item>
         <item name="android:textColor">@color/selector_study_category</item>
     </style>
 
