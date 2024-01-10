@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">developer-study-platform</string>
+    <string name="login_with_github">Login With Github</string>
 </resources>
