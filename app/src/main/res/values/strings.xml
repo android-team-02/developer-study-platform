@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">개발소</string>
+
+    <string name="home">홈</string>
+    <string name="search">검색</string>
+    <string name="study_form">방만들기</string>
+    <string name="chat">채팅</string>
+    <string name="my">마이</string>
+
     <string name="all_my_study">나의 스터디</string>
     <string name="home_detail">더보기</string>
     <string name="home_search_study_category">분야별 스터디 찾기</string>
