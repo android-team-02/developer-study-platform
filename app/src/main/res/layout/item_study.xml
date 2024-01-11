@@ -6,7 +6,6 @@
     android:layout_height="118dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/view_study"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/wildSand"
