@@ -9,6 +9,7 @@
 
     <string name="all_my_study">나의 스터디</string>
     <string name="home_detail">더보기</string>
+    <string name="all_study_people">%1$d/%2$d</string>
     <string name="home_search_study_category">분야별 스터디 찾기</string>
     <string name="all_android">Android</string>
     <string name="all_ios">iOS</string>
