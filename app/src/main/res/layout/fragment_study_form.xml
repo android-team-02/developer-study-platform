@@ -19,7 +19,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -35,7 +36,7 @@
                 android:layout_height="140dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@color/wildSand"
+                android:background="@color/invalid"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -167,6 +168,7 @@
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_name_hint"
                 android:maxLength="20"
+                android:padding="@dimen/space_s_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_name" />
@@ -193,6 +195,7 @@
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_content_hint"
                 android:maxLines="4"
+                android:padding="@dimen/space_s_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_content" />
@@ -227,11 +230,192 @@
                     style="@style/DropDownHintStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/invalid"
                     android:inputType="none"
                     android:text="@string/study_form_language_hint"
-                    app:dropDownBackgroundTint="@color/gallery"
+                    app:dropDownBackgroundTint="@color/invalid"
                     app:simpleItems="@array/study_form_language" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_study_period"
+                style="@style/StudyQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/study_form_period"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_language" />
+
+            <View
+                android:id="@+id/view_period_background"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_study_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_study_period" />
+
+            <TextView
+                android:id="@+id/tv_start_period"
+                style="@style/StudyCustomTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:text="@string/study_form_start"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
+                app:layout_constraintEnd_toStartOf="@+id/tv_period"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view_period_background" />
+
+            <TextView
+                android:id="@+id/tv_period"
+                style="@style/StudyCustomTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/study_form_connect"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
+                app:layout_constraintEnd_toStartOf="@+id/tv_end_period"
+                app:layout_constraintStart_toEndOf="@+id/tv_start_period"
+                app:layout_constraintTop_toTopOf="@+id/view_period_background" />
+
+            <TextView
+                android:id="@+id/tv_end_period"
+                style="@style/StudyCustomTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="@string/study_form_end"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_period"
+                app:layout_constraintTop_toTopOf="@+id/view_period_background" />
+
+            <TextView
+                android:id="@+id/tv_day_time"
+                style="@style/StudyQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/study_form_day_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_period_background" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_monday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_monday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_tuesday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_tuesday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_wednesday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_wednesday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_thursday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_thursday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_friday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_friday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_saturday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_saturday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/acb_sunday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/study_form_sunday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_day_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:constraint_referenced_ids="acb_monday, acb_tuesday, acb_wednesday,
+                acb_thursday, acb_friday, acb_saturday, acb_sunday"
+                app:flow_horizontalGap="5dp"
+                app:flow_maxElementsWrap="7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_day_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flow_day_time"
+                tools:listitem="@layout/item_day_time" />
 
             <TextView
                 android:id="@+id/tv_study_total_people"
@@ -242,7 +426,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/study_form_total_people"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_language" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_day_time" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_total_people"
@@ -263,11 +447,33 @@
                     style="@style/DropDownHintStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/invalid"
                     android:inputType="none"
                     android:text="@string/study_form_total_people_hint"
-                    app:dropDownBackgroundTint="@color/gallery"
+                    app:dropDownBackgroundTint="@color/invalid"
                     app:simpleItems="@array/study_form_language" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_create_study"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_study_input"
+                android:backgroundTint="@color/black"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
+                android:padding="@dimen/space_median"
+                android:text="@string/study_form_create_study"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_total_people" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
