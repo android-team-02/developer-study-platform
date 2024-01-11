@@ -64,16 +64,14 @@
 
     <androidx.constraintlayout.helper.widget.Flow
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="270dp"
         android:layout_marginHorizontal="@dimen/space_median"
         android:layout_marginTop="@dimen/space_median"
-        android:layout_marginBottom="50dp"
         app:constraint_referenced_ids="tv_android,tv_ios,tv_front_end,tv_back_end,tv_ai,tv_etc"
         app:flow_horizontalGap="@dimen/space_small"
         app:flow_maxElementsWrap="2"
         app:flow_verticalGap="@dimen/space_small"
         app:flow_wrapMode="aligned"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_search_study_category" />
@@ -81,36 +79,48 @@
     <TextView
         android:id="@+id/tv_android"
         style="@style/StudyCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_android"
         android:text="@string/all_android" />
 
     <TextView
         android:id="@+id/tv_ios"
         style="@style/StudyCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_ios"
         android:text="@string/all_ios" />
 
     <TextView
         android:id="@+id/tv_front_end"
         style="@style/StudyCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_front_end"
         android:text="@string/all_front_end" />
 
     <TextView
         android:id="@+id/tv_back_end"
         style="@style/StudyCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_back_end"
         android:text="@string/all_back_end" />
 
     <TextView
         android:id="@+id/tv_ai"
         style="@style/StudyCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_ai"
         android:text="@string/all_ai" />
 
     <TextView
         android:id="@+id/tv_etc"
         style="@style/StudyCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/bg_etc"
         android:text="@string/all_etc" />
 
