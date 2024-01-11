@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="study"
+            type="com.sesac.developer_study_platform.Study" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_study"
+            android:layout_width="328dp"
+            android:layout_height="118dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/btn_bc_study_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_thumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:src="@{study.image}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_study"
+            app:layout_constraintStart_toStartOf="@id/iv_study"
+            app:layout_constraintTop_toTopOf="@id/iv_study"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_study_name"
+            android:layout_width="179dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{study.name}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/iv_study"
+            tools:text="예비 안드로이드 개발자를 위한 스터디" />
+
+        <TextView
+            android:id="@+id/tv_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:text="@{study.language}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_study_name"
+            tools:text="kotlin" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_total_people"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_human"
+            app:layout_constraintStart_toEndOf="@id/iv_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_language" />
+
+        <TextView
+            android:id="@+id/tv_current_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="1dp"
+            android:text="@{study.currentPeople}"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_total_people"
+            app:layout_constraintTop_toBottomOf="@id/tv_language"
+            tools:text="4/8" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_calendar"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_calendar_fill"
+            app:layout_constraintStart_toEndOf="@id/tv_current_people"
+            app:layout_constraintTop_toBottomOf="@id/tv_language" />
+
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="1dp"
+            android:text="@{study.dayList.toString()}"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_calendar"
+            app:layout_constraintTop_toBottomOf="@id/tv_language"
+            tools:text="일" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_arrow_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_arrow_next"
+            app:layout_constraintBottom_toBottomOf="@id/iv_study"
+            app:layout_constraintEnd_toEndOf="@id/iv_study"
+            app:layout_constraintTop_toTopOf="@id/iv_study" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
