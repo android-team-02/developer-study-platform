@@ -78,24 +78,24 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/study_form_android_btn"
-                app:layout_constraintBottom_toTopOf="@+id/acb_front_end"
+                app:layout_constraintEnd_toStartOf="@+id/acb_ios"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/siv_image_input"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintTop_toBottomOf="@+id/siv_image_input" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/acb_ios"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/study_form_ios_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/siv_image_input"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintStart_toEndOf="@+id/acb_android"
+                app:layout_constraintTop_toBottomOf="@+id/siv_image_input" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/acb_front_end"
@@ -104,22 +104,24 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/study_form_front_end_btn"
+                app:layout_constraintEnd_toStartOf="@+id/acb_back_end"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_android"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintTop_toBottomOf="@+id/acb_android" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/acb_back_end"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/study_form_back_end_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_ios"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintStart_toEndOf="@+id/acb_front_end"
+                app:layout_constraintTop_toBottomOf="@+id/acb_ios" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/acb_ai"
@@ -128,22 +130,24 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/study_form_ai_btn"
+                app:layout_constraintEnd_toStartOf="@+id/acb_etc"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_front_end"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintTop_toBottomOf="@+id/acb_front_end" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/acb_etc"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/study_form_etc_btn"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_back_end"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintStart_toEndOf="@+id/acb_ai"
+                app:layout_constraintTop_toBottomOf="@+id/acb_back_end" />
 
             <TextView
                 android:id="@+id/tv_study_name"
@@ -167,6 +171,7 @@
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_name_hint"
                 android:maxLength="20"
+                android:padding="@dimen/space_median"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_name" />
@@ -193,6 +198,7 @@
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_content_hint"
                 android:maxLines="4"
+                android:padding="@dimen/space_median"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_content" />
