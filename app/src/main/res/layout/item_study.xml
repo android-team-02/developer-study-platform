@@ -29,80 +29,76 @@
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
         tools:src="@tools:sample/avatars" />
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/space_small"
+        android:orientation="vertical"
+        app:constraint_referenced_ids="tv_study_name,tv_study_language,flow_people_day"
+        app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
+        app:layout_constraintEnd_toStartOf="@id/iv_arrow_forward"
+        app:layout_constraintStart_toEndOf="@id/iv_study_image"
+        app:layout_constraintTop_toTopOf="@id/iv_study_image" />
+
     <TextView
         android:id="@+id/tv_study_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_small"
         android:ellipsize="end"
         android:fontFamily="@font/pretendard_bold"
         android:maxLines="2"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/tv_study_language"
-        app:layout_constraintEnd_toStartOf="@id/iv_arrow_forward"
-        app:layout_constraintStart_toEndOf="@id/iv_study_image"
-        app:layout_constraintTop_toTopOf="@id/iv_study_image"
         tools:text="예비 안드로이드 개발자를 위한 스터디" />
 
     <TextView
         android:id="@+id/tv_study_language"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_small"
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/manatee"
         android:textSize="11sp"
-        app:layout_constraintBottom_toTopOf="@id/tv_study_people"
-        app:layout_constraintStart_toEndOf="@id/iv_study_image"
-        app:layout_constraintTop_toBottomOf="@id/tv_study_name"
         tools:text="Kotlin" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_people_day"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="iv_person,tv_study_people,iv_calendar,tv_study_day"
+        app:flow_horizontalBias="0"
+        app:flow_horizontalGap="4dp"
+        app:flow_horizontalStyle="packed"
+        app:flow_wrapMode="chain" />
 
     <ImageView
         android:id="@+id/iv_person"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_small"
         android:contentDescription="@string/home_icon_person_description"
-        android:src="@drawable/ic_person"
-        app:layout_constraintBottom_toBottomOf="@id/tv_study_people"
-        app:layout_constraintStart_toEndOf="@id/iv_study_image"
-        app:layout_constraintTop_toTopOf="@id/tv_study_people" />
+        android:src="@drawable/ic_person" />
 
     <TextView
         android:id="@+id/tv_study_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/riverBed"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
-        app:layout_constraintStart_toEndOf="@id/iv_person"
-        app:layout_constraintTop_toBottomOf="@id/tv_study_language"
         tools:text="4/8" />
 
     <ImageView
         android:id="@+id/iv_calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:contentDescription="@string/home_icon_calendar_description"
-        android:src="@drawable/ic_calendar"
-        app:layout_constraintBottom_toBottomOf="@id/tv_study_day"
-        app:layout_constraintStart_toEndOf="@id/tv_study_people"
-        app:layout_constraintTop_toTopOf="@id/tv_study_day" />
+        android:src="@drawable/ic_calendar" />
 
     <TextView
         android:id="@+id/tv_study_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/riverBed"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
-        app:layout_constraintStart_toEndOf="@id/iv_calendar"
-        app:layout_constraintTop_toBottomOf="@id/tv_study_language"
         tools:text="일" />
 
     <ImageView
