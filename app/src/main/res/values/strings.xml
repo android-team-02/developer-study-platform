@@ -28,12 +28,15 @@
     <string name="study_form_saturday">토</string>
     <string name="study_form_sunday">일</string>
     <string name="study_form_total_people_label">total_people</string>
+    <string name="study_form_start">시작일자</string>
+    <string name="study_form_end">종료일자</string>
+    <string name="study_form_connect">~</string>
+    <string name="study_form_time">00:00</string>
+    <string name="study_form_create_study">스터디 만들기</string>
     <string-array name="study_form_language">
         <item>Java</item>
         <item>Python</item>
         <item>Kotlin</item>
-        <item>PHP</item>
-        <item>Node.js</item>
         <item>JavaScript</item>
         <item>CSS</item>
         <item>Html</item>
@@ -49,4 +52,5 @@
         <item>7</item>
         <item>8</item>
     </string-array>
+
 </resources>
