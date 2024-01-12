@@ -9,11 +9,11 @@
         android:name="com.sesac.developer_study_platform.JoinStudyListFragment"
         android:label="JoinStudyListFragment" >
         <action
-            android:id="@+id/action_joinStudyListFragment_to_nextFragment"
-            app:destination="@id/nextFragment" />
+            android:id="@+id/action_joinStudyListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nextFragment"
+        android:id="@+id/detailFragment"
         android:name="com.sesac.developer_study_platform.DetailFragment"
         android:label="NextFragment" />
 </navigation>
