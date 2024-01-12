@@ -10,3 +10,9 @@ data class User (
     @SerialName("avatar_url")
     val image : String
 )
+
+@Serializable
+data class StudyUser (
+    val userId: String,
+    val image: String
+)
