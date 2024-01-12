@@ -1,16 +1,22 @@
 package com.sesac.developer_study_platform
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val studyAdapter = StudyAdapter(object : StudyClickListener {
+        override fun onClick(study: Study) {}
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,6 +25,29 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.rvStudyList.adapter = studyAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
+        loadStudyList()
+    }
+
+    private fun loadStudyList() {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getStudyList()
+            }.onSuccess {
+                studyAdapter.submitList(it)
+            }.onFailure {
+                Log.e("HomeFragment", it.message ?: "error occurred.")
+            }
+        }
     }
 
     override fun onDestroyView() {
