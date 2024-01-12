@@ -1,6 +1,7 @@
 package com.sesac.developer_study_platform
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
@@ -33,7 +33,6 @@ class StudyFormFragment : Fragment() {
 
     private var _binding: FragmentStudyFormBinding? = null
     private val binding get() = _binding!!
-    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var dayTimeAdapter: DayTimeAdapter
     private val dayTimeList: MutableList<DayTime> = mutableListOf()
     private var totalSelectedItem = ""
@@ -46,6 +45,11 @@ class StudyFormFragment : Fragment() {
             setStartTimePicker(isStartTime, dayTime)
         }
     }
+    private val imageSelect = registerForActivityResult(ActivityResultContracts.GetContent())
+    { uri: Uri? -> setSelectedImage(uri) }
+
+    private val photoPicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia())
+    { uri: Uri? -> setSelectedImage(uri) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +63,6 @@ class StudyFormFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setImage()
-        setPhotoPickMedia()
         setCategory()
         setValidateText()
         setLanguageDropdownConnect()
@@ -76,18 +79,20 @@ class StudyFormFragment : Fragment() {
 
     private fun setImage() {
         binding.sivImageInput.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                imageSelect.launch("image/*")
+            } else {
+                photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
         }
     }
 
-    private fun setPhotoPickMedia() {
-        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-            if (uri != null) {
-                binding.sivImageInput.setImageURI(uri)
-                binding.groupAddImage.visibility = View.GONE
-            } else {
-                Log.d("PhotoPicker", "No media selected")
-            }
+    private fun setSelectedImage(uri: Uri?) {
+        if (uri != null) {
+            binding.sivImageInput.setImageURI(uri)
+            binding.groupAddImage.visibility = View.GONE
+        } else {
+            Log.d("PhotoPick", "No media selected")
         }
     }
 
