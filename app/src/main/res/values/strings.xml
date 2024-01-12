@@ -27,12 +27,20 @@
     <string name="study_form_friday">금</string>
     <string name="study_form_saturday">토</string>
     <string name="study_form_sunday">일</string>
-    <string name="study_form_total_people_label">total_people</string>
+    <string name="study_form_total_people_label">total people</string>
     <string name="study_form_start">시작일자</string>
     <string name="study_form_end">종료일자</string>
     <string name="study_form_connect">~</string>
     <string name="study_form_time">00:00</string>
     <string name="study_form_create_study">스터디 만들기</string>
+    <string name="study_form_validate_content">최대 4줄까지 작성 가능합니다</string>
+    <string name="study_form_validate_name">최대 20자까지 작성 가능합니다</string>
+    <string name="study_form_validate_end_date">종료날짜는 시작날짜보다 뒤에 있어야 합니다</string>
+    <string name="study_form_validate_start_date">시작날짜는 종료날짜보다 앞에 있어야 합니다</string>
+    <string name="study_form_validate_start_input">시작날짜를 먼저 입력해주세요</string>
+    <string name="study_form_validate_am">오전시간만 입력이 가능합니다</string>
+    <string name="study_form_validate_pm">오후시간만 입력이 가능합니다</string>
+    <string name="study_form_validate_all">모든 사항을 작성해야 합니다</string>
     <string-array name="study_form_language">
         <item>Java</item>
         <item>Python</item>
