@@ -7,15 +7,14 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
-import retrofit2.http.Path
 
 interface GithubService {
 
     @Headers("Accept: application/vnd.github+json")
     @GET("user")
     suspend fun getUser(
-        @Header("Authorization") authorization : String
-    ) : User
+        @Header("Authorization") authorization: String
+    ): User
 
     companion object {
         private const val BASE_URL = "https://api.github.com/"

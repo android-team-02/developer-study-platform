@@ -58,7 +58,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveUserInfo(uid: String, accessToken: String) {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString("uid", uid)
             putString("accessToken", accessToken)
