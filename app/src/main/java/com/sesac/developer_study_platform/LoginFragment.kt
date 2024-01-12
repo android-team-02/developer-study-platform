@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -39,22 +40,19 @@ class LoginFragment : Fragment() {
     private fun startGithubLogin() {
         val provider = OAuthProvider.newBuilder("github.com")
         val firebaseAuth = Firebase.auth
-        val pendingResultTask = firebaseAuth.pendingAuthResult
 
-        if (pendingResultTask == null) {
-            firebaseAuth
-                .startActivityForSignInWithProvider(requireActivity(), provider.build())
-                .addOnSuccessListener {
-                    val uid = it.user?.uid ?: ""
-                    val accessToken =
-                        "Bearer ${(it.credential as? OAuthCredential)?.accessToken.toString()}"
-                    saveUserInfo(uid, accessToken)
-                    tryGetUser(uid, accessToken)
-                }
-                .addOnFailureListener {
-                    Log.d("Login", "Error : $it")
-                }
+        if (firebaseAuth.pendingAuthResult == null) {
+            firebaseAuth.startActivityForSignInWithProvider(requireActivity(), provider.build())
+                .addOnSuccessListener { onGithubLoginSuccess(it) }
+                .addOnFailureListener { Log.e("LoginFragment", "Error: $it") }
         }
+    }
+
+    private fun onGithubLoginSuccess(result: AuthResult) {
+        val uid = result.user?.uid.orEmpty()
+        val accessToken = "Bearer ${(result.credential as OAuthCredential).accessToken}"
+        saveUserInfo(uid, accessToken)
+        tryGetUser(uid, accessToken)
     }
 
     private fun saveUserInfo(uid: String, accessToken: String) {
@@ -73,9 +71,9 @@ class LoginFragment : Fragment() {
                 githubService.getUser(accessToken)
             }.onSuccess {
                 tryPutUser(uid, StudyUser(it.userId, it.image))
-                Log.d("LoginFragment", it.toString())
+                Log.d("LoginFragment-getUser", it.toString())
             }.onFailure {
-                Log.e("LoginFragment", it.message ?: "error occurred.")
+                Log.e("LoginFragment-getUser", it.message ?: "error occurred.")
             }
         }
     }
