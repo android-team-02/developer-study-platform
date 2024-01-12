@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_study_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StudyFormFragment">
@@ -167,7 +168,6 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_name_hint"
-                android:maxLength="20"
                 android:padding="@dimen/space_s_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
