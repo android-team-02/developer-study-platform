@@ -17,6 +17,7 @@
         android:contentDescription="@string/arrow_back"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/rv_study"
         app:layout_constraintTop_toBottomOf="@id/iv_arrow"
         app:layout_constraintStart_toStartOf="parent"
