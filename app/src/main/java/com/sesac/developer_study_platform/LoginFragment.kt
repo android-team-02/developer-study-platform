@@ -46,9 +46,10 @@ class LoginFragment : Fragment() {
                 .startActivityForSignInWithProvider(requireActivity(), provider.build())
                 .addOnSuccessListener {
                     val uid = it.user?.uid ?: ""
-                    val accessToken = "Bearer ${(it.credential as? OAuthCredential)?.accessToken.toString()}"
+                    val accessToken =
+                        "Bearer ${(it.credential as? OAuthCredential)?.accessToken.toString()}"
                     saveUserInfo(uid, accessToken)
-                    tryGetUser(accessToken)
+                    tryGetUser(uid, accessToken)
                 }
                 .addOnFailureListener {
                     Log.d("Login", "Error : $it")
@@ -65,15 +66,29 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun tryGetUser(accessToken: String) {
+    private fun tryGetUser(uid: String, accessToken: String) {
         val githubService = GithubService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 githubService.getUser(accessToken)
             }.onSuccess {
+                tryPutUser(uid, StudyUser(it.userId, it.image))
                 Log.d("LoginFragment", it.toString())
             }.onFailure {
                 Log.e("LoginFragment", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun tryPutUser(uid: String, user: StudyUser) {
+        val studyService = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                studyService.putUser(uid, user)
+            }.onSuccess {
+                Log.d("LoginFragment-putUser", "success")
+            }.onFailure {
+                Log.e("LoginFragment-putUser", it.message ?: "error occurred.")
             }
         }
     }

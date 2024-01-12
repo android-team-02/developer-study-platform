@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -17,6 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "DB_BASE_URL", getDbBaseUrl("DB_BASE_URL"))
     }
 
     buildTypes {
@@ -37,7 +40,12 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
+}
+
+fun getDbBaseUrl(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
 dependencies {
