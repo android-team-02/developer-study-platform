@@ -12,9 +12,8 @@ import retrofit2.http.Path
 interface GithubService {
 
     @Headers("Accept: application/vnd.github+json")
-    @GET("users/{username}")
-    suspend fun getUserInfo(
-        @Path("username") userName : String,
+    @GET("user")
+    suspend fun getUser(
         @Header("Authorization") authorization : String
     ) : User
 

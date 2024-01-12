@@ -45,10 +45,10 @@ class LoginFragment : Fragment() {
             firebaseAuth
                 .startActivityForSignInWithProvider(requireActivity(), provider.build())
                 .addOnSuccessListener {
-                    val userId = it.additionalUserInfo?.profile?.get("login").toString()
+                    val uid = it.user?.uid ?: ""
                     val accessToken = "Bearer ${(it.credential as? OAuthCredential)?.accessToken.toString()}"
-                    saveUserIdAndAccessToken(userId, accessToken)
-                    getUserInfo(userId, accessToken)
+                    saveUserInfo(uid, accessToken)
+                    tryGetUser(accessToken)
                 }
                 .addOnFailureListener {
                     Log.d("Login", "Error : $it")
@@ -56,22 +56,22 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun saveUserIdAndAccessToken(userId: String, accessToken: String) {
+    private fun saveUserInfo(uid: String, accessToken: String) {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
-            putString("userId", userId)
+            putString("uid", uid)
             putString("accessToken", accessToken)
             apply()
         }
     }
 
-    private fun getUserInfo(userId: String, accessToken: String) {
+    private fun tryGetUser(accessToken: String) {
+        val githubService = GithubService.create()
         lifecycleScope.launch {
-            val githubService = GithubService.create()
             kotlin.runCatching {
-                githubService.getUserInfo(userId, accessToken)
+                githubService.getUser(accessToken)
             }.onSuccess {
-                Log.d("LoginFragment", "$it")
+                Log.d("LoginFragment", it.toString())
             }.onFailure {
                 Log.e("LoginFragment", it.message ?: "error occurred.")
             }
