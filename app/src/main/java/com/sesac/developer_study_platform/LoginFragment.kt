@@ -59,7 +59,8 @@ class LoginFragment : Fragment() {
         val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString("uid", uid)
-            putString("accessToken", accessToken)
+            putString("access_token", accessToken)
+            putBoolean("auto_login", true)
             apply()
         }
     }
