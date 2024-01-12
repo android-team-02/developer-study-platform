@@ -4,15 +4,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User (
+data class User(
     @SerialName("login")
-    val userId : String,
+    val userId: String,
     @SerialName("avatar_url")
-    val image : String
+    val image: String
 )
 
 @Serializable
-data class StudyUser (
+data class StudyUser(
     val userId: String,
     val image: String
 )
