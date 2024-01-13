@@ -2,8 +2,6 @@ package com.sesac.developer_study_platform
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.databinding.ItemDayTimeBinding
 
