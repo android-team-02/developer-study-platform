@@ -234,30 +234,31 @@ class StudyFormFragment : Fragment() {
 
         picker.addOnPositiveButtonClickListener {
             val selectedTime = String.format("%02d:%02d", picker.hour, picker.minute)
-            validateTime(isStartTime, dayTime, selectedTime, picker.hour)
+            validateTime(isStartTime, dayTime, selectedTime)
         }
     }
 
-    private fun validateTime(isStartTime: Boolean, dayTime: DayTime, selectedTime: String, hour: Int) {
-        val isAM = hour < 12
+    private fun validateTime(isStartTime: Boolean, dayTime: DayTime, selectedTime: String) {
         if (isStartTime) {
-            if (isAM) {
-                dayTime.startTime = selectedTime
-            } else {
-                showSnackbar(R.string.study_form_validate_am)
-            }
+            dayTime.startTime = selectedTime
         } else {
-            if (isAM) {
-                showSnackbar(R.string.study_form_validate_pm)
-            } else {
+            if (dayTime.startTime?.let { isEndTimeValid(it, selectedTime) } == true) {
                 dayTime.endTime = selectedTime
+            } else {
+                showSnackbar(R.string.study_form_validate_time)
             }
         }
-
         val position = dayTimeList.indexOf(dayTime)
         if (position != -1) {
             dayTimeAdapter.notifyItemChanged(position)
         }
+    }
+
+    private fun isEndTimeValid(startTime: String, endTime: String): Boolean {
+        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val startDateTime = sdf.parse(startTime)
+        val endDateTime = sdf.parse(endTime)
+        return endDateTime?.after(startDateTime) ?: false
     }
 
     private fun setDaySelected() {

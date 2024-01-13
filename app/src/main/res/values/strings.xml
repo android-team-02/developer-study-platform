@@ -38,8 +38,7 @@
     <string name="study_form_validate_end_date">종료날짜는 시작날짜보다 뒤에 있어야 합니다</string>
     <string name="study_form_validate_start_date">시작날짜는 종료날짜보다 앞에 있어야 합니다</string>
     <string name="study_form_validate_start_input">시작날짜를 먼저 입력해주세요</string>
-    <string name="study_form_validate_am">오전시간만 입력이 가능합니다</string>
-    <string name="study_form_validate_pm">오후시간만 입력이 가능합니다</string>
+    <string name="study_form_validate_time">시작시간을 종료날짜보다 앞에 있어서 합니다</string>
     <string name="study_form_validate_all">모든 사항을 작성해야 합니다</string>
     <string-array name="study_form_language">
         <item>Java</item>
