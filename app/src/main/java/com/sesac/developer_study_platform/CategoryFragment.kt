@@ -57,7 +57,9 @@ class CategoryFragment : Fragment() {
             kotlin.runCatching {
                 service.getStudyList(category)
             }.onSuccess {
-                categoryAdapter.submitList(it)
+                categoryAdapter.submitList(
+                    it.sortedByDescending { study -> study.currentMemberCount }
+                )
             }.onFailure {
                 Log.e("CategoryFragment", it.message ?: "error occurred.")
             }
