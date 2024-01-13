@@ -15,5 +15,9 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.sesac.developer_study_platform.DetailFragment"
-        android:label="NextFragment" />
+        android:label="NextFragment">
+    <argument
+        android:name="studyId"
+        app:argType="string" />
+    </fragment>
 </navigation>
