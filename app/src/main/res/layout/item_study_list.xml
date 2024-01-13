@@ -12,7 +12,7 @@
         android:layout_marginStart="@dimen/space_median"
         android:layout_marginTop="@dimen/space_median"
         android:layout_marginEnd="@dimen/space_median"
-        android:src="@drawable/btn_bc_study_list"
+        android:src="@drawable/btn_study_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
