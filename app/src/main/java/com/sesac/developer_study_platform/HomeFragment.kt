@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 
@@ -36,6 +38,14 @@ class HomeFragment : Fragment() {
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
         )
         loadStudyList()
+        with(binding) {
+            setCategoryButton(tvAndroid)
+            setCategoryButton(tvIos)
+            setCategoryButton(tvFrontEnd)
+            setCategoryButton(tvBackEnd)
+            setCategoryButton(tvAi)
+            setCategoryButton(tvEtc)
+        }
     }
 
     private fun loadStudyList() {
@@ -55,6 +65,25 @@ class HomeFragment : Fragment() {
         binding.rvStudyList.isVisible = !studyList.isNullOrEmpty()
         binding.groupStudyForm.isVisible = studyList.isNullOrEmpty()
         studyAdapter.submitList(studyList)
+    }
+
+    private fun setCategoryButton(view: TextView) {
+        view.setOnClickListener {
+            val action = HomeFragmentDirections.actionGlobalToSearchCategory(
+                getPosition(view.text.toString())
+            )
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun getPosition(category: String): Int {
+        return if (category == getString(R.string.all_etc)) {
+            Category.ETC.ordinal
+        } else {
+            Category.valueOf(
+                category.replace("-", "").uppercase()
+            ).ordinal
+        }
     }
 
     override fun onDestroyView() {
