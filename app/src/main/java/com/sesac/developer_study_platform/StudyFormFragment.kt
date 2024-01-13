@@ -92,7 +92,7 @@ class StudyFormFragment : Fragment() {
             binding.sivImageInput.setImageURI(uri)
             binding.groupAddImage.visibility = View.GONE
         } else {
-            Log.d("PhotoPick", "No media selected")
+            Log.d("SelectedImage", "No media selected")
         }
     }
 
@@ -185,7 +185,6 @@ class StudyFormFragment : Fragment() {
         datePicker.addOnPositiveButtonClickListener {
             val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
             calendar.timeInMillis = it
-
             validateDate(periodText, isStartDate, calendar.time)
         }
     }
@@ -259,7 +258,6 @@ class StudyFormFragment : Fragment() {
         if (position != -1) {
             dayTimeAdapter.notifyItemChanged(position)
         }
-        Log.e("데이터피커", dayTimeList.toString())
     }
 
     private fun setDaySelected() {
@@ -294,7 +292,7 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun setTotalPeopleSelected() {
-        binding.actvTotalPeopleDropdown.setOnItemClickListener { parent, view, position, id ->
+        binding.actvTotalPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
             totalSelectedItem = parent.getItemAtPosition(position).toString()
         }
     }
