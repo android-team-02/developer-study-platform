@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sesac.developer_study_platform.databinding.FragmentSearchCategoryBinding
 
@@ -12,6 +13,7 @@ class SearchCategoryFragment : Fragment() {
 
     private var _binding: FragmentSearchCategoryBinding? = null
     private val binding get() = _binding!!
+    private val args by navArgs<SearchCategoryFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +28,7 @@ class SearchCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setViewPager()
+        binding.tl.getTabAt(args.position)?.select()
     }
 
     private fun setViewPager() {
