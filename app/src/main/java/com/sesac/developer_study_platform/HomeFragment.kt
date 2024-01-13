@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
@@ -43,11 +44,17 @@ class HomeFragment : Fragment() {
             kotlin.runCatching {
                 service.getStudyList()
             }.onSuccess {
-                studyAdapter.submitList(it)
+                setStudyList(it)
             }.onFailure {
                 Log.e("HomeFragment", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun setStudyList(studyList: List<Study>?) {
+        binding.rvStudyList.isVisible = !studyList.isNullOrEmpty()
+        binding.groupStudyForm.isVisible = studyList.isNullOrEmpty()
+        studyAdapter.submitList(studyList)
     }
 
     override fun onDestroyView() {
