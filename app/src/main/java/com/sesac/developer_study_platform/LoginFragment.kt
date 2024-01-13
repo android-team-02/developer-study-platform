@@ -1,6 +1,5 @@
 package com.sesac.developer_study_platform
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.sesac.developer_study_platform.StudyApplication.Companion.sharedPref
 import com.sesac.developer_study_platform.databinding.FragmentLoginBinding
 import kotlinx.coroutines.launch
 
@@ -56,11 +56,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveUserInfo(uid: String, accessToken: String) {
-        val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
-            putString("uid", uid)
-            putString("access_token", accessToken)
-            putBoolean("auto_login", true)
+            putString(getString(R.string.pref_uid_key), uid)
+            putString(getString(R.string.pref_access_token_key), accessToken)
+            putBoolean(getString(R.string.pref_auto_login_key), true)
             apply()
         }
     }
