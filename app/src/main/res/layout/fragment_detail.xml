@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_arrow_detail"
@@ -10,19 +12,176 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/arrow_back"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/arrow_back"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_study_name"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_arrow_detail"
+        tools:text="예비 안드로이드 개발자를 위한 스터디" />
+
+    <TextView
+        android:id="@+id/tv_study_content"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/tv_study_name"
+        app:layout_constraintStart_toStartOf="@id/tv_study_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_study_name"
+        tools:text="예비 안드로이드 개발자를 위한 스터디, 예비 안드로이드 개발자를 위한 스터디" />
+
+    <TextView
+        android:id="@+id/tv_k_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/category"
+        app:layout_constraintStart_toStartOf="@id/tv_study_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_study_content" />
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@id/tv_k_category"
+        app:layout_constraintTop_toBottomOf="@id/tv_study_content"
+        tools:text="Android" />
+
+    <TextView
+        android:id="@+id/tv_k_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/language"
+        app:layout_constraintStart_toStartOf="@id/tv_k_category"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_category" />
+
+    <TextView
+        android:id="@+id/tv_language"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@id/tv_k_category"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_category"
+        tools:text="Kotlin" />
+
+
+    <TextView
+        android:id="@+id/tv_k_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/headcount"
+        app:layout_constraintStart_toStartOf="@id/tv_k_language"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_language" />
+
+    <TextView
+        android:id="@+id/tv_people"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@id/tv_k_language"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_language"
+        tools:text="4/8" />
+
+
+    <TextView
+        android:id="@+id/tv_k_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/time"
+        app:layout_constraintStart_toStartOf="@id/tv_k_people"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_people" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@id/tv_k_people"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_people"
+        tools:text="월요일 12:23부터 12:31까지" />
+
+
+    <TextView
+        android:id="@+id/tv_k_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/period"
+        app:layout_constraintStart_toStartOf="@id/tv_k_time"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_time" />
+
+    <TextView
+        android:id="@+id/tv_period"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@id/tv_k_time"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_time"
+        tools:text="2023/10/28 ~ 2023/11/28" />
+
+
+    <TextView
+        android:id="@+id/tv_k_participants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/participant"
+        app:layout_constraintStart_toStartOf="@id/tv_k_period"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_period" />
+
+    <TextView
+        android:id="@+id/tv_participants"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toEndOf="@id/tv_k_period"
+        app:layout_constraintTop_toBottomOf="@id/tv_k_period"
+        tools:text="0se0" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_join_study"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/btn_join_study"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="스터디 상세화면"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:text="@string/join_study"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_join_study"
+        app:layout_constraintEnd_toEndOf="@id/iv_join_study"
+        app:layout_constraintStart_toStartOf="@id/iv_join_study"
+        app:layout_constraintTop_toTopOf="@id/iv_join_study" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
