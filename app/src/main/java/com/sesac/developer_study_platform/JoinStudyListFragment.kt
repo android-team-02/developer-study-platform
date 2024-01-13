@@ -27,9 +27,9 @@ class JoinStudyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        joinStudyAdapter = JoinStudyAdapter { _ ->
+        joinStudyAdapter = JoinStudyAdapter { study ->
             val action = JoinStudyListFragmentDirections
-                .actionJoinStudyListFragmentToDetailFragment()
+                .actionJoinStudyListFragmentToDetailFragment(study.id)
             findNavController().navigate(action)
         }
 
@@ -47,7 +47,8 @@ class JoinStudyListFragment : Fragment() {
             runCatching {
                 service.getStudyList()
             }.onSuccess { studies ->
-                joinStudyAdapter.submitList(studies)
+                val sortedStudies = studies.sortedBy { it.startDate }
+                joinStudyAdapter.submitList(sortedStudies)
             }.onFailure { exception ->
                 Log.e("JoinStudyListFragment", "Failed to load studies: ${exception.message}")
             }
