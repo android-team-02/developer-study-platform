@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">developer-study-platform</string>
+    <string name="pref_file_key">DEVELOPER_STUDY_APP</string>
+    <string name="pref_uid_key">UID</string>
+    <string name="pref_access_token_key">ACCESS_TOKEN</string>
+    <string name="pref_auto_login_key">AUTO_LOGIN</string>
     <string name="login_with_github">Login With Github</string>
 </resources>
