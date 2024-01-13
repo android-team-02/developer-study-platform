@@ -16,4 +16,9 @@
     <style name="TextAppearance.M3.Sys.Typescale.TitleSmall.TabTextAppearance" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
+
+    <style name="StudyImage">
+        <item name="cornerSizeTopLeft">@dimen/space_small</item>
+        <item name="cornerSizeTopRight">@dimen/space_small</item>
+    </style>
 </resources>
