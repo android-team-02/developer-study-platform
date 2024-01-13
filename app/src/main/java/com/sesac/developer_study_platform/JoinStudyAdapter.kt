@@ -39,9 +39,8 @@ class JoinStudyAdapter(private val clickListener: (Study) -> Unit) :
 
                 tvStudyName.text = study.name
                 tvLanguage.text = study.language
-                tvCurrentPeople.text = "${study.currentMemberCount}/${study.totalMemberCount}"
-                tvDay.text = study.days.map { it.split("@")[0] }.joinToString(", ")
-
+               tvCurrentPeople.text = "${study.currentMemberCount}/${study.totalMemberCount}"
+                tvDay.text = study.days.joinToString(",") { it.split("@")[0] }
                 root.setOnClickListener { clickListener(study) }
             }
         }
