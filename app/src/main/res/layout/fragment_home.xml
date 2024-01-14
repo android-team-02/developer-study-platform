@@ -112,6 +112,7 @@
                 android:layout_marginTop="@dimen/space_median"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/home_search_study_category"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_study_list"

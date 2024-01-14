@@ -10,7 +10,7 @@
         <item name="android:fontFamily">@font/pretendard_bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextAppearance.M3.Sys.Typescale.TitleSmall.TabTextAppearance" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
