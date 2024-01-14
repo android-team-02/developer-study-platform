@@ -58,7 +58,9 @@ class CategoryFragment : Fragment() {
                 service.getStudyList(category)
             }.onSuccess {
                 categoryAdapter.submitList(
-                    it.sortedByDescending { study -> study.currentMemberCount }
+                    it.sortedBy { study ->
+                        study.totalMemberCount - study.currentMemberCount
+                    }
                 )
             }.onFailure {
                 Log.e("CategoryFragment", it.message ?: "error occurred.")
