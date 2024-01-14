@@ -6,12 +6,10 @@
     android:layout_height="match_parent">
 
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_arrow_detail"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_arrow_detail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:contentDescription="@string/iv_arrow"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,20 +19,20 @@
         android:id="@+id/tv_study_name"
         android:layout_width="315dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/space_median"
+        android:layout_marginTop="@dimen/space_median"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_arrow_detail"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_arrow_detail"
         tools:text="예비 안드로이드 개발자를 위한 스터디" />
 
     <TextView
         android:id="@+id/tv_study_content"
         android:layout_width="315dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/space_median"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/tv_study_name"
@@ -164,9 +162,9 @@
         android:id="@+id/iv_join_study"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="@dimen/space_median"
+        android:layout_marginEnd="@dimen/space_median"
+        android:layout_marginBottom="@dimen/space_median"
         android:src="@drawable/btn_join_study"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
