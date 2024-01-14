@@ -22,7 +22,8 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -52,23 +53,23 @@ class LoginFragment : Fragment() {
         val uid = result.user?.uid.orEmpty()
         val accessToken = "Bearer ${(result.credential as OAuthCredential).accessToken}"
         saveUserInfo(uid, accessToken)
-        tryGetUser(uid, accessToken)
+        tryGetUser(uid)
     }
 
     private fun saveUserInfo(uid: String, accessToken: String) {
         with(sharedPref.edit()) {
-            putString(getString(R.string.pref_uid_key), uid)
-            putString(getString(R.string.pref_access_token_key), accessToken)
-            putBoolean(getString(R.string.pref_auto_login_key), true)
+            putString(getString(R.string.all_pref_uid_key), uid)
+            putString(getString(R.string.all_pref_access_token_key), accessToken)
+            putBoolean(getString(R.string.all_pref_auto_login_key), true)
             apply()
         }
     }
 
-    private fun tryGetUser(uid: String, accessToken: String) {
+    private fun tryGetUser(uid: String) {
         val githubService = GithubService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
-                githubService.getUser(accessToken)
+                githubService.getUser()
             }.onSuccess {
                 tryPutUser(uid, StudyUser(it.userId, it.image))
                 Log.d("LoginFragment-getUser", it.toString())

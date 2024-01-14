@@ -8,7 +8,7 @@ class StudyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         sharedPref = applicationContext.getSharedPreferences(
-            getString(R.string.pref_file_key),
+            getString(R.string.application_pref_file_key),
             MODE_PRIVATE
         )
     }
