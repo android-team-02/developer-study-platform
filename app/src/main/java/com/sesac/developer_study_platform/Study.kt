@@ -16,5 +16,5 @@ data class Study(
     val startDate: String,
     val endDate: String,
     val createdDate: String,
-    val banUsers: List<String>
+    val banUsers: List<String>,
 )
