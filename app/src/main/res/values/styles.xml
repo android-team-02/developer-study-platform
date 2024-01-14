@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.Material3.Toolbar.TitleTextAppearance" parent="Widget.Material3.Toolbar">
+    <style name="HomeToolbar" parent="Widget.Material3.Toolbar">
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/pretendard_bold</item>
     </style>
@@ -13,7 +13,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TextAppearance.M3.Sys.Typescale.TitleSmall.TabTextAppearance" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
+    <style name="SearchCategoryTab" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
 

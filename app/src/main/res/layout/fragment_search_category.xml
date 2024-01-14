@@ -16,7 +16,7 @@
         app:tabIndicatorFullWidth="true"
         app:tabMode="scrollable"
         app:tabRippleColor="@null"
-        app:tabTextAppearance="@style/TextAppearance.M3.Sys.Typescale.TitleSmall.TabTextAppearance"
+        app:tabTextAppearance="@style/SearchCategoryTab"
         app:tabTextColor="@color/black" />
 
     <androidx.viewpager2.widget.ViewPager2

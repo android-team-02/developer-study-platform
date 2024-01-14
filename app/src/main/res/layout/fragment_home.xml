@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name"
-        app:titleTextAppearance="@style/Widget.Material3.Toolbar.TitleTextAppearance"
+        app:titleTextAppearance="@style/HomeToolbar"
         app:titleTextColor="@color/black" />
 
     <androidx.core.widget.NestedScrollView
