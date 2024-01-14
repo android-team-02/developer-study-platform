@@ -22,6 +22,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="@dimen/space_median"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@id/iv_study"
         app:layout_constraintStart_toStartOf="@id/iv_study"
         app:layout_constraintTop_toTopOf="@id/iv_study"
