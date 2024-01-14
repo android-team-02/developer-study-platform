@@ -13,8 +13,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var splashScreen: SplashScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         splashScreen = installSplashScreen()
+        super.onCreate(savedInstanceState)
         startSplash()
         setContentView(R.layout.activity_main)
     }
