@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sesac.developer_study_platform.databinding.FragmentJoinStudyListBinding
 import kotlinx.coroutines.launch
 
@@ -31,11 +30,6 @@ class JoinStudyListFragment : Fragment() {
             val action = JoinStudyListFragmentDirections
                 .actionJoinStudyListFragmentToDetailFragment(study.id)
             findNavController().navigate(action)
-        }
-
-        binding.rvStudy.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = joinStudyAdapter
         }
 
         loadStudyList()

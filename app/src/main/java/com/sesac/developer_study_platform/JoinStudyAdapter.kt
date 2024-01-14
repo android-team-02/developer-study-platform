@@ -25,7 +25,6 @@ class JoinStudyAdapter(private val clickListener: (Study) -> Unit) :
 
     fun submitList(newStudies: List<Study>) {
         studies = newStudies
-        notifyDataSetChanged()
     }
 
     class ViewHolder(private val binding: ItemStudyListBinding) :
