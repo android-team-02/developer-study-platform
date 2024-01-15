@@ -7,16 +7,24 @@ import android.view.animation.AnticipateInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.sesac.developer_study_platform.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var splashScreen: SplashScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         startSplash()
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setBottomNavigationView()
     }
 
     private fun startSplash() {
@@ -30,5 +38,11 @@ class MainActivity : AppCompatActivity() {
                 start()
             }
         }
+    }
+
+    private fun setBottomNavigationView() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bnv.setupWithNavController(navController)
     }
 }
