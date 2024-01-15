@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
             firebaseAuth.startActivityForSignInWithProvider(requireActivity(), provider.build())
                 .addOnSuccessListener { onGithubLoginSuccess(it) }
                 .addOnFailureListener {
-                    R.string.login_failure.showSnackbar(binding.root)
+                    binding.root.showSnackbar(R.string.login_failure)
                     Log.e("LoginFragment", "Error: $it")
                 }
         }
