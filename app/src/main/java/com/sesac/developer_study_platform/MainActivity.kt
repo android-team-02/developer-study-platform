@@ -3,10 +3,12 @@ package com.sesac.developer_study_platform
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sesac.developer_study_platform.databinding.ActivityMainBinding
@@ -44,5 +46,15 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bnv.setupWithNavController(navController)
+        hideBottomNavigationView(navController)
+    }
+
+    private fun hideBottomNavigationView(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bnv.visibility = when (destination.id) {
+                R.id.dest_login -> View.GONE
+                else -> View.VISIBLE
+            }
+        }
     }
 }
