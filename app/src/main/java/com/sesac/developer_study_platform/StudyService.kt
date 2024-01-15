@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.PUT
+import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface StudyService {
@@ -16,12 +17,18 @@ interface StudyService {
         @Body user: StudyUser
     )
 
+    @GET("studies.json")
+    suspend fun getStudyList(): List<Study>
+
+    @GET("categories/{category}.json")
+    suspend fun getStudyList(@Path("category") category: String): List<Study>
+
     companion object {
-        private const val BASE_URL = BuildConfig.DB_BASE_URL
+        private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
+        private val contentType = "application/json".toMediaType()
+        private val jsonConfig = Json { ignoreUnknownKeys = true }
 
         fun create(): StudyService {
-            val jsonConfig = Json { ignoreUnknownKeys = true }
-            val contentType = "application/json".toMediaType()
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(jsonConfig.asConverterFactory(contentType))
