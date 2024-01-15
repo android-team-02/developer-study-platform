@@ -11,6 +11,7 @@
     <string name="study_form_etc_btn">기타</string>
     <string name="study_form_name">스터디 이름</string>
     <string name="study_form_name_hint">스터디 이름을 입력하세요</string>
+    <string name="study_form_image_description">스터디 이미지</string>
     <string name="study_form_content">스터디 내용</string>
     <string name="study_form_content_hint">스터디 내용을 입력하세요</string>
     <string name="study_form_language">스터디 대표 언어</string>
@@ -38,14 +39,28 @@
     <string name="study_form_validate_end_date">종료날짜는 시작날짜보다 뒤에 있어야 합니다</string>
     <string name="study_form_validate_start_date">시작날짜는 종료날짜보다 앞에 있어야 합니다</string>
     <string name="study_form_validate_start_input">시작날짜를 먼저 입력해주세요</string>
-    <string name="study_form_validate_time">시작시간을 종료날짜보다 앞에 있어서 합니다</string>
-    <string name="study_form_validate_all">모든 사항을 작성해야 합니다</string>
+    <string name="study_form_validate_start_time">시작시간은 종료시간보다 앞에 있어서 합니다</string>
+    <string name="study_form_validate_end_time">종료시간은 시작시간보다 앞에 있어서 합니다</string>
+    <string name="study_form_start_before_currentDate">시작날짜가 오늘 날짜보다 이전입니다</string>
+    <string name="study_form_end_before_currentDate">종료날짜가 오늘 날짜보다 이전입니다</string>
+    <string name="study_form_validate_all_image">스터디 이미지가 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_category">스터디 카테고리가 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_name">스터디 이름이 작성되지 않았습니다</string>
+    <string name="study_form_validate_all_content">스터디 내용이 작성되지 않았습니다</string>
+    <string name="study_form_validate_all_language">스터디 대표언어가 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_total">스터디 총 인원이 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_start_date">스터디 기간 시작날짜가 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_end_date">스터디 기간 종료날짜가 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_day_time_empty">스터디 요일이 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_day_time_start">스터디 요일 시작시간이 선택되지 않았습니다</string>
+    <string name="study_form_validate_all_day_time_end">스터디 요일 종료시간이 선택되지 않았습니다</string>
     <string-array name="study_form_language">
         <item>Java</item>
         <item>Python</item>
         <item>Kotlin</item>
         <item>JavaScript</item>
         <item>CSS</item>
+        <item>Swift</item>
         <item>Html</item>
         <item>기타</item>
     </string-array>
@@ -59,5 +74,4 @@
         <item>7</item>
         <item>8</item>
     </string-array>
-
 </resources>
