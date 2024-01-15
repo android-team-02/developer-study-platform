@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.util
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar

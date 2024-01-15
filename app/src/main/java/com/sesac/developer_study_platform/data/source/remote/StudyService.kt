@@ -1,6 +1,9 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.sesac.developer_study_platform.BuildConfig
+import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.data.StudyUser
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit

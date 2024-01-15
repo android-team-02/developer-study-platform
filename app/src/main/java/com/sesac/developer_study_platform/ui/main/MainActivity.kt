@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.ui.main
 
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +11,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
