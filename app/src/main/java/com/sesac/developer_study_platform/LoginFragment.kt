@@ -70,7 +70,6 @@ class LoginFragment : Fragment() {
         val accessToken = "Bearer ${(result.credential as OAuthCredential).accessToken}"
         saveUserInfo(uid, accessToken)
         tryGetUser(uid)
-        findNavController().navigate(R.id.action_login_to_home)
     }
 
     private fun saveUserInfo(uid: String, accessToken: String) {
@@ -102,6 +101,7 @@ class LoginFragment : Fragment() {
             kotlin.runCatching {
                 studyService.putUser(uid, user)
             }.onSuccess {
+                findNavController().navigate(R.id.action_login_to_home)
                 Log.d("LoginFragment-putUser", "success")
             }.onFailure {
                 Log.e("LoginFragment-putUser", it.message ?: "error occurred.")
