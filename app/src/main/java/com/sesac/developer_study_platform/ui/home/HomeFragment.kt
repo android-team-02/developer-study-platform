@@ -6,25 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.ui.SpaceItemDecoration
-import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.UserStudyClickListener
+import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
+import com.sesac.developer_study_platform.ui.SpaceItemDecoration
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val studyAdapter = StudyAdapter(object : StudyClickListener {
-        override fun onClick(study: Study) {}
+    private val studyAdapter = StudyAdapter(object : UserStudyClickListener {
+        override fun onClick(userStudy: UserStudy) {}
     })
 
     override fun onCreateView(
@@ -58,19 +59,22 @@ class HomeFragment : Fragment() {
         val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
-                service.getStudyList()
+                service.getUserStudyList(Firebase.auth.uid)
             }.onSuccess {
-                setStudyList(it)
+                setUserStudyList(it)
             }.onFailure {
                 Log.e("HomeFragment", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun setStudyList(studyList: List<Study>?) {
-        binding.rvStudyList.isVisible = !studyList.isNullOrEmpty()
-        binding.groupStudyForm.isVisible = studyList.isNullOrEmpty()
-        studyAdapter.submitList(studyList)
+    private fun setUserStudyList(userStudyList: Map<String, UserStudy>?) {
+        if (userStudyList != null) {
+            studyAdapter.submitList(userStudyList.values.toList())
+        } else {
+            binding.groupStudyForm.visibility = View.VISIBLE
+            binding.rvStudyList.visibility = View.GONE
+        }
     }
 
     private fun setCategoryButton(view: TextView) {
