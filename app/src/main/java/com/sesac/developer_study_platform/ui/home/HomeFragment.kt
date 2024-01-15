@@ -13,7 +13,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.UserStudyClickListener
+import com.sesac.developer_study_platform.ui.UserStudyClickListener
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
