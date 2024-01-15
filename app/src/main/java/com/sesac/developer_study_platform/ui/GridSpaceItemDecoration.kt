@@ -32,10 +32,18 @@ class GridSpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecorat
             outRect.left = space / 4
         }
 
-        if (position >= itemCount - 2 && position < itemCount) {
-            outRect.bottom = space
+        if (itemCount % 2 == 0) {
+            if (position > itemCount / 2) {
+                outRect.bottom = space
+            } else {
+                outRect.bottom = space / 4
+            }
         } else {
-            outRect.bottom = space / 4
+            if (position == itemCount - 1) {
+                outRect.bottom = space
+            } else {
+                outRect.bottom = space / 4
+            }
         }
     }
 }
