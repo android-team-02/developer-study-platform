@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.ui.StudyClickListener
-import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.UserStudyClickListener
+import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
 
-class StudyAdapter(private val clickListener: StudyClickListener) :
-    ListAdapter<Study, StudyAdapter.StudyViewHolder>(diffUtil) {
+class StudyAdapter(private val clickListener: UserStudyClickListener) :
+    ListAdapter<UserStudy, StudyAdapter.StudyViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudyViewHolder {
         return StudyViewHolder.from(parent)
@@ -25,8 +25,7 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
     class StudyViewHolder(private val binding: ItemStudyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(study: Study, clickListener: StudyClickListener) {
-            val days = mutableListOf<String>()
+        fun bind(study: UserStudy, clickListener: UserStudyClickListener) {
             Glide.with(itemView)
                 .load(study.image)
                 .centerCrop()
@@ -34,15 +33,7 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
                 .into(binding.ivStudyImage)
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
-            binding.tvStudyPeople.text = itemView.context.getString(
-                R.string.all_study_people,
-                study.currentMemberCount,
-                study.totalMemberCount
-            )
-            study.days.forEach {
-                days.add(it.split("@")[0])
-            }
-            binding.tvStudyDay.text = days.joinToString(", ")
+            binding.tvStudyDay.text = study.days.keys.joinToString(", ")
             itemView.setOnClickListener {
                 clickListener.onClick(study)
             }
@@ -62,12 +53,12 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Study>() {
-            override fun areItemsTheSame(oldItem: Study, newItem: Study): Boolean {
-                return oldItem.id == newItem.id
+        val diffUtil = object : DiffUtil.ItemCallback<UserStudy>() {
+            override fun areItemsTheSame(oldItem: UserStudy, newItem: UserStudy): Boolean {
+                return oldItem.sid == newItem.sid
             }
 
-            override fun areContentsTheSame(oldItem: Study, newItem: Study): Boolean {
+            override fun areContentsTheSame(oldItem: UserStudy, newItem: UserStudy): Boolean {
                 return oldItem == newItem
             }
         }
