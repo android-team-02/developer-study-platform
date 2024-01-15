@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.ui.home
 
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.sesac.developer_study_platform.Category
+import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.ui.SpaceItemDecoration
+import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 

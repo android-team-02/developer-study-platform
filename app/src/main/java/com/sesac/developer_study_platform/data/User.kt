@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

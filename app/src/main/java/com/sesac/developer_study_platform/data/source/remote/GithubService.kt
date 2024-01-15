@@ -1,7 +1,8 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.StudyApplication.Companion.sharedPref
+import com.sesac.developer_study_platform.data.User
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

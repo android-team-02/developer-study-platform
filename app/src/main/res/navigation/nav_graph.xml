@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/dest_login"
-        android:name="com.sesac.developer_study_platform.LoginFragment"
+        android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
 
@@ -24,13 +24,13 @@
 
     <fragment
         android:id="@+id/dest_home"
-        android:name="com.sesac.developer_study_platform.HomeFragment"
+        android:name="com.sesac.developer_study_platform.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/dest_search_category"
-        android:name="com.sesac.developer_study_platform.SearchCategoryFragment"
+        android:name="com.sesac.developer_study_platform.ui.searchcategory.SearchCategoryFragment"
         android:label="fragment_search_category"
         tools:layout="@layout/fragment_search_category">
         <argument

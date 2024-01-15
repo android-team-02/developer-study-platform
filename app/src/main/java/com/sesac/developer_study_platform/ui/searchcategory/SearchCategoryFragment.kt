@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.ui.searchcategory
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
+import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.databinding.FragmentSearchCategoryBinding
 
 class SearchCategoryFragment : Fragment() {
