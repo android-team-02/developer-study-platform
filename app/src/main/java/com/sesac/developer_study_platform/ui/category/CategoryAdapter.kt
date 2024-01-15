@@ -35,7 +35,7 @@ class CategoryAdapter(private val clickListener: StudyClickListener) :
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyPeople.text = itemView.context.getString(
                 R.string.all_study_people,
-                study.currentMemberCount,
+                study.members.count(),
                 study.totalMemberCount
             )
             itemView.setOnClickListener {
@@ -59,7 +59,7 @@ class CategoryAdapter(private val clickListener: StudyClickListener) :
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Study>() {
             override fun areItemsTheSame(oldItem: Study, newItem: Study): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.sid == newItem.sid
             }
 
             override fun areContentsTheSame(oldItem: Study, newItem: Study): Boolean {
