@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">developer-study-platform</string>
-
     <string name="study_form_toolbar">스터디 만들기</string>
     <string name="study_form_add_image">스터디 대표 이미지 추가하기</string>
     <string name="study_form_android_btn">Android</string>
@@ -34,7 +33,7 @@
     <string name="study_form_connect">~</string>
     <string name="study_form_time">00:00</string>
     <string name="study_form_create_study">스터디 만들기</string>
-    <string name="study_form_validate_content">최대 4줄까지 작성 가능합니다</string>
+    <string name="study_form_validate_content">최대 150자까지 작성 가능합니다</string>
     <string name="study_form_validate_name">최대 20자까지 작성 가능합니다</string>
     <string name="study_form_validate_end_date">종료날짜는 시작날짜보다 뒤에 있어야 합니다</string>
     <string name="study_form_validate_start_date">시작날짜는 종료날짜보다 앞에 있어야 합니다</string>
