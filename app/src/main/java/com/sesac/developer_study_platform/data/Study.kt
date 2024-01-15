@@ -18,3 +18,12 @@ data class Study(
     val createdDate: String,
     val banUsers: List<String>,
 )
+
+@Serializable
+data class UserStudy(
+    val sid: String,
+    val name: String,
+    val image: String,
+    val language: String,
+    val days: Map<String, String>,
+)

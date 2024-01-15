@@ -2,14 +2,14 @@ package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.BuildConfig
-import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.Body
-import retrofit2.http.PUT
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface StudyService {
@@ -20,11 +20,10 @@ interface StudyService {
         @Body user: StudyUser
     )
 
-    @GET("studies.json")
-    suspend fun getStudyList(): List<Study>
-
-    @GET("categories/{category}.json")
-    suspend fun getStudyList(@Path("category") category: String): List<Study>
+    @GET("userStudyRooms/{uid}.json")
+    suspend fun getUserStudyList(
+        @Path("uid") uid: String?
+    ): Map<String, UserStudy>
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
