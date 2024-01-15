@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
@@ -20,6 +21,18 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        checkAutoLogin()
+    }
+
+    private fun checkAutoLogin() {
+        val hasAutoLogin = sharedPref.getBoolean(getString(R.string.all_pref_auto_login_key), false)
+        if (hasAutoLogin) {
+            findNavController().navigate(R.id.action_login_to_home)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +70,7 @@ class LoginFragment : Fragment() {
         val accessToken = "Bearer ${(result.credential as OAuthCredential).accessToken}"
         saveUserInfo(uid, accessToken)
         tryGetUser(uid)
+        findNavController().navigate(R.id.action_login_to_home)
     }
 
     private fun saveUserInfo(uid: String, accessToken: String) {
