@@ -1,12 +1,10 @@
 package com.sesac.developer_study_platform
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -76,7 +74,6 @@ class StudyFormFragment : Fragment() {
         setTotalPeopleSelected()
         setValidateAll()
         setValidateText()
-
     }
 
     private fun setImageBtn() {
@@ -102,7 +99,6 @@ class StudyFormFragment : Fragment() {
         val buttons = binding.flowCategory.referencedIds.map { id ->
             binding.root.findViewById<AppCompatButton>(id)
         }
-
         val categoryClickListener = View.OnClickListener { clickedView ->
             buttons.forEach { it.isSelected = false }
             val clickedButton = clickedView as AppCompatButton
@@ -132,12 +128,7 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun validateContent(content: EditText) {
-        val maxLines = 4
-        if (content.lineCount > maxLines) {
-            val lines = content.text.toString().lines().take(maxLines)
-            val newText = lines.joinToString("\n")
-            content.setText(newText)
-            content.setSelection(newText.length)
+        if (content.lineCount == 150) {
             R.string.study_form_validate_content.showSnackbar(binding.clStudyForm)
         }
     }
@@ -197,40 +188,70 @@ class StudyFormFragment : Fragment() {
         if (isStartDate) {
             startDate = time
             if (endDate == null) {
-                if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
-                    periodText.text = setPeriodText
-                } else if (startDate?.before(currentDate) == true) {
-                    R.string.study_form_start_before_currentDate.showSnackbar(binding.clStudyForm)
-                    startDate = saveStartPreviousDate
-                } else {
-                    periodText.text = setPeriodText
-                }
+                validateStartDateBeforeCurrentDate(dateFormat, currentDate, periodText, setPeriodText, saveStartPreviousDate)
             } else {
-                if (endDate!!.before(startDate)) {
-                    R.string.study_form_validate_start_date.showSnackbar(binding.clStudyForm)
-                    startDate = saveStartPreviousDate
-                } else if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
-                    periodText.text = setPeriodText
-                } else if (startDate?.before(currentDate) == true) {
-                    R.string.study_form_start_before_currentDate.showSnackbar(binding.clStudyForm)
-                    startDate = saveStartPreviousDate
-                } else {
-                    periodText.text = setPeriodText
-                }
+                validateStartDate(saveStartPreviousDate, dateFormat, currentDate, periodText, setPeriodText)
             }
         } else {
-            endDate = time
-            if (endDate!!.before(startDate)) {
-                R.string.study_form_validate_end_date.showSnackbar(binding.clStudyForm)
-                endDate = saveEndPreviousDate
-            } else if (dateFormat.format(currentDate) == endDate?.let { dateFormat.format(it) }) {
-                periodText.text = setPeriodText
-            } else {
-                periodText.text = setPeriodText
-            }
+            validateEndDate(time, saveEndPreviousDate, dateFormat, currentDate, periodText, setPeriodText)
         }
     }
 
+    private fun validateStartDateBeforeCurrentDate(
+        dateFormat: SimpleDateFormat,
+        currentDate: Date,
+        periodText: TextView,
+        setPeriodText: String?,
+        saveStartPreviousDate: Date?
+    ) {
+        if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
+            periodText.text = setPeriodText
+        } else if (startDate?.before(currentDate) == true) {
+            R.string.study_form_start_before_currentDate.showSnackbar(binding.clStudyForm)
+            startDate = saveStartPreviousDate
+        } else {
+            periodText.text = setPeriodText
+        }
+    }
+
+    private fun validateStartDate(
+        saveStartPreviousDate: Date?,
+        dateFormat: SimpleDateFormat,
+        currentDate: Date,
+        periodText: TextView,
+        setPeriodText: String?
+    ) {
+        if (endDate!!.before(startDate)) {
+            R.string.study_form_validate_start_date.showSnackbar(binding.clStudyForm)
+            startDate = saveStartPreviousDate
+        } else if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
+            periodText.text = setPeriodText
+        } else if (startDate?.before(currentDate) == true) {
+            R.string.study_form_start_before_currentDate.showSnackbar(binding.clStudyForm)
+            startDate = saveStartPreviousDate
+        } else {
+            periodText.text = setPeriodText
+        }
+    }
+
+    private fun validateEndDate(
+        time: Date,
+        saveEndPreviousDate: Date?,
+        dateFormat: SimpleDateFormat,
+        currentDate: Date,
+        periodText: TextView,
+        setPeriodText: String?
+    ) {
+        endDate = time
+        if (endDate!!.before(startDate)) {
+            R.string.study_form_validate_end_date.showSnackbar(binding.clStudyForm)
+            endDate = saveEndPreviousDate
+        } else if (dateFormat.format(currentDate) == endDate?.let { dateFormat.format(it) }) {
+            periodText.text = setPeriodText
+        } else {
+            periodText.text = setPeriodText
+        }
+    }
 
     private fun setDayTimeAdapter() {
         dayTimeAdapter = DayTimeAdapter(dayTimeClickListener)
@@ -350,10 +371,6 @@ class StudyFormFragment : Fragment() {
                     R.string.study_form_validate_all_language.showSnackbar(binding.clStudyForm)
                 }
 
-                totalSelectedItem.isEmpty() -> {
-                    R.string.study_form_validate_all_total.showSnackbar(binding.clStudyForm)
-                }
-
                 startDate == null -> {
                     R.string.study_form_validate_all_start_date.showSnackbar(binding.clStudyForm)
                 }
@@ -372,6 +389,10 @@ class StudyFormFragment : Fragment() {
 
                 dayTimeList.any { it.endTime == null } -> {
                     R.string.study_form_validate_all_day_time_end.showSnackbar(binding.clStudyForm)
+                }
+
+                totalSelectedItem.isEmpty() -> {
+                    R.string.study_form_validate_all_total.showSnackbar(binding.clStudyForm)
                 }
 
                 else -> {
