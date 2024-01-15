@@ -2,6 +2,7 @@ package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.BuildConfig
+import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
@@ -11,6 +12,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface StudyService {
 
@@ -24,6 +26,12 @@ interface StudyService {
     suspend fun getUserStudyList(
         @Path("uid") uid: String?
     ): Map<String, UserStudy>
+
+    @GET("studies.json")
+    suspend fun getStudyList(
+        @Query("equalTo") category: String,
+        @Query("orderBy") orderBy: String = "\"category\""
+    ): Map<String, Study>
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
