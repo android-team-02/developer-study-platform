@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/joinStudyListFragment">
+    app:startDestination="@id/joinStudyList">
 
     <fragment
-        android:id="@+id/joinStudyListFragment"
+        android:id="@+id/joinStudyList"
         android:name="com.sesac.developer_study_platform.JoinStudyListFragment"
         android:label="JoinStudyListFragment"
         tools:layout="@layout/fragment_join_study_list">
         <action
-            android:id="@+id/action_joinStudyListFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            android:id="@+id/action_joinStudyListFragment_to_detail"
+            app:destination="@id/detail" />
     </fragment>
 
     <fragment
-        android:id="@+id/detailFragment"
+        android:id="@+id/detail"
         android:name="com.sesac.developer_study_platform.DetailFragment"
         android:label="DatailFragment"
         tools:layout="@layout/fragment_detail">
