@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.ui.detail
 
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -16,13 +19,17 @@ import java.util.Calendar
 import java.util.Locale
 
 class DetailFragment : Fragment() {
+
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
-
     private var currentStudy: Study? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -30,7 +37,7 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val studySid = args.studySid
+        val studySid = args.studyId
         fetchStudyDetails(studySid)
 
         binding.toolbarArrowDetail.setOnClickListener {
@@ -38,7 +45,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun fetchStudyDetails(studySid: String) {
+    private fun fetchStudyDetails(studyId: String) {
         val service = StudyService.create()
         lifecycleScope.launch {
             runCatching {
@@ -57,7 +64,8 @@ class DetailFragment : Fragment() {
         binding.tvCategory.text = study.category
         binding.tvLanguage.text = study.language
         val currentMemberCount = study.members.keys.size
-        binding.tvPeople.text = getString(R.string.study_people_format, currentMemberCount, study.totalMemberCount)
+        binding.tvPeople.text =
+            getString(R.string.all_study_people, currentMemberCount, study.totalMemberCount)
         val studyTime = study.days.entries.joinToString("\n") { (day, time) ->
             val parts = time.split("@")
             if (parts.size == 2) {
@@ -80,7 +88,8 @@ class DetailFragment : Fragment() {
         }
 
         binding.tvTime.text = getString(R.string.study_time_format, studyTime)
-        binding.tvPeriod.text = getString(R.string.study_period_format, study.startDate, study.endDate)
+        binding.tvPeriod.text =
+            getString(R.string.study_period_format, study.startDate, study.endDate)
 
         fetchStudyParticipants(study.members.keys)
     }
@@ -113,11 +122,7 @@ class DetailFragment : Fragment() {
 
     private fun joinStudy() {
         currentStudy?.let { study ->
-            if (isDeadline(study) || isMemberLimit(study)) {
-                binding.btnJoinStudy.isEnabled = false
-            } else {
-                binding.btnJoinStudy.isEnabled = true
-            }
+            binding.btnJoinStudy.isEnabled = !(isDeadline(study) || isMemberLimit(study))
         }
     }
 
@@ -126,23 +131,17 @@ class DetailFragment : Fragment() {
         val today = Calendar.getInstance()
         val currentDate = dateFormat.format(today.time).replace("/", "")
         val formattedEndDate = study.endDate.replace("/", "")
-
-        Log.d("Detailbtn1", "Current Date: $currentDate, Study End Date: ${study.endDate}")
-
         return currentDate > formattedEndDate
     }
 
     private fun isMemberLimit(study: Study): Boolean {
-        val isLimitReached = study.members.keys.size >= study.totalMemberCount
-        Log.d("Detailbtn2", "Member Count: ${study.members.keys.size}, Limit: ${study.totalMemberCount}, Limit Reached: $isLimitReached")
-        return isLimitReached
+        return study.members.keys.size >= study.totalMemberCount
     }
 
     /* private fun isUserBanned(study: Study): Boolean {
          val currentUser = getCurrentUser()
          return currentUser in study.banUsers.keys
      } */
-
 
     private fun formatTime(time: String): String {
         val hour = time.substring(0, 2)
@@ -154,5 +153,4 @@ class DetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

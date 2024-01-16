@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/lilac"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_study_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/StudyImage"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_study_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_small"
+        android:layout_marginTop="@dimen/space_small"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_bold"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_study_image"
+        tools:text="예비 안드로이드 개발자를 위한 스터디" />
+
+    <TextView
+        android:id="@+id/tv_study_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/space_small"
+        android:layout_marginStart="@dimen/space_small"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/manatee"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_study_name"
+        tools:text="Kotlin" />
+
+    <ImageView
+        android:id="@+id/iv_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/home_icon_person_description"
+        android:src="@drawable/ic_person"
+        app:layout_constraintBottom_toBottomOf="@id/tv_study_people"
+        app:layout_constraintEnd_toStartOf="@id/tv_study_people"
+        app:layout_constraintTop_toTopOf="@id/tv_study_people" />
+
+    <TextView
+        android:id="@+id/tv_study_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/space_small"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/riverBed"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_study_name"
+        tools:text="4/8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
