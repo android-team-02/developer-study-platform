@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_median"
         android:layout_marginEnd="5dp"
+        android:fontFamily="@font/pretendard_bold"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/iv_arrow_next"
@@ -46,6 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/manatee"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/tv_study_name"
@@ -53,34 +56,12 @@
         tools:text="kotlin" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_total_people"
-        android:layout_width="@dimen/space_small"
-        android:layout_height="@dimen/space_small"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/ic_human"
-        app:layout_constraintStart_toStartOf="@id/tv_language"
-        app:layout_constraintTop_toBottomOf="@id/tv_language" />
-
-    <TextView
-        android:id="@+id/tv_current_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="3dp"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/iv_total_people"
-        app:layout_constraintTop_toBottomOf="@id/tv_language"
-        tools:text="4/8" />
-
-    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_calendar"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:src="@drawable/ic_calendar_fill"
-        app:layout_constraintStart_toEndOf="@id/tv_current_people"
+        app:layout_constraintStart_toStartOf="@id/tv_language"
         app:layout_constraintTop_toBottomOf="@id/tv_language" />
 
     <TextView
@@ -89,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:fontFamily="@font/pretendard_bold"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/iv_calendar"
