@@ -128,7 +128,7 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun validateContent(content: EditText) {
-        if (content.lineCount == 150) {
+        if (content.text.toString().length == 150) {
             R.string.study_form_validate_content.showSnackbar(binding.clStudyForm)
         }
     }
