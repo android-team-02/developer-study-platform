@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sesac.developer_study_platform.databinding.FragmentJoinStudyListBinding
 import kotlinx.coroutines.launch
 
@@ -19,6 +18,7 @@ class JoinStudyListFragment : Fragment() {
 
     private lateinit var joinStudyAdapter: JoinStudyAdapter
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentJoinStudyListBinding.inflate(inflater, container, false)
         return binding.root
@@ -27,14 +27,13 @@ class JoinStudyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        joinStudyAdapter = JoinStudyAdapter { _ ->
+        joinStudyAdapter = JoinStudyAdapter { userStudyRoom ->
             val action = JoinStudyListFragmentDirections
-                .actionJoinStudyListFragmentToDetailFragment()
+                .actionJoinStudyListFragmentToDetail(userStudyRoom.sid)
             findNavController().navigate(action)
         }
 
         binding.rvStudy.apply {
-            layoutManager = LinearLayoutManager(context)
             adapter = joinStudyAdapter
         }
 
@@ -45,13 +44,26 @@ class JoinStudyListFragment : Fragment() {
         val service = StudyService.create()
         lifecycleScope.launch {
             runCatching {
-                service.getStudyList()
-            }.onSuccess { studies ->
-                joinStudyAdapter.submitList(studies)
+                service.getStudyList("abcd")
+            }.onSuccess { map ->
+                val studyRooms = map.values.map { userStudyRoom ->
+                    UserStudyRoom(
+                        days = userStudyRoom.days,
+                        image = userStudyRoom.image,
+                        language = userStudyRoom.language,
+                        name = userStudyRoom.name,
+                        sid = userStudyRoom.sid
+                    )
+                }
+                setStudyList(studyRooms)
             }.onFailure { exception ->
-                Log.e("JoinStudyListFragment", "Failed to load studies: ${exception.message}")
+                Log.e("JoinStudyListFragment", "Failed to load user study rooms: ${exception.message}")
             }
         }
+    }
+
+    private fun setStudyList(studyRooms: List<UserStudyRoom>) {
+        joinStudyAdapter.submitList(studyRooms)
     }
 
     override fun onDestroyView() {

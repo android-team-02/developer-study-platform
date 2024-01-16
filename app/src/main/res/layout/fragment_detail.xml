@@ -1,28 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_arrow_detail"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_arrow_detail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:contentDescription="@string/iv_arrow"
         android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/arrow_back"/>
+        app:navigationIcon="@drawable/ic_arrow_back" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="스터디 상세화면"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_join_study"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_arrow_detail">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_study_name"
+                android:layout_width="315dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
+                android:fontFamily="@font/pretendard_bold"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="예비 안드로이드 개발자를 위한 스터디" />
+
+            <TextView
+                android:id="@+id/tv_study_content"
+                android:layout_width="315dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_median"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_study_name"
+                app:layout_constraintStart_toStartOf="@id/tv_study_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_study_name"
+                tools:text="예비 안드로이드 개발자를 위한 스터디, 예비 안드로이드 개발자를 위한 스터디" />
+
+            <TextView
+                android:id="@+id/tv_kr_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/category"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_study_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_study_content" />
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_kr_category"
+                app:layout_constraintTop_toBottomOf="@id/tv_study_content"
+                tools:text="Android" />
+
+            <TextView
+                android:id="@+id/tv_kr_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/language"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_kr_category"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_category" />
+
+            <TextView
+                android:id="@+id/tv_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_kr_category"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_category"
+                tools:text="Kotlin" />
+
+
+            <TextView
+                android:id="@+id/tv_kr_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/people"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_kr_language"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_language" />
+
+            <TextView
+                android:id="@+id/tv_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_kr_language"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_language"
+                tools:text="4/8" />
+
+
+            <TextView
+                android:id="@+id/tv_kr_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/time"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_kr_people"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_people" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_kr_people"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_people"
+                tools:text="월요일 12:23부터 12:31까지" />
+
+
+            <TextView
+                android:id="@+id/tv_kr_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/period"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_kr_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_time" />
+
+            <TextView
+                android:id="@+id/tv_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_kr_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_time"
+                tools:text="2023/10/28 ~ 2023/11/28" />
+
+
+            <TextView
+                android:id="@+id/tv_kr_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/participant"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/tv_kr_period"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_period" />
+
+            <TextView
+                android:id="@+id/tv_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:textColor="@color/manatee"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/tv_kr_period"
+                app:layout_constraintTop_toBottomOf="@id/tv_kr_period"
+                tools:text="0se0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_join_study"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/space_median"
+        android:layout_marginEnd="@dimen/space_median"
+        android:layout_marginBottom="@dimen/space_median"
+        android:background="@drawable/selector_join_study"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/study_join"
+        android:textColor="@color/white"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

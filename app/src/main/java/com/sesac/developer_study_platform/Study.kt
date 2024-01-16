@@ -4,17 +4,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Study(
-    val id: String,
-    val name: String,
-    val image: String,
-    val content: String,
+    val banUsers: Map<String, Boolean>,
     val category: String,
-    val language: String,
-    val currentMemberCount: Int,
-    val totalMemberCount: Int,
-    val days: List<String>,
-    val startDate: String,
-    val endDate: String,
+    val content: String,
     val createdDate: String,
-    val banUsers: List<String>
+    val days: Map<String, String>,
+    val endDate: String,
+    val image: String,
+    val language: String,
+    val members: Map<String, Boolean>,
+    val name: String,
+    val sid: String,
+    val startDate: String,
+    val totalMemberCount: Int,
 )
