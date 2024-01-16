@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_study_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StudyFormFragment">
@@ -31,39 +32,41 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/siv_image_input"
+                android:id="@+id/iv_image_input"
                 android:layout_width="0dp"
                 android:layout_height="140dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/invalid"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
+                android:background="@color/lilac"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeableImageViewCircle" />
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <ImageView
                 android:id="@+id/iv_plus"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="45dp"
+                android:contentDescription="@string/study_form_image_description"
                 android:src="@drawable/ic_plus"
-                app:layout_constraintEnd_toEndOf="@id/siv_image_input"
-                app:layout_constraintStart_toStartOf="@id/siv_image_input"
-                app:layout_constraintTop_toTopOf="@id/siv_image_input" />
+                app:layout_constraintEnd_toEndOf="@id/iv_image_input"
+                app:layout_constraintStart_toStartOf="@id/iv_image_input"
+                app:layout_constraintTop_toTopOf="@id/iv_image_input" />
 
             <TextView
                 android:id="@+id/tv_add_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:fontFamily="@font/pretendard_bold"
                 android:text="@string/study_form_add_image"
                 android:textColor="@color/manatee"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/siv_image_input"
-                app:layout_constraintStart_toStartOf="@id/siv_image_input"
+                app:layout_constraintEnd_toEndOf="@id/iv_image_input"
+                app:layout_constraintStart_toStartOf="@id/iv_image_input"
                 app:layout_constraintTop_toBottomOf="@id/iv_plus" />
 
             <androidx.constraintlayout.widget.Group
@@ -72,101 +75,98 @@
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="iv_plus, tv_add_image" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_android"
-                style="@style/StudyAppCompatButton"
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_category"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/study_form_android_btn"
-                app:layout_constraintBottom_toTopOf="@+id/acb_front_end"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/siv_image_input"
-                app:layout_constraintWidth_percent="0.43" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_ios"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/study_form_ios_btn"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_large"
+                app:constraint_referenced_ids="btn_android,btn_ios,btn_front_end,btn_back_end,btn_ai,btn_etc"
+                app:flow_horizontalGap="@dimen/space_small"
+                app:flow_maxElementsWrap="2"
+                app:flow_verticalGap="@dimen/space_x_small"
+                app:flow_wrapMode="aligned"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/siv_image_input"
-                app:layout_constraintWidth_percent="0.43" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_front_end"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/study_form_front_end_btn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_android"
-                app:layout_constraintWidth_percent="0.43" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_image_input" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_back_end"
+                android:id="@+id/btn_android"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/study_form_back_end_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_ios"
-                app:layout_constraintWidth_percent="0.43" />
+                android:text="@string/study_form_android_btn" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_ai"
+                android:id="@+id/btn_ios"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/study_form_ai_btn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_front_end"
-                app:layout_constraintWidth_percent="0.43" />
+                android:text="@string/study_form_ios_btn" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_etc"
+                android:id="@+id/btn_front_end"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/study_form_etc_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_back_end"
-                app:layout_constraintWidth_percent="0.43" />
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_x_small"
+                android:text="@string/study_form_front_end_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_back_end"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/space_x_small"
+                android:layout_marginTop="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_median"
+                android:text="@string/study_form_back_end_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_ai"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_x_small"
+                android:text="@string/study_form_ai_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_etc"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/space_x_small"
+                android:layout_marginTop="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_median"
+                android:text="@string/study_form_etc_btn" />
 
             <TextView
                 android:id="@+id/tv_study_name"
                 style="@style/StudyQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
                 android:text="@string/study_form_name"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acb_ai" />
+                app:layout_constraintTop_toBottomOf="@+id/flow_category" />
 
             <EditText
                 android:id="@+id/et_study_name_input"
                 style="@style/StudyAnswer"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
+                android:autofillHints="no"
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_name_hint"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLength="20"
                 android:padding="@dimen/space_s_large"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -178,8 +178,8 @@
                 style="@style/StudyQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
                 android:text="@string/study_form_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_study_name_input" />
@@ -187,14 +187,17 @@
             <EditText
                 android:id="@+id/et_study_content_input"
                 style="@style/StudyAnswer"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
+                android:autofillHints="no"
                 android:background="@drawable/bg_study_input"
                 android:hint="@string/study_form_content_hint"
-                android:maxLines="4"
+                android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
+                android:maxLength="150"
+                android:maxLines="5"
                 android:padding="@dimen/space_s_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -205,8 +208,8 @@
                 style="@style/StudyQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
                 android:text="@string/study_form_language"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_study_content_input" />
@@ -216,24 +219,24 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
                 android:hint="@string/study_form_language_label"
-                app:boxBackgroundColor="@color/gallery"
+                app:boxBackgroundColor="@color/lilac"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_language">
 
                 <AutoCompleteTextView
-                    android:id="@+id/actv_language_dropdown"
+                    android:id="@+id/tv_language_dropdown"
                     style="@style/DropDownHintStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/invalid"
+                    android:background="@color/lilac"
                     android:inputType="none"
                     android:text="@string/study_form_language_hint"
-                    app:dropDownBackgroundTint="@color/invalid"
+                    app:dropDownBackgroundTint="@color/lilac"
                     app:simpleItems="@array/study_form_language" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,19 +245,19 @@
                 style="@style/StudyQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
                 android:text="@string/study_form_period"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_language" />
 
             <View
                 android:id="@+id/view_period_background"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
                 android:background="@drawable/bg_study_input"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -265,7 +268,7 @@
                 style="@style/StudyCustomTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/space_median"
                 android:gravity="center"
                 android:text="@string/study_form_start"
                 android:textColor="@color/black"
@@ -291,7 +294,7 @@
                 style="@style/StudyCustomTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/space_median"
                 android:gravity="center"
                 android:text="@string/study_form_end"
                 android:textColor="@color/black"
@@ -305,112 +308,109 @@
                 style="@style/StudyQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
                 android:text="@string/study_form_day_time"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_period_background" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_monday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_monday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_tuesday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_tuesday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_wednesday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_wednesday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_thursday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_thursday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_friday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_friday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_saturday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_saturday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/acb_sunday"
-                style="@style/StudyAppCompatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/study_form_sunday"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:id="@+id/flow_day_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="horizontal"
-                app:constraint_referenced_ids="acb_monday, acb_tuesday, acb_wednesday,
-                acb_thursday, acb_friday, acb_saturday, acb_sunday"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
+                app:constraint_referenced_ids="btn_monday, btn_tuesday, btn_wednesday,
+                btn_thursday, btn_friday, btn_saturday, btn_sunday"
                 app:flow_horizontalGap="5dp"
                 app:flow_maxElementsWrap="7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_monday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_monday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_tuesday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_tuesday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_wednesday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_wednesday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_thursday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_thursday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_friday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_friday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_saturday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_saturday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_sunday"
+                style="@style/StudyAppCompatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:text="@string/study_form_sunday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_day_time"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="@dimen/space_x_small"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -422,8 +422,8 @@
                 style="@style/StudyQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
                 android:text="@string/study_form_total_people"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_day_time" />
@@ -433,9 +433,9 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
+                android:layout_marginEnd="@dimen/space_median"
                 android:hint="@string/study_form_total_people_label"
                 app:boxBackgroundColor="@color/gallery"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -443,25 +443,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_total_people">
 
                 <AutoCompleteTextView
-                    android:id="@+id/actv_total_people_dropdown"
+                    android:id="@+id/tv_total_people_dropdown"
                     style="@style/DropDownHintStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/invalid"
+                    android:background="@color/lilac"
                     android:inputType="none"
                     android:text="@string/study_form_total_people_hint"
-                    app:dropDownBackgroundTint="@color/invalid"
-                    app:simpleItems="@array/study_form_language" />
+                    app:dropDownBackgroundTint="@color/lilac"
+                    app:simpleItems="@array/study_form_total_people" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_create_study"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_create_study"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_large"
+                android:layout_marginEnd="@dimen/space_median"
+                android:layout_marginBottom="@dimen/space_median"
                 android:background="@drawable/bg_study_input"
                 android:backgroundTint="@color/black"
                 android:fontFamily="@font/pretendard_bold"
