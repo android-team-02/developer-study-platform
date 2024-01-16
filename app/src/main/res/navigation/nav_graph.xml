@@ -19,7 +19,7 @@
             android:id="@+id/action_login_to_home"
             app:destination="@id/dest_home"
             app:popUpTo="@id/dest_login"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -37,4 +37,10 @@
             android:name="position"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/dest_study_form"
+        android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
+        android:label="fragment_study_form"
+        tools:layout="@layout/fragment_study_form" />
 </navigation>

@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bnv.visibility = when (destination.id) {
                 R.id.dest_login -> View.GONE
+                R.id.dest_study_form -> View.GONE
                 else -> View.VISIBLE
             }
         }
