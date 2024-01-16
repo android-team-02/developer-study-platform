@@ -9,11 +9,20 @@ import retrofit2.http.Path
 
 interface StudyService {
 
-    @GET("studies.json")
-    suspend fun getStudyList(): List<Study>
+    @GET("userStudyRooms/{uid}.json") //uid.json
+    suspend fun getStudyList(
+        @Path("uid") uid: String,
+    ): Map<String, UserStudyRoom>
 
-    @GET("studies/{id}.json")
-    suspend fun getStudyDetail(@Path("id") index: String): Study
+    @GET("studies/{sid}.json") //sid.json
+    suspend fun getDetail(
+        @Path("sid") sid: String,
+    ): Study
+
+    @GET("users/{uid}.json")
+    suspend fun getUserById(
+        @Path("uid") uid: String,
+    ): Users
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_URL
