@@ -5,7 +5,7 @@
     android:id="@+id/cl_study_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudyFormFragment">
+    tools:context=".ui.studyform.StudyFormFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -51,7 +51,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="45dp"
                 android:contentDescription="@string/study_form_image_description"
-                android:src="@drawable/ic_plus"
+                android:src="@drawable/ic_plus_home"
                 app:layout_constraintEnd_toEndOf="@id/iv_image_input"
                 app:layout_constraintStart_toStartOf="@id/iv_image_input"
                 app:layout_constraintTop_toTopOf="@id/iv_image_input" />
@@ -95,14 +95,14 @@
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:text="@string/study_form_android_btn" />
+                android:text="@string/all_android" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_ios"
                 style="@style/StudyAppCompatButton"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:text="@string/study_form_ios_btn" />
+                android:text="@string/all_ios" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_front_end"
@@ -112,7 +112,7 @@
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_x_small"
-                android:text="@string/study_form_front_end_btn" />
+                android:text="@string/all_front_end" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_back_end"
@@ -122,7 +122,7 @@
                 android:layout_marginStart="@dimen/space_x_small"
                 android:layout_marginTop="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_median"
-                android:text="@string/study_form_back_end_btn" />
+                android:text="@string/all_back_end" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_ai"
@@ -132,7 +132,7 @@
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_x_small"
-                android:text="@string/study_form_ai_btn" />
+                android:text="@string/all_ai" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_etc"
@@ -142,7 +142,7 @@
                 android:layout_marginStart="@dimen/space_x_small"
                 android:layout_marginTop="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_median"
-                android:text="@string/study_form_etc_btn" />
+                android:text="@string/all_etc" />
 
             <TextView
                 android:id="@+id/tv_study_name"

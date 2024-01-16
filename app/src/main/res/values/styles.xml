@@ -54,4 +54,28 @@
         <item name="android:textColor">@color/selector_study_category</item>
     </style>
 
+    <style name="HomeToolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="StudyCategory">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="SearchCategoryTab" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="StudyImage">
+        <item name="cornerSizeTopLeft">@dimen/space_small</item>
+        <item name="cornerSizeTopRight">@dimen/space_small</item>
+    </style>
+
+    <style name="BottomNavigationView" parent="TextAppearance.M3.Sys.Typescale.LabelMedium">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
 </resources>
