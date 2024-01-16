@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.data
 
 data class DayTime(
     val day: String,

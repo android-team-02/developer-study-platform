@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.ui.studyform
 
 import android.graphics.Color
 import android.net.Uri
@@ -22,7 +22,11 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.sesac.developer_study_platform.data.DayTime
+import com.sesac.developer_study_platform.ui.DayTimeClickListener
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
+import com.sesac.developer_study_platform.util.showSnackbar
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -135,13 +139,13 @@ class StudyFormFragment : Fragment() {
 
     private fun validateName(name: EditText) {
         if (name.text.toString().length == 20) {
-            R.string.study_form_validate_name.showSnackbar(binding.clStudyForm)
+            binding.clStudyForm.showSnackbar(R.string.study_form_validate_name)
         }
     }
 
     private fun validateContent(content: EditText) {
         if (content.text.toString().length == 150) {
-            R.string.study_form_validate_content.showSnackbar(binding.clStudyForm)
+            binding.clStudyForm.showSnackbar(R.string.study_form_validate_content)
         }
     }
 
@@ -164,7 +168,7 @@ class StudyFormFragment : Fragment() {
             if (startDate != null) {
                 setDatePicker(binding.tvEndPeriod, false)
             } else {
-                R.string.study_form_validate_start_input.showSnackbar(binding.clStudyForm)
+                binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_input)
             }
         }
     }
@@ -194,12 +198,31 @@ class StudyFormFragment : Fragment() {
         if (isStartDate) {
             startDate = time
             if (endDate == null) {
-                validateStartDateBeforeCurrentDate(dateFormat, currentDate, periodText, setPeriodText, saveStartPreviousDate)
+                validateStartDateBeforeCurrentDate(
+                    dateFormat,
+                    currentDate,
+                    periodText,
+                    setPeriodText,
+                    saveStartPreviousDate
+                )
             } else {
-                validateStartDate(saveStartPreviousDate, dateFormat, currentDate, periodText, setPeriodText)
+                validateStartDate(
+                    saveStartPreviousDate,
+                    dateFormat,
+                    currentDate,
+                    periodText,
+                    setPeriodText
+                )
             }
         } else {
-            validateEndDate(time, saveEndPreviousDate, dateFormat, currentDate, periodText, setPeriodText)
+            validateEndDate(
+                time,
+                saveEndPreviousDate,
+                dateFormat,
+                currentDate,
+                periodText,
+                setPeriodText
+            )
         }
     }
 
@@ -213,7 +236,7 @@ class StudyFormFragment : Fragment() {
         if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
             periodText.text = setPeriodText
         } else if (startDate?.before(currentDate) == true) {
-            R.string.study_form_start_before_currentDate.showSnackbar(binding.clStudyForm)
+            binding.clStudyForm.showSnackbar(R.string.study_form_start_before_currentDate)
             startDate = saveStartPreviousDate
         } else {
             periodText.text = setPeriodText
@@ -228,12 +251,12 @@ class StudyFormFragment : Fragment() {
         setPeriodText: String?
     ) {
         if (endDate!!.before(startDate)) {
-            R.string.study_form_validate_start_date.showSnackbar(binding.clStudyForm)
+            binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_date)
             startDate = saveStartPreviousDate
         } else if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
             periodText.text = setPeriodText
         } else if (startDate?.before(currentDate) == true) {
-            R.string.study_form_start_before_currentDate.showSnackbar(binding.clStudyForm)
+            binding.clStudyForm.showSnackbar(R.string.study_form_start_before_currentDate)
             startDate = saveStartPreviousDate
         } else {
             periodText.text = setPeriodText
@@ -250,7 +273,7 @@ class StudyFormFragment : Fragment() {
     ) {
         endDate = time
         if (endDate!!.before(startDate)) {
-            R.string.study_form_validate_end_date.showSnackbar(binding.clStudyForm)
+            binding.clStudyForm.showSnackbar(R.string.study_form_validate_end_date)
             endDate = saveEndPreviousDate
         } else if (dateFormat.format(currentDate) == endDate?.let { dateFormat.format(it) }) {
             periodText.text = setPeriodText
@@ -283,14 +306,14 @@ class StudyFormFragment : Fragment() {
         if (isStartTime) {
             val endTime = dayTime.endTime
             if ((endTime != null) && (selectedTime > endTime)) {
-                R.string.study_form_validate_start_time.showSnackbar(binding.clStudyForm)
+                binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_time)
                 return
             }
             dayTime.startTime = selectedTime
         } else {
             val startTime = dayTime.startTime
             if ((startTime != null) && (selectedTime < startTime)) {
-                R.string.study_form_validate_end_time.showSnackbar(binding.clStudyForm)
+                binding.clStudyForm.showSnackbar(R.string.study_form_validate_end_time)
                 return
             }
             dayTime.endTime = selectedTime
@@ -358,47 +381,47 @@ class StudyFormFragment : Fragment() {
         binding.btnCreateStudy.setOnClickListener {
             when {
                 binding.ivImageInput.drawable == null -> {
-                    R.string.study_form_validate_all_image.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_image)
                 }
 
                 categorySelectedItem.isEmpty() -> {
-                    R.string.study_form_validate_all_category.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_category)
                 }
 
                 binding.etStudyNameInput.text.toString().isEmpty() -> {
-                    R.string.study_form_validate_all_name.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_name)
                 }
 
                 binding.etStudyContentInput.text.toString().isEmpty() -> {
-                    R.string.study_form_validate_all_content.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_content)
                 }
 
                 languageSelectedItem.isEmpty() -> {
-                    R.string.study_form_validate_all_language.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_language)
                 }
 
                 startDate == null -> {
-                    R.string.study_form_validate_all_start_date.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_start_date)
                 }
 
                 endDate == null -> {
-                    R.string.study_form_validate_all_end_date.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_end_date)
                 }
 
                 dayTimeList.isEmpty() -> {
-                    R.string.study_form_validate_all_day_time_empty.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_day_time_empty)
                 }
 
                 dayTimeList.any { it.startTime == null } -> {
-                    R.string.study_form_validate_all_day_time_start.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_day_time_start)
                 }
 
                 dayTimeList.any { it.endTime == null } -> {
-                    R.string.study_form_validate_all_day_time_end.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_day_time_end)
                 }
 
                 totalSelectedItem.isEmpty() -> {
-                    R.string.study_form_validate_all_total.showSnackbar(binding.clStudyForm)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_total)
                 }
 
                 else -> {

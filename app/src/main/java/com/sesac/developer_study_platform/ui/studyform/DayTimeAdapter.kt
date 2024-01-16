@@ -1,10 +1,12 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.ui.studyform
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.sesac.developer_study_platform.data.DayTime
+import com.sesac.developer_study_platform.ui.DayTimeClickListener
 import com.sesac.developer_study_platform.databinding.ItemDayTimeBinding
 
 class DayTimeAdapter(private val dayTimeClickListener: DayTimeClickListener) :

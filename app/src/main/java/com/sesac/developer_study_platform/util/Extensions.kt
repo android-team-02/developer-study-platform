@@ -1,12 +1,12 @@
-package com.sesac.developer_study_platform
+package com.sesac.developer_study_platform.util
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 
-fun Int.showSnackbar(view: View) {
+fun View.showSnackbar(resId: Int) {
     Snackbar.make(
-        view,
         this,
+        resId,
         Snackbar.LENGTH_SHORT
     ).show()
 }
