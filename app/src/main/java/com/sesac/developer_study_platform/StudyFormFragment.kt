@@ -113,29 +113,35 @@ class StudyFormFragment : Fragment() {
         val name = binding.etStudyNameInput
         val content = binding.etStudyContentInput
 
-        val textWatcher = object : TextWatcher {
+        val nameTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
             override fun afterTextChanged(s: Editable?) {
                 validateName(name)
+            }
+        }
+
+        val contentTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
                 validateContent(content)
             }
         }
-        name.addTextChangedListener(textWatcher)
-        content.addTextChangedListener(textWatcher)
-    }
 
-    private fun validateContent(content: EditText) {
-        if (content.text.toString().length == 150) {
-            R.string.study_form_validate_content.showSnackbar(binding.clStudyForm)
-        }
+        name.addTextChangedListener(nameTextWatcher)
+        content.addTextChangedListener(contentTextWatcher)
     }
 
     private fun validateName(name: EditText) {
         if (name.text.toString().length == 20) {
             R.string.study_form_validate_name.showSnackbar(binding.clStudyForm)
+        }
+    }
+
+    private fun validateContent(content: EditText) {
+        if (content.text.toString().length == 150) {
+            R.string.study_form_validate_content.showSnackbar(binding.clStudyForm)
         }
     }
 

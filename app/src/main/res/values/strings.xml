@@ -38,8 +38,8 @@
     <string name="study_form_validate_end_date">종료날짜는 시작날짜보다 뒤에 있어야 합니다</string>
     <string name="study_form_validate_start_date">시작날짜는 종료날짜보다 앞에 있어야 합니다</string>
     <string name="study_form_validate_start_input">시작날짜를 먼저 입력해주세요</string>
-    <string name="study_form_validate_start_time">시작시간은 종료시간보다 앞에 있어서 합니다</string>
-    <string name="study_form_validate_end_time">종료시간은 시작시간보다 앞에 있어서 합니다</string>
+    <string name="study_form_validate_start_time">시작시간은 종료시간보다 앞에 있어야 합니다</string>
+    <string name="study_form_validate_end_time">종료시간은 시작시간보다 앞에 있어야 합니다</string>
     <string name="study_form_start_before_currentDate">시작날짜가 오늘 날짜보다 이전입니다</string>
     <string name="study_form_end_before_currentDate">종료날짜가 오늘 날짜보다 이전입니다</string>
     <string name="study_form_validate_all_image">스터디 이미지가 선택되지 않았습니다</string>
