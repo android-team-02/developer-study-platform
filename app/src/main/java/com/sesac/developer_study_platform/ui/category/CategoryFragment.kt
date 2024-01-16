@@ -61,13 +61,9 @@ class CategoryFragment : Fragment() {
         val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
-                service.getStudyList(category)
+                service.getStudyList("\"${category}\"")
             }.onSuccess {
-                categoryAdapter.submitList(
-                    it.sortedBy { study ->
-                        study.totalMemberCount - study.currentMemberCount
-                    }
-                )
+                categoryAdapter.submitList(it.values.toList())
             }.onFailure {
                 Log.e("CategoryFragment", it.message ?: "error occurred.")
             }
