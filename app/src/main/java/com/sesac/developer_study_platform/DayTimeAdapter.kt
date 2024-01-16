@@ -7,19 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.databinding.ItemDayTimeBinding
 
-class DayTimeAdapter(private val daytimeList: List<DayTime>, private val dayTimeClickListener: DayTimeClickListener) :
-    RecyclerView.Adapter<DayTimeAdapter.DayTimeViewHolder>() {
+class DayTimeAdapter(private val dayTimeClickListener: DayTimeClickListener) :
+    ListAdapter<DayTime, DayTimeAdapter.DayTimeViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayTimeViewHolder {
         return DayTimeViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: DayTimeViewHolder, position: Int) {
-        return holder.bind(daytimeList[position], dayTimeClickListener)
-    }
-
-    override fun getItemCount(): Int {
-        return daytimeList.size
+        return holder.bind(currentList[position], dayTimeClickListener)
     }
 
     class DayTimeViewHolder private constructor(private val binding: ItemDayTimeBinding) :
@@ -51,6 +47,18 @@ class DayTimeAdapter(private val daytimeList: List<DayTime>, private val dayTime
                         false
                     )
                 )
+            }
+        }
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<DayTime>() {
+            override fun areItemsTheSame(oldItem: DayTime, newItem: DayTime): Boolean {
+                return oldItem.day == newItem.day
+            }
+
+            override fun areContentsTheSame(oldItem: DayTime, newItem: DayTime): Boolean {
+                return oldItem == newItem
             }
         }
     }

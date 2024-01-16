@@ -8,36 +8,36 @@
     <TextView
         android:id="@+id/tv_day"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:fontFamily="@font/pretendard_medium"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/space_x_small"
+        android:fontFamily="@font/pretendard_bold"
         android:gravity="center"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.10"
+        app:layout_constraintWidth_percent="0.1"
         tools:text="월" />
 
     <View
         android:id="@+id/view_background"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/space_x_small"
         android:background="@drawable/bg_study_input"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_day"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.80" />
+        app:layout_constraintWidth_percent="0.8" />
 
     <TextView
         android:id="@+id/tv_start_time"
         style="@style/StudyCustomTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/space_median"
         android:gravity="center"
         android:text="@string/study_form_time"
         android:textColor="@color/black"
@@ -63,7 +63,7 @@
         style="@style/StudyCustomTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/space_median"
         android:gravity="center"
         android:text="@string/study_form_time"
         android:textColor="@color/black"
