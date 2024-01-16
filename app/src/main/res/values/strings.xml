@@ -98,4 +98,15 @@
     <string name="home_icon_person_description">사람 모양의 아이콘</string>
     <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
     <string name="home_move_study_detail_description">스터디 상세 화면으로 이동</string>
+
+    <string name="iv_arrow">홈 화면으로 이동</string>
+    <string name="join_study">스터디 참여하기</string>
+    <string name="category">분야</string>
+    <string name="language">언어</string>
+    <string name="people">인원</string>
+    <string name="time">시간</string>
+    <string name="period">기간</string>
+    <string name="participant">참여자</string>
+    <string name="study_time_format">%s</string>
+    <string name="study_period_format">%1$s ~ %2$s</string>
 </resources>

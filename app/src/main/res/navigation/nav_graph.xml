@@ -26,7 +26,31 @@
         android:id="@+id/dest_home"
         android:name="com.sesac.developer_study_platform.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_join_study_list"
+            app:destination="@id/dest_join_study_list" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_join_study_list"
+        android:name="com.sesac.developer_study_platform.ui.joinstudylist.JoinStudyListFragment"
+        android:label="fragment_join_study_list"
+        tools:layout="@layout/fragment_join_study_list">
+        <action
+            android:id="@+id/action_join_study_list_to_detail"
+            app:destination="@id/dest_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_detail"
+        android:name="com.sesac.developer_study_platform.ui.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_search_category"

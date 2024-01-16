@@ -33,6 +33,16 @@ interface StudyService {
         @Query("orderBy") orderBy: String = "\"category\""
     ): Map<String, Study>
 
+    @GET("studies/{sid}.json")
+    suspend fun getDetail(
+        @Path("sid") sid: String,
+    ): Study
+
+    @GET("users/{uid}.json")
+    suspend fun getUserById(
+        @Path("uid") uid: String,
+    ): StudyUser
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()

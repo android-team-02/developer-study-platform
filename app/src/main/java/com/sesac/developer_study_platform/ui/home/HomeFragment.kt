@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setDetailButton()
         binding.rvStudyList.adapter = studyAdapter
         binding.rvStudyList.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
@@ -52,6 +53,13 @@ class HomeFragment : Fragment() {
             setCategoryButton(tvBackEnd)
             setCategoryButton(tvAi)
             setCategoryButton(tvEtc)
+        }
+    }
+
+    private fun setDetailButton() {
+        binding.tvDetail.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeToJoinStudyList()
+            findNavController().navigate(action)
         }
     }
 

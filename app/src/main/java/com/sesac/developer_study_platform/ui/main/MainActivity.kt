@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             binding.bnv.visibility = when (destination.id) {
                 R.id.dest_login -> View.GONE
                 R.id.dest_study_form -> View.GONE
+                R.id.dest_detail -> View.GONE
                 else -> View.VISIBLE
             }
         }
