@@ -109,4 +109,7 @@
     <string name="participant">참여자</string>
     <string name="study_time_format">%s</string>
     <string name="study_period_format">%1$s ~ %2$s</string>
+
+    <string name="chat_select_image">이미지 추가</string>
+    <string name="chat_send_message_description">메시지 전송</string>
 </resources>
