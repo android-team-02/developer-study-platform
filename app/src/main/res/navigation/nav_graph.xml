@@ -63,6 +63,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/dest_search"
+        android:name="com.sesac.developer_study_platform.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/dest_search_result"
+        android:name="com.sesac.developer_study_platform.ui.searchresult.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" />
+
+    <fragment
         android:id="@+id/dest_study_form"
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
