@@ -25,7 +25,8 @@ class SearchResultFragment : Fragment() {
     private val binding get() = _binding!!
     private val searchAdapter = SearchAdapter(object : SearchClickListener {
         override fun onClick(sid: String) {
-            // 스터디 상세화면으로 이동
+            val action = SearchResultFragmentDirections.actionGlobalToDetail(sid)
+            findNavController().navigate(action)
         }
     })
 

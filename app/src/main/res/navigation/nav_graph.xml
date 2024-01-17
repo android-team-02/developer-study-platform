@@ -9,6 +9,10 @@
         android:id="@+id/action_global_to_search_category"
         app:destination="@id/dest_search_category" />
 
+    <action
+        android:id="@+id/action_global_to_detail"
+        app:destination="@+id/dest_detail" />
+
     <fragment
         android:id="@+id/dest_login"
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
