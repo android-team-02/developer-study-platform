@@ -67,4 +67,10 @@
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
         tools:layout="@layout/fragment_study_form" />
+
+    <fragment
+        android:id="@+id/dest_chat"
+        android:name="com.sesac.developer_study_platform.ui.chatroom.ChatRoomFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room" />
 </navigation>
