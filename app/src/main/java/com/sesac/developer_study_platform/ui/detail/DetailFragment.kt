@@ -31,7 +31,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
@@ -156,16 +156,16 @@ class DetailFragment : Fragment() {
     }
 
     private fun isUserBanned(study: Study): Boolean {
-         val currentUser = getCurrentUserId()
-         return currentUser in study.banUsers.keys
-     }
+        val currentUser = getCurrentUserId()
+        return currentUser in study.banUsers.keys
+    }
 
     private fun getCurrentUserId(): String? {
         val currentUser = FirebaseAuth.getInstance().currentUser
         return currentUser?.uid
     }
 
-    private fun dialogLogic (binding: DialogWarningBinding, dialog: AlertDialog) {
+    private fun dialogLogic(binding: DialogWarningBinding, dialog: AlertDialog) {
         binding.ivWarningYes.setOnClickListener {
             //participateInStudy()
             dialog.dismiss()
