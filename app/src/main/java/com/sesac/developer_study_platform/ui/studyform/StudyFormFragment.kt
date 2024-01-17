@@ -18,16 +18,26 @@ import android.widget.TextView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.sesac.developer_study_platform.data.DayTime
 import com.sesac.developer_study_platform.ui.DayTimeClickListener
 import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
 import com.sesac.developer_study_platform.util.showSnackbar
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -39,11 +49,13 @@ class StudyFormFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var dayTimeAdapter: DayTimeAdapter
     private val dayTimeList = mutableListOf<DayTime>()
+    private val studyService = StudyService.create()
     private var totalSelectedItem = ""
     private var languageSelectedItem = ""
     private var categorySelectedItem = ""
     private var startDate: Date? = null
     private var endDate: Date? = null
+    private var selectedImageUri: Uri? = null
     private val dayTimeClickListener = object : DayTimeClickListener {
         override fun onClick(dayTime: DayTime, isStartTime: Boolean) {
             setStartTimePicker(isStartTime, dayTime)
@@ -90,13 +102,12 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun setSelectedImage(uri: Uri?) {
-        if (uri != null) {
+    private fun setSelectedImage(imageUri: Uri?) {
+        imageUri?.let { uri ->
             binding.ivImageInput.setImageURI(uri)
             binding.groupAddImage.visibility = View.GONE
-        } else {
-            Log.d("SelectedImage", "No media selected")
-        }
+            selectedImageUri = uri
+        } ?: Log.d("SelectedImage", "No media selected")
     }
 
     private fun setCategory() {
@@ -425,8 +436,87 @@ class StudyFormFragment : Fragment() {
                 }
 
                 else -> {
-                    // 모든 검사가 통과되었을 때 다음 화면으로 이동하기 구현
+                    selectedImageUri?.let { uri ->
+                        val uid = Firebase.auth.uid
+                        if (uid != null) {
+                            uploadImageStorage(uid, uri) { fileName ->
+                                putFirebase(uid, fileName)
+                            }
+                        }
+                    }
                 }
+            }
+        }
+    }
+
+    private fun uploadImageStorage(uid: String, imageUri: Uri, onUploadSuccess: (String) -> Unit) {
+        val storageRef = Firebase.storage.reference
+        val fileName = "image_${binding.etStudyNameInput.text}.jpg"
+        val imageRef = storageRef.child("$uid/$fileName")
+        val uploadTask = imageRef.putFile(imageUri)
+
+        uploadTask.addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
+                onUploadSuccess(fileName)
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("UploadImage", "Upload failed", exception)
+        }
+    }
+
+    private fun putFirebase(uid: String, fileName: String) {
+        val sid = formatSid(uid)
+        val newStudy = saveStudy(sid, uid, fileName)
+        val userStudyRoom = saveUserStudy(sid, fileName)
+        tryPutData(uid, sid, newStudy, userStudyRoom)
+
+    }
+
+    private fun formatSid(uid: String): String {
+        val timestamp = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
+        return "@make@$uid@time@$timestamp"
+    }
+
+    private fun saveStudy(sid: String, uid: String, fileName: String): Study {
+        return Study(
+            sid = sid,
+            name = binding.etStudyNameInput.text.toString(),
+            image = fileName,
+            content = binding.etStudyContentInput.text.toString(),
+            category = categorySelectedItem,
+            language = languageSelectedItem,
+            totalMemberCount = totalSelectedItem.toInt(),
+            days = formatDays(),
+            startDate = binding.tvStartPeriod.text.toString(),
+            endDate = binding.tvEndPeriod.text.toString(),
+            members = mapOf(uid to true),
+            banUsers = mapOf()
+        )
+    }
+
+    private fun saveUserStudy(sid: String, fileName: String): UserStudy {
+        return UserStudy(
+            sid = sid,
+            name = binding.etStudyNameInput.text.toString(),
+            image = fileName,
+            language = languageSelectedItem,
+            days = formatDays()
+        )
+    }
+
+    private fun formatDays() = dayTimeList.associate {
+        it.day to "${it.startTime?.replace(":", "")}@${it.endTime?.replace(":", "")}"
+    }
+
+    private fun tryPutData(uid: String, sid: String, newStudy: Study, userStudyRoom: UserStudy) {
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                studyService.putStudy(sid, newStudy)
+                studyService.putUserStudyRoom(uid, sid, userStudyRoom)
+            }.onSuccess {
+                Log.d("StudyFormFragment-putData", "success")
+            }.onFailure {
+                Log.e("StudyFormFragment-putData", it.message ?: "error occurred.")
             }
         }
     }
