@@ -109,4 +109,12 @@
     <string name="participant">참여자</string>
     <string name="study_time_format">%s</string>
     <string name="study_period_format">%1$s ~ %2$s</string>
+
+    <string name="export">내보내기</string>
+    <string name="profile_export">내보내기 모양의 아이콘</string>
+    <string name="divider">레포지토리 시작을 알리는 구분선</string>
+    <string name="repository">Repository</string>
+    <string name="repository_fork">레포지토리 포크 모양의 아이콘</string>
+    <string name="repository_stars">레포지토리 스타 모양의 아이콘</string>
+    <string name="repository_issue">레포지토리 이슈 모양의 아이콘</string>
 </resources>
