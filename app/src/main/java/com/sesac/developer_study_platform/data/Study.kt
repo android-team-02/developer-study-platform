@@ -14,7 +14,6 @@ data class Study(
     val days: Map<String, String>,
     val startDate: String,
     val endDate: String,
-    val createdDate: String,
     val members: Map<String, Boolean>,
     val banUsers: Map<String, Boolean>,
 )
