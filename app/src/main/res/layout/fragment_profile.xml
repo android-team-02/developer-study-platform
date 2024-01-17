@@ -20,7 +20,6 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="150dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="tv_profile_name"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,8 +68,8 @@
         android:layout_marginTop="@dimen/space_small"
         android:contentDescription="@string/divider"
         android:src="@drawable/ic_divider"
-        app:layout_constrainStart_toStartof="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
     <TextView
