@@ -109,4 +109,8 @@
     <string name="participant">참여자</string>
     <string name="study_time_format">%s</string>
     <string name="study_period_format">%1$s ~ %2$s</string>
+
+    <string name="warning_dialog">레포지토리 확인 후 방장에 의하여 내보내질 수 있습니다.</string>
+    <string name="no">아니요</string>
+    <string name="yes">네</string>
 </resources>
