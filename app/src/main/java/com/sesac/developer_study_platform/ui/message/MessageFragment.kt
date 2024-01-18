@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.data.Message
+import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
 import kotlinx.coroutines.async
@@ -92,6 +94,17 @@ class MessageFragment : Fragment() {
                 Log.e("MessageFragment-updateUnreadUserCount", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private suspend fun getUser(): StudyUser? {
+        val service = StudyService.create()
+        return lifecycleScope.async {
+            kotlin.runCatching {
+                uid?.let { service.getUserById(it) }
+            }.onFailure {
+                Log.e("MessageFragment-getUser", it.message ?: "error occurred.")
+            }.getOrNull()
+        }.await()
     }
 
     override fun onDestroyView() {
