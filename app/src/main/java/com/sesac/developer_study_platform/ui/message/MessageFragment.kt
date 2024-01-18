@@ -37,9 +37,7 @@ class MessageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvMessageList.adapter = messageAdapter
-        if (messageAdapter.currentList.isNotEmpty()) {
-            loadMessageList()
-        }
+        loadMessageList()
         binding.ivSend.setOnClickListener {
             sendMessage()
         }
