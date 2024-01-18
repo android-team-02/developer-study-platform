@@ -47,7 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:constraint_referenced_ids="flow_repo, tv_repository_create_date"
+        app:constraint_referenced_ids="flow_repo, tv_repository_create_at"
         app:flow_horizontalBias="0"
         app:flow_horizontalGap="5dp"
         app:flow_horizontalStyle="packed"
@@ -188,7 +188,7 @@
         tools:text="9" />
 
     <TextView
-        android:id="@+id/tv_repository_create_date"
+        android:id="@+id/tv_repository_created_at"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
