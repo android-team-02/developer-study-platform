@@ -36,8 +36,6 @@ import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -49,7 +47,6 @@ class StudyFormFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var dayTimeAdapter: DayTimeAdapter
     private val dayTimeList = mutableListOf<DayTime>()
-    private val studyService = StudyService.create()
     private var totalSelectedItem = ""
     private var languageSelectedItem = ""
     private var categorySelectedItem = ""
@@ -469,7 +466,6 @@ class StudyFormFragment : Fragment() {
         val newStudy = saveStudy(sid, uid, fileName)
         val userStudyRoom = saveUserStudy(sid, fileName)
         tryPutData(uid, sid, newStudy, userStudyRoom)
-
     }
 
     private fun formatSid(uid: String): String {
@@ -509,6 +505,7 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun tryPutData(uid: String, sid: String, newStudy: Study, userStudyRoom: UserStudy) {
+        val studyService = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 studyService.putStudy(sid, newStudy)
