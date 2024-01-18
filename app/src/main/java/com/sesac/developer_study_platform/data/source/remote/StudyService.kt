@@ -63,6 +63,13 @@ interface StudyService {
         @Body readUsers: Map<String, Boolean>
     )
 
+    @PUT("chatRooms/{chatRoomId}/unreadUsers/{uid}.json")
+    suspend fun updateUnreadUserCount(
+        @Path("chatRoomId") chatRoomId: String,
+        @Path("uid") uid: String?,
+        @Body count: Int = 0
+    )
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()
