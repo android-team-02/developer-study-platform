@@ -67,4 +67,11 @@
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
         tools:layout="@layout/fragment_study_form" />
+
+    <!-- TODO 채팅방 목록 구현되면 변경 -->
+    <fragment
+        android:id="@+id/dest_chat"
+        android:name="com.sesac.developer_study_platform.ui.message.MessageFragment"
+        android:label="fragment_message_list"
+        tools:layout="@layout/fragment_message" />
 </navigation>

@@ -2,6 +2,7 @@ package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.BuildConfig
+import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
@@ -42,6 +43,11 @@ interface StudyService {
     suspend fun getUserById(
         @Path("uid") uid: String,
     ): StudyUser
+
+    @GET("chatRooms/{chatRoomId}/messages.json")
+    suspend fun getMessageList(
+        @Path("chatRoomId") chatRoomId: String
+    ): Map<String, Message>
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
