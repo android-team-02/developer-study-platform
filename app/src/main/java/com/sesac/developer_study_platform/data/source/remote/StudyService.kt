@@ -81,6 +81,11 @@ interface StudyService {
         @Path("studyId") studyId: String
     ): Map<String, Boolean>
 
+    @GET("chatRooms/{chatRoomId}/unreadUsers.json")
+    suspend fun getUnreadUserList(
+        @Path("chatRoomId") chatRoomId: String
+    ): Map<String, Int>
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()

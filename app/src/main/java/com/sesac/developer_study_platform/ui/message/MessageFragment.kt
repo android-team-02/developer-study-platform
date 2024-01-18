@@ -131,6 +131,51 @@ class MessageFragment : Fragment() {
         }.await()
     }
 
+    private fun getStudyMemberList() {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getStudyMemberList(chatRoomId)
+            }.onSuccess {
+                it.keys.forEach { member ->
+                    if (messageAdapter.currentList.isNotEmpty() && member != uid) {
+                        getUnreadUserList(member)
+                    }
+                }
+            }.onFailure {
+                Log.e("MessageFragment-getStudyMemberList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun getUnreadUserList(member: String) {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getUnreadUserList(chatRoomId)
+            }.onSuccess {
+                updateUnreadUserCount(member, it)
+            }.onFailure {
+                Log.e("MessageFragment-getUnreadUserList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun updateUnreadUserCount(member: String, unreadUserList: Map<String, Int>) {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.updateUnreadUserCount(
+                    chatRoomId,
+                    member,
+                    unreadUserList.getOrDefault(member, 0) + 1
+                )
+            }.onFailure {
+                Log.e("MessageFragment-updateUnreadUserCount", it.message ?: "error occurred.")
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
