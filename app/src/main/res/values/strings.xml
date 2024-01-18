@@ -109,4 +109,6 @@
     <string name="participant">참여자</string>
     <string name="study_time_format">%s</string>
     <string name="study_period_format">%1$s ~ %2$s</string>
+
+    <string name="detail_bookmark_description">스터디 북마크하기</string>
 </resources>
