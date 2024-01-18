@@ -93,6 +93,12 @@ interface StudyService {
         @Body message: Message,
     )
 
+    @PUT("chatRooms/{chatRoomId}/lastMessage.json")
+    suspend fun updateLastMessage(
+        @Path("chatRoomId") chatRoomId: String,
+        @Body lastMessage: Message
+    )
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()

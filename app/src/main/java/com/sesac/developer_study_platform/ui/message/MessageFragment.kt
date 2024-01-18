@@ -115,6 +115,7 @@ class MessageFragment : Fragment() {
             }.onSuccess {
                 loadMessageList()
                 getStudyMemberList()
+                updateLastMessage(message)
                 binding.etMessageInput.text.clear()
             }.onFailure {
                 Log.e("MessageFragment-sendMessage", it.message ?: "error occurred.")
@@ -198,6 +199,17 @@ class MessageFragment : Fragment() {
                 )
             }.onFailure {
                 Log.e("MessageFragment-updateUnreadUserCount", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun updateLastMessage(message: Message) {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.updateLastMessage(chatRoomId, message)
+            }.onFailure {
+                Log.e("MessageFragment-updateLastMessage", it.message ?: "error occurred.")
             }
         }
     }
