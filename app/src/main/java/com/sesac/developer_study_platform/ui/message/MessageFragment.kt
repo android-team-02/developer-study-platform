@@ -1,14 +1,18 @@
 package com.sesac.developer_study_platform.ui.message
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.remote.StudyService
@@ -23,6 +27,11 @@ class MessageFragment : Fragment() {
     private val chatRoomId = "@make@abcd@time@20240111144250"
     private val messageAdapter = MessageAdapter()
     private val uid = Firebase.auth.uid
+    private val storageRef = Firebase.storage.reference
+    private val pickMultipleMedia =
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(9)) { uriList ->
+            saveMultipleMedia(uriList)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +47,23 @@ class MessageFragment : Fragment() {
 
         binding.rvMessageList.adapter = messageAdapter
         loadMessageList()
+        binding.ivPlus.setOnClickListener {
+            pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
         binding.ivSend.setOnClickListener {
             sendMessage()
+        }
+    }
+
+    private fun saveMultipleMedia(uriList: List<Uri>) {
+        if (uriList.isNotEmpty()) {
+            uriList.forEach { uri ->
+                val imagesRef = storageRef.child("$chatRoomId/image_${uri.lastPathSegment}.jpg")
+                val uploadTask = imagesRef.putFile(uri)
+                uploadTask.addOnFailureListener {
+                    Log.e("MessageFragment-selectMultipleMedia", it.message ?: "error occurred.")
+                }
+            }
         }
     }
 
