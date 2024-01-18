@@ -107,6 +107,17 @@ class MessageFragment : Fragment() {
         }.await()
     }
 
+    private suspend fun isAdmin(): Boolean {
+        val service = StudyService.create()
+        return lifecycleScope.async {
+            kotlin.runCatching {
+                service.isAdmin(chatRoomId, uid)
+            }.onFailure {
+                Log.e("MessageFragment-isAdmin", it.message ?: "error occurred.")
+            }.getOrDefault(false)
+        }.await()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
