@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -85,6 +86,12 @@ interface StudyService {
     suspend fun getUnreadUserList(
         @Path("chatRoomId") chatRoomId: String
     ): Map<String, Int>
+
+    @POST("chatRooms/{chatRoomId}/messages.json")
+    suspend fun addMessage(
+        @Path("chatRoomId") chatRoomId: String,
+        @Body message: Message,
+    )
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL

@@ -40,6 +40,9 @@ class MessageFragment : Fragment() {
         if (messageAdapter.currentList.isNotEmpty()) {
             loadMessageList()
         }
+        binding.ivSend.setOnClickListener {
+            sendMessage()
+        }
     }
 
     private fun loadMessageList() {
@@ -92,6 +95,29 @@ class MessageFragment : Fragment() {
                 service.updateUnreadUserCount(chatRoomId, uid)
             }.onFailure {
                 Log.e("MessageFragment-updateUnreadUserCount", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun sendMessage() {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            val message = Message(
+                uid,
+                getUser(),
+                isAdmin(),
+                binding.etMessageInput.text.toString(),
+                getStudyMemberCount(),
+                mapOf(uid to true)
+            )
+            kotlin.runCatching {
+                service.addMessage(chatRoomId, message)
+            }.onSuccess {
+                loadMessageList()
+                getStudyMemberList()
+                binding.etMessageInput.text.clear()
+            }.onFailure {
+                Log.e("MessageFragment-sendMessage", it.message ?: "error occurred.")
             }
         }
     }
