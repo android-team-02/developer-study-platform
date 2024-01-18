@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
+import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
@@ -24,6 +26,7 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DetailFragmentArgs by navArgs()
     private var currentStudy: Study? = null
+    private lateinit var bookmarkStudy: Study
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +46,9 @@ class DetailFragment : Fragment() {
         binding.toolbarArrowDetail.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        loadBookmarkButtonState()
+        setBookmarkButton()
     }
 
     private fun fetchStudyDetails(studyId: String) {
@@ -51,6 +57,7 @@ class DetailFragment : Fragment() {
             runCatching {
                 service.getDetail("@make@abcd@time@20240111144250")
             }.onSuccess { studies ->
+                bookmarkStudy = studies
                 displayStudyDetails(studies)
             }.onFailure { exception ->
                 Log.e("DetailFragment2", "Failed to load study details: ${exception.message}")
@@ -147,6 +154,45 @@ class DetailFragment : Fragment() {
         val hour = time.substring(0, 2)
         val minute = time.substring(2)
         return "$hour:$minute"
+    }
+
+    private fun loadBookmarkButtonState() {
+        lifecycleScope.launch {
+            binding.ivBookmark.isSelected =
+                bookmarkDao.getBookmarkStudyBySid("@make@abcd@time@20240111144250").isNotEmpty()
+        }
+    }
+
+    private fun setBookmarkButton() {
+        binding.ivBookmark.setOnClickListener {
+            if (binding.ivBookmark.isSelected) {
+                binding.ivBookmark.isSelected = false
+                deleteBookmarkStudyBySid()
+            } else {
+                binding.ivBookmark.isSelected = true
+                insertBookmarkStudy()
+            }
+        }
+    }
+
+    private fun insertBookmarkStudy() {
+        lifecycleScope.launch {
+            bookmarkDao.insertBookmarkStudy(
+                BookmarkStudy(
+                    bookmarkStudy.sid,
+                    bookmarkStudy.name,
+                    bookmarkStudy.image,
+                    bookmarkStudy.language,
+                    bookmarkStudy.days.keys.joinToString(", ")
+                )
+            )
+        }
+    }
+
+    private fun deleteBookmarkStudyBySid() {
+        lifecycleScope.launch {
+            bookmarkDao.deleteBookmarkStudyBySid("@make@abcd@time@20240111144250")
+        }
     }
 
     override fun onDestroyView() {
