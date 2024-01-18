@@ -473,7 +473,7 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun formatSid(uid: String): String {
-        val timestamp = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
+        val timestamp = SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(Date())
         return "@make@$uid@time@$timestamp"
     }
 
