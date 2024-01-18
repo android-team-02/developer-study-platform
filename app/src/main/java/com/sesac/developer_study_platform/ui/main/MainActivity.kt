@@ -1,10 +1,10 @@
 package com.sesac.developer_study_platform.ui.main
 
 import android.animation.ObjectAnimator
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.dest_login -> View.GONE
                 R.id.dest_study_form -> View.GONE
                 R.id.dest_detail -> View.GONE
+                R.id.dest_profile -> View.GONE
                 else -> View.VISIBLE
             }
         }
