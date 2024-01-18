@@ -52,7 +52,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_dest_detail_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/dest_profile" />
     </fragment>
 
     <fragment
@@ -71,7 +71,7 @@
         android:label="fragment_study_form"
         tools:layout="@layout/fragment_study_form" />
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="ProfileFragment"
+        android:id="@+id/dest_profile"
+        android:name="com.sesac.developer_study_platform.ui.ProfileFragment"
         android:label="ProfileFragment" />
 </navigation>
