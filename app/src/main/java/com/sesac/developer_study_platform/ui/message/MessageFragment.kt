@@ -118,6 +118,19 @@ class MessageFragment : Fragment() {
         }.await()
     }
 
+    private suspend fun getStudyMemberCount(): Int {
+        val service = StudyService.create()
+        return lifecycleScope.async {
+            kotlin.runCatching {
+                service.getStudyMemberList(chatRoomId)
+            }.mapCatching {
+                it.count()
+            }.onFailure {
+                Log.e("MessageFragment-getStudyMemberCount", it.message ?: "error occurred.")
+            }.getOrDefault(0)
+        }.await()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
