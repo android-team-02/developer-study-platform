@@ -11,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -48,6 +49,19 @@ interface StudyService {
     suspend fun getMessageList(
         @Path("chatRoomId") chatRoomId: String
     ): Map<String, Message>
+
+    @GET("chatRooms/{chatRoomId}/messages/{messageId}/readUsers.json")
+    suspend fun getReadUserList(
+        @Path("chatRoomId") chatRoomId: String,
+        @Path("messageId") messageId: String,
+    ): MutableMap<String, Boolean>
+
+    @PATCH("chatRooms/{chatRoomId}/messages/{messageId}/readUsers.json")
+    suspend fun updateReadUserList(
+        @Path("chatRoomId") chatRoomId: String,
+        @Path("messageId") messageId: String,
+        @Body readUsers: Map<String, Boolean>
+    )
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
