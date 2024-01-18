@@ -32,7 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/tv_repository_name"
         android:layout_width="0dp"
@@ -41,13 +40,12 @@
         android:textSize="18sp"
         tools:text="NewsApp_Project" />
 
-
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_repo_all"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:constraint_referenced_ids="flow_repo, tv_repository_create_at"
+        app:constraint_referenced_ids="flow_repo, tv_repository_created_at"
         app:flow_horizontalBias="0"
         app:flow_horizontalGap="5dp"
         app:flow_horizontalStyle="packed"
@@ -55,7 +53,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
-
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_repo"
@@ -166,7 +163,7 @@
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="iv_repository_issue,tv_repository_issue"
         app:flow_horizontalBias="0"
-        app:flow_horizontalGap="2dp"
+        app:flow_horizontalGap="3dp"
         app:flow_horizontalStyle="packed"
         app:flow_wrapMode="chain"
         app:layout_constraintStart_toEndOf="@id/flow_fork"
