@@ -8,8 +8,7 @@ import java.util.Date
 @Serializable
 data class Message(
     val uid: String?,
-    val userId: String?,
-    val userImage: String?,
+    val studyUser: StudyUser?,
     val isAdmin: Boolean,
     val message: String,
     val totalMemberCount: Int,

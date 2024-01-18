@@ -62,11 +62,11 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
         val count = message.totalMemberCount - message.readUsers.count()
 
         Glide.with(itemView)
-            .load(message.userImage)
+            .load(message.studyUser?.image)
             .centerCrop()
             .into(binding.ivUserImage)
         binding.ivAdmin.isVisible = message.isAdmin
-        binding.tvUserId.text = message.userId
+        binding.tvUserId.text = message.studyUser?.userId
         binding.tvMessage.text = message.message
         binding.tvTimestamp.text = message.timestamp.formatTime()
         if (count > 0) {
