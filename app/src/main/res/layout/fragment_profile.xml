@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/iv_divider" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_study"
+        android:id="@+id/rv_repository"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
