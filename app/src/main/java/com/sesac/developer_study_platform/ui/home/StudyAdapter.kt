@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.ui.UserStudyClickListener
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
+import com.sesac.developer_study_platform.ui.UserStudyClickListener
 
 class StudyAdapter(private val clickListener: UserStudyClickListener) :
     ListAdapter<UserStudy, StudyAdapter.StudyViewHolder>(diffUtil) {
