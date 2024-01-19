@@ -44,7 +44,7 @@ class BookmarkFragment : Fragment() {
 
     private fun setBookmarkStudyList(bookmarkStudyList: List<BookmarkStudy>) {
         if (bookmarkStudyList.isNotEmpty()) {
-            bookmarkAdapter.submitList(bookmarkStudyList)
+            bookmarkAdapter.submitList(bookmarkStudyList.sortedByDescending { it.id })
         } else {
             binding.rvStudy.visibility = View.GONE
             binding.groupNoData.visibility = View.VISIBLE
