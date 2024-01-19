@@ -436,8 +436,10 @@ class StudyFormFragment : Fragment() {
                     selectedImageUri?.let { uri ->
                         val uid = Firebase.auth.uid
                         if (uid != null) {
-                            uploadImageStorage(uid, uri) { fileName ->
-                                putFirebase(uid, fileName)
+                            val sid = formatSid(uid)
+                            uploadImageStorage(sid, uri) { fileName ->
+                                putFirebase(sid, uid, fileName)
+
                             }
                         }
                     }
@@ -446,13 +448,12 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun uploadImageStorage(uid: String, imageUri: Uri, onUploadSuccess: (String) -> Unit) {
+    private fun uploadImageStorage(sid: String, imageUri: Uri, onUploadSuccess: (String) -> Unit) {
         val storageRef = Firebase.storage.reference
         val fileName = "image_${binding.etStudyNameInput.text}.jpg"
-        val imageRef = storageRef.child("$uid/$fileName")
-        val uploadTask = imageRef.putFile(imageUri)
+        val imageRef = storageRef.child("$sid/$fileName")
 
-        uploadTask.addOnSuccessListener { taskSnapshot ->
+        imageRef.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
                 onUploadSuccess(fileName)
             }
@@ -461,8 +462,7 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun putFirebase(uid: String, fileName: String) {
-        val sid = formatSid(uid)
+    private fun putFirebase(sid: String, uid: String, fileName: String) {
         val newStudy = saveStudy(sid, uid, fileName)
         val userStudyRoom = saveUserStudy(sid, fileName)
         tryPutData(uid, sid, newStudy, userStudyRoom)
