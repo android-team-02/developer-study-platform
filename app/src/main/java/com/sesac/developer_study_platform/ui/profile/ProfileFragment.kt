@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.ui
+package com.sesac.developer_study_platform.ui.profile
 
 import android.os.Bundle
 import android.util.Log
