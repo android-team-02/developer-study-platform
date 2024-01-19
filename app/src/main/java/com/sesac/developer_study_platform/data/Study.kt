@@ -15,7 +15,7 @@ data class Study(
     val startDate: String,
     val endDate: String,
     val members: Map<String, Boolean>,
-    val banUsers: Map<String, Boolean> = emptyMap(),
+    val banUsers: Map<String, Boolean>,
 )
 
 @Serializable
