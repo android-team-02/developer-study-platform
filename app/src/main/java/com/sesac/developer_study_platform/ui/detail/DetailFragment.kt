@@ -1,6 +1,8 @@
 package com.sesac.developer_study_platform.ui.detail
 
 import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -139,6 +141,7 @@ class DetailFragment : Fragment() {
             .setView(dialogBinding.root)
 
         val dialog = dialogBuilder.show()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogLogic(dialogBinding, dialog)
     }
 
