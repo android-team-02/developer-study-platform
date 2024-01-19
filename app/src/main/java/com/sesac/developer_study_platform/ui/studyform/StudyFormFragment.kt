@@ -486,7 +486,7 @@ class StudyFormFragment : Fragment() {
             startDate = binding.tvStartPeriod.text.toString(),
             endDate = binding.tvEndPeriod.text.toString(),
             members = mapOf(uid to true),
-            banUsers = mapOf()
+            banUsers = mapOf("default" to true)
         )
     }
 
