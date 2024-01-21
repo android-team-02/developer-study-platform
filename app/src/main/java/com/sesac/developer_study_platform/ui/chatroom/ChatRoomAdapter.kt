@@ -62,7 +62,6 @@ class ChatRoomAdapter(private val clickListener: ChatRoomClickListener) :
             override fun areContentsTheSame(oldItem: UserChatRoom, newItem: UserChatRoom): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 }
