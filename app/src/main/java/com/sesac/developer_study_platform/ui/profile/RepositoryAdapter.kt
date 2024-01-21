@@ -31,20 +31,20 @@ class RepositoryAdapter : ListAdapter<Repository, RepositoryAdapter.ViewHolder>(
         fun bind(repository: Repository) {
             binding.tvRepositoryName.text = repository.name
             binding.tvRepositoryLanguage.text = repository.language ?: "Unknown"
-            binding.tvRepositoryStars.text = repository.stargazers_count.toString()
-            binding.tvRepositoryFork.text = repository.forks_count.toString()
-            binding.tvRepositoryIssue.text = repository.open_issues_count.toString()
+            binding.tvRepositoryStars.text = repository.stargazersCount.toString()
+            binding.tvRepositoryFork.text = repository.forksCount.toString()
+            binding.tvRepositoryIssue.text = repository.openIssuesCount.toString()
 
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
             val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date: Date = inputFormat.parse(repository.created_at) ?: Date()
+            val date: Date = inputFormat.parse(repository.createdAt) ?: Date()
             binding.tvRepositoryCreatedAt.text = outputFormat.format(date)
         }
     }
 
     private class RepositoryDiffCallback : DiffUtil.ItemCallback<Repository>() {
         override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean {
-            return oldItem.created_at == newItem.created_at
+            return oldItem.createdAt == newItem.createdAt
         }
 
         override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean {

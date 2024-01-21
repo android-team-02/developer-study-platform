@@ -28,7 +28,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
@@ -130,7 +130,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun navigationToProfileFragment(){
+    private fun navigationToProfileFragment() {
         val action = DetailFragmentDirections.actionDestDetailToProfileFragment()
         findNavController().navigate(action)
     }

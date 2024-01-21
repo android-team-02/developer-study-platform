@@ -7,9 +7,9 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_arrow_profile"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back" />
@@ -43,9 +43,9 @@
         android:id="@+id/iv_export"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:contentDescription="@string/profile_export"
         android:src="@drawable/ic_export"
+        app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_profile_name"
         app:layout_constraintTop_toTopOf="@id/tv_profile_name" />
@@ -55,32 +55,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/export"
+        android:text="@string/profile_export"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_export"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/iv_export"
         app:layout_constraintTop_toTopOf="@id/iv_export" />
 
-    <ImageView
+    <com.google.android.material.divider.MaterialDivider
         android:id="@+id/iv_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/space_x_small"
         android:layout_marginTop="@dimen/space_small"
-        android:contentDescription="@string/divider"
-        android:src="@drawable/ic_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
     <TextView
         android:id="@+id/tv_repository"
+        style="@style/StudyQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_median"
         android:layout_marginTop="@dimen/space_median"
-        android:fontFamily="@font/pretendard_bold"
-        android:text="@string/repository"
-        android:textSize="16sp"
+        android:text="@string/profile_repository"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_divider" />
 

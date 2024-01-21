@@ -34,10 +34,9 @@
 
     <TextView
         android:id="@+id/tv_repository_name"
+        style="@style/ToolbarTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_bold"
-        android:textSize="18sp"
         tools:text="NewsApp_Project" />
 
     <androidx.constraintlayout.helper.widget.Flow
@@ -89,10 +88,9 @@
 
     <TextView
         android:id="@+id/tv_repository_language"
+        style="@style/Repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/iv_repository_stars"
         app:layout_constraintStart_toEndOf="@id/iv_repository_language"
         app:layout_constraintTop_toBottomOf="@id/tv_repository_name"
@@ -114,15 +112,14 @@
         android:id="@+id/iv_repository_stars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/repository_stars"
-        android:src="@drawable/ic_stars" />
+        android:contentDescription="@string/profile_repository_stars"
+        android:src="@drawable/ic_star" />
 
     <TextView
         android:id="@+id/tv_repository_stars"
+        style="@style/Repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/iv_repository_fork"
         app:layout_constraintStart_toStartOf="@id/iv_repository_stars"
         app:layout_constraintTop_toBottomOf="@id/tv_repository_name"
@@ -144,17 +141,16 @@
         android:id="@+id/iv_repository_fork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/repository_fork"
+        android:contentDescription="@string/profile_repository_fork"
         android:src="@drawable/ic_fork" />
 
     <TextView
         android:id="@+id/tv_repository_fork"
+        style="@style/Repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:fontFamily="@font/pretendard_medium"
-        android:textSize="14sp"
         tools:text="5" />
 
     <androidx.constraintlayout.helper.widget.Flow
@@ -173,19 +169,19 @@
         android:id="@+id/iv_repository_issue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/repository_issue"
+        android:contentDescription="@string/profile_repository_issue"
         android:src="@drawable/ic_issue" />
 
     <TextView
         android:id="@+id/tv_repository_issue"
+        style="@style/Repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:textSize="14sp"
         tools:text="9" />
 
     <TextView
         android:id="@+id/tv_repository_created_at"
+        style="@style/Repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

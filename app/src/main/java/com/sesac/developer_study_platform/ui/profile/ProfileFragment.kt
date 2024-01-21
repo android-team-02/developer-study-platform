@@ -20,7 +20,7 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var studyService: StudyService
+    private val studyService = StudyService.create()
     private val repositoryAdapter = RepositoryAdapter()
 
     override fun onCreateView(
@@ -35,11 +35,10 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firebaseUid = getCurrentFirebaseUserId()
+        val firebaseUid = Firebase.auth.uid
         if (firebaseUid != null) {
-            studyService = StudyService.create()
-            fetchUserProfileAndRepositories("kxg02ZurZAMTkgQOuNg8jN8WhiF3")
             binding.rvRepository.adapter = repositoryAdapter
+            fetchUserProfileAndRepositories("kxg02ZurZAMTkgQOuNg8jN8WhiF3")
             checkMembershipInStudy("@make@abcd@time@20240111144250", firebaseUid)
         }
 
@@ -48,9 +47,24 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun getCurrentFirebaseUserId(): String? {
-        return Firebase.auth.uid
+    private fun fetchUserProfileAndRepositories(uid: String) {
+        lifecycleScope.launch {
+            runCatching {
+                studyService.getUserById(uid)
+            }.onSuccess { user ->
+                binding.tvProfileName.text = user.userId
+                Glide.with(binding.ivProfileImage).load(user.image).into(binding.ivProfileImage)
+
+                val repositories = GithubService.create().listRepos(user.userId)
+                repositoryAdapter.submitList(repositories)
+
+                Log.d("Repositories", "Repositories successfully loaded")
+            }.onFailure { exception ->
+                Log.e("fetchUserProfileAndRepositories", "Error loading repositories: ${exception.message}")
+            }
+        }
     }
+
 
     private fun checkMembershipInStudy(sid: String, firebaseUid: String) {
         lifecycleScope.launch {
@@ -81,24 +95,6 @@ class ProfileFragment : Fragment() {
         } else {
             binding.ivExport.visibility = View.GONE
             binding.tvExport.visibility = View.GONE
-        }
-    }
-
-    private fun fetchUserProfileAndRepositories(uid: String) {
-        lifecycleScope.launch {
-            runCatching {
-                studyService.getUserById(uid)
-            }.onSuccess { user ->
-                binding.tvProfileName.text = user.userId
-                Glide.with(this@ProfileFragment).load(user.image).into(binding.ivProfileImage)
-
-                val repositories = GithubService.create().listRepos(user.userId)
-                repositoryAdapter.submitList(repositories)
-
-                Log.d("Repositories", "Repositories successfully loaded")
-            }.onFailure { exception ->
-                Log.e("fetchUserProfileAndRepositories", "Error loading repositories: ${exception.message}")
-            }
         }
     }
 
