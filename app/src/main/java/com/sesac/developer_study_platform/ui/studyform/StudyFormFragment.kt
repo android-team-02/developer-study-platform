@@ -52,7 +52,7 @@ class StudyFormFragment : Fragment() {
     private var categorySelectedItem = ""
     private var startDate: Date? = null
     private var endDate: Date? = null
-    private var selectedImageUri: Uri? = null
+    private lateinit var selectedImageUri: Uri
     private val dayTimeClickListener = object : DayTimeClickListener {
         override fun onClick(dayTime: DayTime, isStartTime: Boolean) {
             setStartTimePicker(isStartTime, dayTime)
@@ -100,13 +100,9 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun setSelectedImage(imageUri: Uri?) {
-        imageUri?.let { uri ->
-            binding.ivImageInput.setImageURI(uri)
         if (imageUri != null) {
             binding.ivImageInput.setImageURI(imageUri)
             binding.groupAddImage.visibility = View.GONE
-            selectedImageUri = uri
-        } ?: Log.d("SelectedImage", "No media selected")
             selectedImageUri = imageUri
         } else {
             Log.d("SelectedImage", "No media selected")
@@ -439,14 +435,11 @@ class StudyFormFragment : Fragment() {
                 }
 
                 else -> {
-                    selectedImageUri?.let { uri ->
-                        val uid = Firebase.auth.uid
-                        if (uid != null) {
-                            val sid = formatSid(uid)
-                            uploadImageStorage(sid, uri) { fileName ->
-                                putFirebase(sid, uid, fileName)
-
-                            }
+                    val uid = Firebase.auth.uid
+                    if (uid != null) {
+                        val sid = formatSid(uid)
+                        uploadImageStorage(sid, selectedImageUri) { fileName ->
+                            putFirebase(sid, uid, fileName)
                         }
                     }
                 }
