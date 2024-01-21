@@ -75,12 +75,10 @@ class SearchResultFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
                 Log.d("SearchResultFragment1", p0.toString())
-                if (p0 != null) {
-                    if (p0.isEmpty()) {
-                        searchAdapter.submitList(emptyList())
-                    } else {
-                        loadSearchStudyList(p0.toString())
-                    }
+                if (p0.isNullOrEmpty()) {
+                    searchAdapter.submitList(emptyList())
+                } else {
+                    loadSearchStudyList(p0.toString())
                 }
             }
         })
