@@ -13,6 +13,7 @@ import com.sesac.developer_study_platform.ui.BookmarkClickListener
 import kotlinx.coroutines.launch
 
 class BookmarkFragment : Fragment() {
+
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
     private val bookmarkAdapter = BookmarkAdapter(object : BookmarkClickListener {
