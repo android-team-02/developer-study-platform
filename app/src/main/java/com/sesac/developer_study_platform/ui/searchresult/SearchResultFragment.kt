@@ -93,7 +93,6 @@ class SearchResultFragment : Fragment() {
                 service.getSearchStudyList("\"${searchKeyword}\"", "\"${searchKeyword}\\uf8ff\"")
             }.onSuccess {
                 setSearchStudyList(it)
-                Log.d("SearchResultFragment", it.toString())
             }.onFailure {
                 Log.e("SearchResultFragment", it.message ?: "error occurred.")
             }
