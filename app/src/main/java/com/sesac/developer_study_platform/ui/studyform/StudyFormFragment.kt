@@ -102,9 +102,15 @@ class StudyFormFragment : Fragment() {
     private fun setSelectedImage(imageUri: Uri?) {
         imageUri?.let { uri ->
             binding.ivImageInput.setImageURI(uri)
+        if (imageUri != null) {
+            binding.ivImageInput.setImageURI(imageUri)
             binding.groupAddImage.visibility = View.GONE
             selectedImageUri = uri
         } ?: Log.d("SelectedImage", "No media selected")
+            selectedImageUri = imageUri
+        } else {
+            Log.d("SelectedImage", "No media selected")
+        }
     }
 
     private fun setCategory() {
