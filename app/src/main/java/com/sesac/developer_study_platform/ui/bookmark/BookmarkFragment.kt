@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.sesac.developer_study_platform.StudyApplication
-import com.sesac.developer_study_platform.data.BookmarkStudy
+import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
 import com.sesac.developer_study_platform.ui.BookmarkClickListener
 import kotlinx.coroutines.launch
@@ -39,16 +38,13 @@ class BookmarkFragment : Fragment() {
 
     private fun loadStudyList() {
         lifecycleScope.launch {
-            setBookmarkStudyList(StudyApplication.bookmarkDao.getAllBookmarkStudy())
-        }
-    }
-
-    private fun setBookmarkStudyList(bookmarkStudyList: List<BookmarkStudy>) {
-        if (bookmarkStudyList.isNotEmpty()) {
-            bookmarkAdapter.submitList(bookmarkStudyList.sortedByDescending { it.id })
-        } else {
-            binding.rvStudy.visibility = View.GONE
-            binding.groupNoData.visibility = View.VISIBLE
+            val bookmarkStudyList = bookmarkDao.getAllBookmarkStudy()
+            if (bookmarkStudyList.isNotEmpty()) {
+                bookmarkAdapter.submitList(bookmarkStudyList.sortedByDescending { it.id })
+            } else {
+                binding.rvStudy.visibility = View.GONE
+                binding.groupNoData.visibility = View.VISIBLE
+            }
         }
     }
 
