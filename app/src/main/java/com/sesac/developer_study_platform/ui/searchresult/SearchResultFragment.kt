@@ -1,6 +1,5 @@
 package com.sesac.developer_study_platform.ui.searchresult
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -56,9 +56,8 @@ class SearchResultFragment : Fragment() {
     }
 
     private fun showKeyboard(textInputEditText: TextInputEditText) {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(textInputEditText, 0)
+        val imm = context?.getSystemService(InputMethodManager::class.java)
+        imm?.showSoftInput(textInputEditText, SHOW_IMPLICIT)
     }
 
     private fun setBackBtn() {
