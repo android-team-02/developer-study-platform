@@ -35,6 +35,9 @@ class ChatRoomAdapter(private val clickListener: ChatRoomClickListener) :
             binding.tvLastMessage.text = userChatRoom.lastMessage
             binding.tvLastMessageTime.text = userChatRoom.lastMessageTime.toString()
             binding.tvUnreadCount.text = "1"
+            itemView.setOnClickListener {
+                clickListener.onClick(userChatRoom.sid)
+            }
         }
 
         companion object {
