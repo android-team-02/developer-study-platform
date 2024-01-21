@@ -464,9 +464,10 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun putFirebase(sid: String, uid: String, fileName: String) {
-        val newStudy = saveStudy(sid, uid, fileName)
-        val userStudyRoom = saveUserStudy(sid, fileName)
-        tryPutData(uid, sid, newStudy, userStudyRoom)
+        val newStudy = getStudy(sid, uid, fileName)
+        val userStudyRoom = getUserStudy(sid, fileName)
+        tryPutStudy(sid, newStudy)
+        tryPutUserStudyRoom(uid, sid, userStudyRoom)
     }
 
     private fun formatSid(uid: String): String {
@@ -474,7 +475,7 @@ class StudyFormFragment : Fragment() {
         return "@make@$uid@time@$timestamp"
     }
 
-    private fun saveStudy(sid: String, uid: String, fileName: String): Study {
+    private fun getStudy(sid: String, uid: String, fileName: String): Study {
         return Study(
             sid = sid,
             name = binding.etStudyNameInput.text.toString(),
@@ -491,7 +492,7 @@ class StudyFormFragment : Fragment() {
         )
     }
 
-    private fun saveUserStudy(sid: String, fileName: String): UserStudy {
+    private fun getUserStudy(sid: String, fileName: String): UserStudy {
         return UserStudy(
             sid = sid,
             name = binding.etStudyNameInput.text.toString(),
@@ -505,16 +506,28 @@ class StudyFormFragment : Fragment() {
         it.day to "${it.startTime?.replace(":", "")}@${it.endTime?.replace(":", "")}"
     }
 
-    private fun tryPutData(uid: String, sid: String, newStudy: Study, userStudyRoom: UserStudy) {
+    private fun tryPutStudy(sid: String, newStudy: Study) {
         val studyService = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 studyService.putStudy(sid, newStudy)
+            }.onSuccess {
+                Log.d("StudyFormFragment-Study", "success")
+            }.onFailure {
+                Log.e("StudyFormFragment-Study", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun tryPutUserStudyRoom(uid: String, sid: String, userStudyRoom: UserStudy) {
+        val studyService = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
                 studyService.putUserStudyRoom(uid, sid, userStudyRoom)
             }.onSuccess {
-                Log.d("StudyFormFragment-putData", "success")
+                Log.d("StudyFormFragment-UserStudyRoom", "success")
             }.onFailure {
-                Log.e("StudyFormFragment-putData", it.message ?: "error occurred.")
+                Log.e("StudyFormFragment-UserStudyRoom", it.message ?: "error occurred.")
             }
         }
     }
