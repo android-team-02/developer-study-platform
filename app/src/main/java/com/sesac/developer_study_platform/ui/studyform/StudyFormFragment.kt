@@ -455,6 +455,8 @@ class StudyFormFragment : Fragment() {
         imageRef.putFile(imageUri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
                 onUploadSuccess(fileName)
+            }?.addOnFailureListener {
+                Log.e("download URL", "download URL Failed", it)
             }
         }.addOnFailureListener { exception ->
             Log.e("UploadImage", "Upload failed", exception)
