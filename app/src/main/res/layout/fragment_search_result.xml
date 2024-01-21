@@ -29,6 +29,7 @@
         android:drawableStart="@drawable/ic_search_line"
         android:drawablePadding="@dimen/space_small"
         android:hint="@string/search_hint"
+        android:maxLines="1"
         android:padding="@dimen/space_median"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_back"
