@@ -58,10 +58,7 @@ class BookmarkAdapter(private val clickListener: BookmarkClickListener) :
                 return oldItem.sid == newItem.sid
             }
 
-            override fun areContentsTheSame(
-                oldItem: BookmarkStudy,
-                newItem: BookmarkStudy
-            ): Boolean {
+            override fun areContentsTheSame(oldItem: BookmarkStudy, newItem: BookmarkStudy): Boolean {
                 return oldItem == newItem
             }
         }
