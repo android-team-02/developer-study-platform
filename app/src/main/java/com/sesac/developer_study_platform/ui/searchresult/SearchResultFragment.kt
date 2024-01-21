@@ -100,9 +100,9 @@ class SearchResultFragment : Fragment() {
         val searchStudyList = searchStudyMap.values.toList().sortedBy {
             val comparator = it.totalMemberCount - it.members.count()
             if (comparator != 0) {
-                it.totalMemberCount - it.members.count()
+                comparator
             } else {
-                8
+                MAX_MEMBER_COUNT
             }
         }
         searchAdapter.submitList(searchStudyList)
@@ -111,5 +111,9 @@ class SearchResultFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val MAX_MEMBER_COUNT = 8
     }
 }
