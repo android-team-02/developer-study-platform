@@ -111,4 +111,9 @@ class SearchResultFragment : Fragment() {
         }
         searchAdapter.submitList(searchStudyList)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
