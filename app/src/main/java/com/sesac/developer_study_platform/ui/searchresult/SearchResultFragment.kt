@@ -68,16 +68,16 @@ class SearchResultFragment : Fragment() {
 
     private fun searchStudy() {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(p0: Editable?) {
-                Log.d("SearchResultFragment1", p0.toString())
-                if (p0.isNullOrEmpty()) {
+            override fun afterTextChanged(s: Editable?) {
+                Log.d("SearchResultFragment1", s.toString())
+                if (s.isNullOrEmpty()) {
                     searchAdapter.submitList(emptyList())
                 } else {
-                    loadSearchStudyList(p0.toString())
+                    loadSearchStudyList(s.toString())
                 }
             }
         })
