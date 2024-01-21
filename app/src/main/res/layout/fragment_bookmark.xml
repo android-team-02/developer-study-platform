@@ -11,7 +11,6 @@
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:contentDescription="@string/bookmark_back_description"
-        android:src="@drawable/ic_arrow_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
