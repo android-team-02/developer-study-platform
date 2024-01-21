@@ -17,10 +17,8 @@ class SpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration(
         val position = parent.getChildAdapterPosition(view)
         val itemCount = state.itemCount
 
-        if (itemCount >= 2 && position == 1) {
-            outRect.top = space
-        }
-        if (itemCount == 3 && position == 1) {
+        outRect.top = space
+        if (position == itemCount - 1) {
             outRect.bottom = space
         }
     }
