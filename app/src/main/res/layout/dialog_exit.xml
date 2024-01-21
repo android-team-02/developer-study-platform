@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_exit_dialog"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingVertical="@dimen/space_median"
@@ -28,9 +28,9 @@
 
     <TextView
         android:id="@+id/tv_exit"
+        style="@style/ToolbarTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_bold"
         android:gravity="center_horizontal"
         android:paddingHorizontal="75dp"
         android:text="@string/exit_dialog"
@@ -49,41 +49,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/iv_exit_no"
         android:layout_width="157dp"
         android:layout_height="52dp"
-        android:background="@color/lilac"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_no"
         android:fontFamily="@font/pretendard_bold"
         android:text="@string/no"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_exit_no"
-        app:layout_constraintEnd_toEndOf="@id/iv_exit_no"
-        app:layout_constraintStart_toStartOf="@id/iv_exit_no"
-        app:layout_constraintTop_toTopOf="@id/iv_exit_no" />
+        android:textSize="16sp" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/iv_exit_yes"
         android:layout_width="157dp"
         android:layout_height="52dp"
-        android:background="@color/black"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_yes"
         android:fontFamily="@font/pretendard_bold"
         android:text="@string/yes"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_exit_yes"
-        app:layout_constraintEnd_toEndOf="@id/iv_exit_yes"
-        app:layout_constraintStart_toStartOf="@id/iv_exit_yes"
-        app:layout_constraintTop_toTopOf="@id/iv_exit_yes" />
+        android:textSize="16sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -159,13 +159,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun isUserBanned(study: Study): Boolean {
-        val currentUser = getCurrentUserId()
+        val currentUser = FirebaseAuth.getInstance().currentUser?.uid
         return currentUser in study.banUsers.keys
-    }
-
-    private fun getCurrentUserId(): String? {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        return currentUser?.uid
     }
 
     private fun dialogLogic(binding: DialogWarningBinding, dialog: AlertDialog) {
