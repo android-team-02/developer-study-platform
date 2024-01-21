@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="90dp">
 
-    <View
-        android:id="@+id/view_line"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/mercury"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_study_image"
         android:layout_width="0dp"
@@ -23,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_line"
+        app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
         tools:src="@tools:sample/avatars" />
 

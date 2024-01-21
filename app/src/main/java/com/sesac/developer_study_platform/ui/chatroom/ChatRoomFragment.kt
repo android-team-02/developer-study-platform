@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.divider.MaterialDividerItemDecoration.VERTICAL
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.source.remote.StudyService
@@ -37,6 +39,7 @@ class ChatRoomFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvChatRoom.adapter = chatRoomAdapter
+        binding.rvChatRoom.addItemDecoration(DividerItemDecoration(binding.rvChatRoom.context, VERTICAL))
         loadUserChatRoomList()
     }
 
