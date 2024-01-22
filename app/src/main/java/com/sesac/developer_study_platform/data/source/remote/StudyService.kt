@@ -23,6 +23,19 @@ interface StudyService {
         @Body user: StudyUser
     )
 
+    @PUT("studies/{sid}.json")
+    suspend fun putStudy(
+        @Path("sid") sid: String,
+        @Body study: Study
+    )
+
+    @PUT("userStudyRooms/{uid}/{sid}.json")
+    suspend fun putUserStudyRoom(
+        @Path("uid") uid: String,
+        @Path("sid") sid: String,
+        @Body userStudy: UserStudy
+    )
+
     @GET("userStudyRooms/{uid}.json")
     suspend fun getUserStudyList(
         @Path("uid") uid: String?
@@ -32,6 +45,13 @@ interface StudyService {
     suspend fun getStudyList(
         @Query("equalTo") category: String,
         @Query("orderBy") orderBy: String = "\"category\""
+    ): Map<String, Study>
+
+    @GET("studies.json")
+    suspend fun getSearchStudyList(
+        @Query("startAt") startAt: String,
+        @Query("endAt") endAt: String,
+        @Query("orderBy") orderBy: String = "\"name\""
     ): Map<String, Study>
 
     @GET("studies/{sid}.json")
