@@ -78,4 +78,8 @@
     <style name="BottomNavigationView" parent="TextAppearance.M3.Sys.Typescale.LabelMedium">
         <item name="fontFamily">@font/pretendard_medium</item>
     </style>
+
+    <style name="SearchBar" parent="TextAppearance.M3.Sys.Typescale.BodyLarge">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
 </resources>

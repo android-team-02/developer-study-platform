@@ -46,6 +46,13 @@ interface StudyService {
         @Query("orderBy") orderBy: String = "\"category\""
     ): Map<String, Study>
 
+    @GET("studies.json")
+    suspend fun getSearchStudyList(
+        @Query("startAt") startAt: String,
+        @Query("endAt") endAt: String,
+        @Query("orderBy") orderBy: String = "\"name\""
+    ): Map<String, Study>
+
     @GET("studies/{sid}.json")
     suspend fun getDetail(
         @Path("sid") sid: String,

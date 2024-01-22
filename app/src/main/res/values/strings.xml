@@ -99,6 +99,9 @@
     <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
     <string name="home_move_study_detail_description">스터디 상세 화면으로 이동</string>
 
+    <string name="search_hint">스터디 검색</string>
+    <string name="search_back_btn_description">검색 화면으로 이동</string>
+
     <string name="iv_arrow">홈 화면으로 이동</string>
     <string name="join_study">스터디 참여하기</string>
     <string name="category">분야</string>
