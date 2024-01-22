@@ -22,6 +22,19 @@ interface StudyService {
         @Body user: StudyUser
     )
 
+    @PUT("studies/{sid}.json")
+    suspend fun putStudy(
+        @Path("sid") sid: String,
+        @Body study: Study
+    )
+
+    @PUT("userStudyRooms/{uid}/{sid}.json")
+    suspend fun putUserStudyRoom(
+        @Path("uid") uid: String,
+        @Path("sid") sid: String,
+        @Body userStudy: UserStudy
+    )
+
     @GET("userStudyRooms/{uid}.json")
     suspend fun getUserStudyList(
         @Path("uid") uid: String?
