@@ -13,11 +13,11 @@ import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.sesac.developer_study_platform.data.source.remote.GithubService
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.StudyApplication.Companion.sharedPref
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.source.remote.GithubService
+import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentLoginBinding
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch

@@ -73,9 +73,9 @@
     <string name="all_pref_uid_key">UID</string>
     <string name="all_pref_access_token_key">ACCESS_TOKEN</string>
     <string name="all_pref_auto_login_key">AUTO_LOGIN</string>
+    <string name="all_logo_description">앱 로고</string>
     <string name="login_with_github">Login with Github</string>
     <string name="login_failure">로그인에 실패하였습니다. 다시 시도해주세요.</string>
-    <string name="login_logo_description">앱 로고</string>
 
     <string name="home">홈</string>
     <string name="search">검색</string>
@@ -99,6 +99,9 @@
     <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
     <string name="home_move_study_detail_description">스터디 상세 화면으로 이동</string>
 
+    <string name="search_hint">스터디 검색</string>
+    <string name="search_back_btn_description">검색 화면으로 이동</string>
+
     <string name="iv_arrow">홈 화면으로 이동</string>
     <string name="join_study">스터디 참여하기</string>
     <string name="category">분야</string>
@@ -116,4 +119,20 @@
     <string name="exit_dialog">채팅방을 나가시겠습니까?</string>
     <string name="no">아니요</string>
     <string name="yes">네</string>
+
+    <string name="profile_export">내보내기</string>
+    <string name="profile_ic_export">내보내기 모양의 아이콘</string>
+    <string name="profile_divider">레포지토리 시작을 알리는 구분선</string>
+    <string name="profile_repository">Repository</string>
+    <string name="profile_repository_fork">레포지토리 포크 모양의 아이콘</string>
+    <string name="profile_repository_stars">레포지토리 스타 모양의 아이콘</string>
+    <string name="profile_repository_issue">레포지토리 이슈 모양의 아이콘</string>
+    <string name="profile_repository_language_unknown">Unknown</string>
+
+    <string name="detail_bookmark_description">스터디 북마크하기</string>
+    <string name="bookmark_back_description">마이페이지 화면으로 이동</string>
+    <string name="bookmark_no_data">저장한 스터디가 없습니다.</string>
+
+    <string name="chat_select_image">이미지 추가</string>
+    <string name="chat_send_message_description">메시지 전송</string>
 </resources>

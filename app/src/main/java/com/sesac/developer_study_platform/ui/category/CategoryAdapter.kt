@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.ui.StudyClickListener
 import com.sesac.developer_study_platform.databinding.ItemStudyCategoryBinding
+import com.sesac.developer_study_platform.ui.StudyClickListener
 
 class CategoryAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<Study, CategoryAdapter.CategoryViewHolder>(diffUtil) {
