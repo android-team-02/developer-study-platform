@@ -83,4 +83,8 @@
         <item name="android:fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="SearchBar" parent="TextAppearance.M3.Sys.Typescale.BodyLarge">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
 </resources>

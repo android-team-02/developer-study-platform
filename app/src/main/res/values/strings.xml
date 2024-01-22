@@ -99,6 +99,9 @@
     <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
     <string name="home_move_study_detail_description">스터디 상세 화면으로 이동</string>
 
+    <string name="search_hint">스터디 검색</string>
+    <string name="search_back_btn_description">검색 화면으로 이동</string>
+
     <string name="iv_arrow">홈 화면으로 이동</string>
     <string name="join_study">스터디 참여하기</string>
     <string name="category">분야</string>
@@ -118,4 +121,7 @@
     <string name="profile_repository_stars">레포지토리 스타 모양의 아이콘</string>
     <string name="profile_repository_issue">레포지토리 이슈 모양의 아이콘</string>
     <string name="profile_repository_language_unknown">Unknown</string>
+
+    <string name="chat_select_image">이미지 추가</string>
+    <string name="chat_send_message_description">메시지 전송</string>
 </resources>
