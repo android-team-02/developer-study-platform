@@ -9,6 +9,10 @@
         android:id="@+id/action_global_to_search_category"
         app:destination="@id/dest_search_category" />
 
+    <action
+        android:id="@+id/action_global_to_detail"
+        app:destination="@+id/dest_detail" />
+
     <fragment
         android:id="@+id/dest_login"
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
@@ -63,8 +67,30 @@
     </fragment>
 
     <fragment
+        android:id="@+id/dest_search"
+        android:name="com.sesac.developer_study_platform.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_search_to_search_result"
+            app:destination="@id/dest_search_result" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_search_result"
+        android:name="com.sesac.developer_study_platform.ui.searchresult.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" />
+
+    <fragment
         android:id="@+id/dest_study_form"
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
         tools:layout="@layout/fragment_study_form" />
+
+    <fragment
+        android:id="@+id/dest_chat"
+        android:name="com.sesac.developer_study_platform.ui.chatroom.ChatRoomFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room" />
 </navigation>

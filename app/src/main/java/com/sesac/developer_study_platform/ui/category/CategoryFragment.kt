@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sesac.developer_study_platform.Category
-import com.sesac.developer_study_platform.ui.GridSpaceItemDecoration
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.ui.StudyClickListener
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentCategoryBinding
+import com.sesac.developer_study_platform.ui.GridSpaceItemDecoration
+import com.sesac.developer_study_platform.ui.StudyClickListener
 import kotlinx.coroutines.launch
 
 class CategoryFragment : Fragment() {
