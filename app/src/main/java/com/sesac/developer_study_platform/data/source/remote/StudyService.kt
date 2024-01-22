@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.sesac.developer_study_platform.BuildConfig
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.UserChatRoom
 import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -62,6 +63,11 @@ interface StudyService {
     suspend fun getUserById(
         @Path("uid") uid: String,
     ): StudyUser
+
+    @GET("userChatRooms/{uid}.json")
+    suspend fun getUserChatRoomList(
+        @Path("uid") uid: String?
+    ): Map<String, UserChatRoom>
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
