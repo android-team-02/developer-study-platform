@@ -1,5 +1,8 @@
 package com.sesac.developer_study_platform.ui.detail
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.auth.FirebaseAuth
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
+import com.sesac.developer_study_platform.databinding.DialogWarningBinding
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -48,7 +53,7 @@ class DetailFragment : Fragment() {
         }
 
         binding.btnJoinStudy.setOnClickListener {
-            navigationToProfileFragment()
+            showWarningDialog()
         }
 
         loadBookmarkButtonState()
@@ -133,13 +138,18 @@ class DetailFragment : Fragment() {
 
     private fun joinStudy() {
         currentStudy?.let { study ->
-            binding.btnJoinStudy.isEnabled = !(isDeadline(study) || isMemberLimit(study))
+            binding.btnJoinStudy.isEnabled = !(isDeadline(study) || isMemberLimit(study) || isUserBanned(study))
         }
     }
 
-    private fun navigationToProfileFragment() {
-        val action = DetailFragmentDirections.actionDestDetailToProfileFragment()
-        findNavController().navigate(action)
+    private fun showWarningDialog() {
+        val dialogBinding = DialogWarningBinding.inflate(layoutInflater)
+        val dialogBuilder = AlertDialog.Builder(context)
+            .setView(dialogBinding.root)
+
+        val dialog = dialogBuilder.show()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogLogic(dialogBinding, dialog)
     }
 
     private fun isDeadline(study: Study): Boolean {
@@ -154,10 +164,21 @@ class DetailFragment : Fragment() {
         return study.members.keys.size >= study.totalMemberCount
     }
 
-    /* private fun isUserBanned(study: Study): Boolean {
-         val currentUser = getCurrentUser()
-         return currentUser in study.banUsers.keys
-     } */
+    private fun isUserBanned(study: Study): Boolean {
+        val currentUser = FirebaseAuth.getInstance().currentUser?.uid
+        return currentUser in study.banUsers.keys
+    }
+
+    private fun dialogLogic(binding: DialogWarningBinding, dialog: AlertDialog) {
+        binding.ivWarningYes.setOnClickListener {
+            //participateInStudy()
+            dialog.dismiss()
+        }
+
+        binding.ivWarningNo.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
 
     private fun formatTime(time: String): String {
         val hour = time.substring(0, 2)

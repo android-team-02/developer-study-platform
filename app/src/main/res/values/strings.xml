@@ -113,6 +113,13 @@
     <string name="study_time_format">%s</string>
     <string name="study_period_format">%1$s ~ %2$s</string>
 
+    <string name="warning_dialog">레포지토리 확인 후 방장에 의하여 내보내질 수 있습니다.</string>
+    <string name="logout_dialog">로그아웃 하시겠습니까?</string>
+    <string name="export_dialog">내보내기 하시겠습니까?</string>
+    <string name="exit_dialog">채팅방을 나가시겠습니까?</string>
+    <string name="no">아니요</string>
+    <string name="yes">네</string>
+
     <string name="profile_export">내보내기</string>
     <string name="profile_ic_export">내보내기 모양의 아이콘</string>
     <string name="profile_divider">레포지토리 시작을 알리는 구분선</string>
