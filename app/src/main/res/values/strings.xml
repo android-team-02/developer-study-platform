@@ -113,6 +113,15 @@
     <string name="study_time_format">%s</string>
     <string name="study_period_format">%1$s ~ %2$s</string>
 
+    <string name="profile_export">내보내기</string>
+    <string name="profile_ic_export">내보내기 모양의 아이콘</string>
+    <string name="profile_divider">레포지토리 시작을 알리는 구분선</string>
+    <string name="profile_repository">Repository</string>
+    <string name="profile_repository_fork">레포지토리 포크 모양의 아이콘</string>
+    <string name="profile_repository_stars">레포지토리 스타 모양의 아이콘</string>
+    <string name="profile_repository_issue">레포지토리 이슈 모양의 아이콘</string>
+    <string name="profile_repository_language_unknown">Unknown</string>
+
     <string name="detail_bookmark_description">스터디 북마크하기</string>
     <string name="bookmark_back_description">마이페이지 화면으로 이동</string>
     <string name="bookmark_no_data">저장한 스터디가 없습니다.</string>

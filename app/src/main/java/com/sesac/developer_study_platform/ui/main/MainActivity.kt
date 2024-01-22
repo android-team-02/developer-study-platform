@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.dest_study_form -> View.GONE
                 R.id.dest_search_result -> View.GONE
                 R.id.dest_detail -> View.GONE
+                R.id.dest_profile -> View.GONE
                 else -> View.VISIBLE
             }
         }

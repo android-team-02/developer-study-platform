@@ -31,7 +31,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
@@ -45,6 +45,10 @@ class DetailFragment : Fragment() {
 
         binding.toolbarArrowDetail.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.btnJoinStudy.setOnClickListener {
+            navigationToProfileFragment()
         }
 
         loadBookmarkButtonState()
@@ -131,6 +135,11 @@ class DetailFragment : Fragment() {
         currentStudy?.let { study ->
             binding.btnJoinStudy.isEnabled = !(isDeadline(study) || isMemberLimit(study))
         }
+    }
+
+    private fun navigationToProfileFragment() {
+        val action = DetailFragmentDirections.actionDestDetailToProfileFragment()
+        findNavController().navigate(action)
     }
 
     private fun isDeadline(study: Study): Boolean {
