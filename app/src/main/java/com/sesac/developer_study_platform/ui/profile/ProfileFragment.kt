@@ -37,12 +37,12 @@ class ProfileFragment : Fragment() {
 
         val firebaseUid = Firebase.auth.uid
         if (firebaseUid != null) {
-            binding.rvRepository.adapter = repositoryAdapter
+            binding.rvRepositoryList.adapter = repositoryAdapter
             fetchUserProfileAndRepositories("kxg02ZurZAMTkgQOuNg8jN8WhiF3")
             checkMembershipInStudy("@make@abcd@time@20240111144250", firebaseUid)
         }
 
-        binding.toolbarArrowProfile.setOnClickListener {
+        binding.toolbar.setOnClickListener {
             findNavController().navigateUp()
         }
     }
@@ -60,7 +60,10 @@ class ProfileFragment : Fragment() {
 
                 Log.d("Repositories", "Repositories successfully loaded")
             }.onFailure { exception ->
-                Log.e("fetchUserProfileAndRepositories", "Error loading repositories: ${exception.message}")
+                Log.e(
+                    "fetchUserProfileAndRepositories",
+                    "Error loading repositories: ${exception.message}"
+                )
             }
         }
     }

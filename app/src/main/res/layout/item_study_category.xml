@@ -28,6 +28,7 @@
 
     <TextView
         android:id="@+id/tv_study_name"
+        style="@style/BlackText.XSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_small"
@@ -35,8 +36,6 @@
         android:ellipsize="end"
         android:fontFamily="@font/pretendard_bold"
         android:maxLines="2"
-        android:textColor="@color/black"
-        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_study_image"
@@ -44,13 +43,12 @@
 
     <TextView
         android:id="@+id/tv_study_language"
+        style="@style/ManateeText.XSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/space_small"
         android:layout_marginStart="@dimen/space_small"
         android:fontFamily="@font/pretendard_bold"
-        android:textColor="@color/manatee"
-        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_study_name"
@@ -61,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:contentDescription="@string/home_icon_person_description"
+        android:contentDescription="@string/all_icon_person_description"
         android:src="@drawable/ic_person"
         app:layout_constraintBottom_toBottomOf="@id/tv_study_people"
         app:layout_constraintEnd_toStartOf="@id/tv_study_people"
@@ -69,12 +67,11 @@
 
     <TextView
         android:id="@+id/tv_study_people"
+        style="@style/RiverBedText.XSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_small"
         android:fontFamily="@font/pretendard_bold"
-        android:textColor="@color/riverBed"
-        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_study_name"

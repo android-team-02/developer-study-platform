@@ -7,12 +7,12 @@
 
     <TextView
         android:id="@+id/tv_day"
+        style="@style/BlackText.XLarge"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/space_x_small"
         android:fontFamily="@font/pretendard_bold"
         android:gravity="center"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view_background"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,25 +34,25 @@
 
     <TextView
         android:id="@+id/tv_start_time"
-        style="@style/StudyCustomTextStyle"
+        style="@style/BlackText.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_median"
+        android:fontFamily="@font/pretendard_medium"
         android:gravity="center"
         android:text="@string/study_form_time"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/view_background"
-        app:layout_constraintEnd_toStartOf="@+id/tv_time"
+        app:layout_constraintEnd_toStartOf="@+id/tv_connect"
         app:layout_constraintStart_toStartOf="@+id/view_background"
         app:layout_constraintTop_toTopOf="@+id/view_background" />
 
     <TextView
-        android:id="@+id/tv_time"
-        style="@style/StudyCustomTextStyle"
+        android:id="@+id/tv_connect"
+        style="@style/BlackText.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_medium"
         android:text="@string/study_form_connect"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/view_background"
         app:layout_constraintEnd_toEndOf="@+id/view_background"
         app:layout_constraintStart_toEndOf="@+id/tv_day"
@@ -60,16 +60,16 @@
 
     <TextView
         android:id="@+id/tv_end_time"
-        style="@style/StudyCustomTextStyle"
+        style="@style/BlackText.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_median"
+        android:fontFamily="@font/pretendard_medium"
         android:gravity="center"
         android:text="@string/study_form_time"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/view_background"
         app:layout_constraintEnd_toEndOf="@+id/view_background"
-        app:layout_constraintStart_toEndOf="@+id/tv_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_connect"
         app:layout_constraintTop_toTopOf="@+id/view_background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

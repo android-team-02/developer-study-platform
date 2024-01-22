@@ -18,7 +18,7 @@ import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
-import com.sesac.developer_study_platform.databinding.DialogWarningBinding
+import com.sesac.developer_study_platform.databinding.DialogChatExitBinding
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -48,7 +48,7 @@ class DetailFragment : Fragment() {
         val studySid = args.studyId
         fetchStudyDetails(studySid)
 
-        binding.toolbarArrowDetail.setOnClickListener {
+        binding.toolbar.setOnClickListener {
             findNavController().navigateUp()
         }
 
@@ -77,10 +77,10 @@ class DetailFragment : Fragment() {
     private fun displayStudyDetails(study: Study) {
         binding.tvStudyName.text = study.name
         binding.tvStudyContent.text = study.content
-        binding.tvCategory.text = study.category
-        binding.tvLanguage.text = study.language
+        binding.tvCategoryValue.text = study.category
+        binding.tvLanguageValue.text = study.language
         val currentMemberCount = study.members.keys.size
-        binding.tvPeople.text =
+        binding.tvPeopleValue.text =
             getString(R.string.all_study_people, currentMemberCount, study.totalMemberCount)
         val studyTime = study.days.entries.joinToString("\n") { (day, time) ->
             val parts = time.split("@")
@@ -103,8 +103,8 @@ class DetailFragment : Fragment() {
             }
         }
 
-        binding.tvTime.text = getString(R.string.study_time_format, studyTime)
-        binding.tvPeriod.text =
+        binding.tvTimeValue.text = getString(R.string.study_time_format, studyTime)
+        binding.tvPeriodValue.text =
             getString(R.string.study_period_format, study.startDate, study.endDate)
 
         fetchStudyParticipants(study.members.keys)
@@ -133,17 +133,18 @@ class DetailFragment : Fragment() {
 
     private fun updateParticipantsUI(participantNames: List<String>) {
         val participantsText = participantNames.joinToString("\n")
-        binding.tvParticipants.text = participantsText
+        binding.tvParticipantValue.text = participantsText
     }
 
     private fun joinStudy() {
         currentStudy?.let { study ->
-            binding.btnJoinStudy.isEnabled = !(isDeadline(study) || isMemberLimit(study) || isUserBanned(study))
+            binding.btnJoinStudy.isEnabled =
+                !(isDeadline(study) || isMemberLimit(study) || isUserBanned(study))
         }
     }
 
     private fun showWarningDialog() {
-        val dialogBinding = DialogWarningBinding.inflate(layoutInflater)
+        val dialogBinding = DialogChatExitBinding.inflate(layoutInflater)
         val dialogBuilder = AlertDialog.Builder(context)
             .setView(dialogBinding.root)
 
@@ -169,13 +170,13 @@ class DetailFragment : Fragment() {
         return currentUser in study.banUsers.keys
     }
 
-    private fun dialogLogic(binding: DialogWarningBinding, dialog: AlertDialog) {
-        binding.ivWarningYes.setOnClickListener {
+    private fun dialogLogic(binding: DialogChatExitBinding, dialog: AlertDialog) {
+        binding.btnYes.setOnClickListener {
             //participateInStudy()
             dialog.dismiss()
         }
 
-        binding.ivWarningNo.setOnClickListener {
+        binding.btnNo.setOnClickListener {
             dialog.dismiss()
         }
     }

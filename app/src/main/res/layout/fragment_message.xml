@@ -16,7 +16,7 @@
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/app_name"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/HomeToolbar"
+        app:titleTextAppearance="@style/ToolbarText"
         app:titleTextColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView

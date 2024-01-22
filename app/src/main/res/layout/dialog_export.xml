@@ -2,69 +2,59 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_white_radius_18dp">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_export_dialog"
-        android:layout_width="0dp"
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/space_median"
-        app:constraint_referenced_ids="iv_logo_export,tv_export, flow_export_choice"
-        app:flow_verticalGap="15dp"
-        app:flow_wrapMode="chain"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/space_median"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_logo_export"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/all_logo_description"
-        android:src="@drawable/ic_launcher_foreground" />
-
     <TextView
         android:id="@+id/tv_export"
-        style="@style/ToolbarTextStyle"
-        android:layout_width="0dp"
+        style="@style/BlackText.Large"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/export_dialog"
-        android:textSize="18sp" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_export_choice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="iv_export_no,iv_export_yes"
-        app:flow_horizontalBias="0.5"
-        app:flow_horizontalGap="10dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="@string/dialog_export"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/iv_export_no"
-        android:layout_width="157dp"
+        android:id="@+id/btn_no"
+        style="@style/BlackText.Medium"
+        android:layout_width="0dp"
         android:layout_height="52dp"
+        android:layout_marginVertical="@dimen/space_median"
+        android:layout_marginStart="@dimen/space_x_large"
+        android:layout_marginEnd="@dimen/space_x_small"
         android:background="@drawable/bg_lilac_radius_12dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/no"
-        android:textSize="16sp" />
+        android:text="@string/all_no"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_yes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_export" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/iv_export_yes"
-        android:layout_width="157dp"
+        android:id="@+id/btn_yes"
+        style="@style/WhiteText.Medium"
+        android:layout_width="0dp"
         android:layout_height="52dp"
+        android:layout_marginStart="@dimen/space_x_small"
+        android:layout_marginEnd="@dimen/space_x_large"
         android:background="@drawable/bg_black_radius_12dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/yes"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:text="@string/all_yes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_no"
+        app:layout_constraintTop_toBottomOf="@id/tv_export" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

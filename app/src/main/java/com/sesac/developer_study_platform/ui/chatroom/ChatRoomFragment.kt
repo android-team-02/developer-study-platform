@@ -38,8 +38,13 @@ class ChatRoomFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvChatRoom.adapter = chatRoomAdapter
-        binding.rvChatRoom.addItemDecoration(DividerItemDecoration(binding.rvChatRoom.context, VERTICAL))
+        binding.rvChatRoomList.adapter = chatRoomAdapter
+        binding.rvChatRoomList.addItemDecoration(
+            DividerItemDecoration(
+                binding.rvChatRoomList.context,
+                VERTICAL
+            )
+        )
         loadUserChatRoomList()
     }
 

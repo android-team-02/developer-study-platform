@@ -11,7 +11,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class RepositoryAdapter : ListAdapter<Repository, RepositoryAdapter.ViewHolder>(RepositoryDiffCallback()) {
+class RepositoryAdapter :
+    ListAdapter<Repository, RepositoryAdapter.ViewHolder>(RepositoryDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRepositoryBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -31,7 +32,7 @@ class RepositoryAdapter : ListAdapter<Repository, RepositoryAdapter.ViewHolder>(
         fun bind(repository: Repository) {
             binding.tvRepositoryName.text = repository.name
             binding.tvRepositoryLanguage.text = repository.language ?: "Unknown"
-            binding.tvRepositoryStars.text = repository.stargazersCount.toString()
+            binding.tvRepositoryStar.text = repository.stargazersCount.toString()
             binding.tvRepositoryFork.text = repository.forksCount.toString()
             binding.tvRepositoryIssue.text = repository.openIssuesCount.toString()
 

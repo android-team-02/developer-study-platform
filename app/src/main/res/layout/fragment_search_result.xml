@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.searchresult.SearchResultFragment">
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/iv_back"
+        android:id="@+id/iv_arrow_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_median"
@@ -20,7 +19,7 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_search"
-        style="@style/StudyAnswer"
+        style="@style/SearchBarText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_median"
@@ -32,7 +31,7 @@
         android:maxLines="1"
         android:padding="@dimen/space_median"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_back"
+        app:layout_constraintStart_toEndOf="@id/iv_arrow_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

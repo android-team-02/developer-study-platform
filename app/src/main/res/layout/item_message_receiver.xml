@@ -25,11 +25,10 @@
 
     <TextView
         android:id="@+id/tv_system_message"
+        style="@style/RiverBedText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/riverBed"
-        android:textSize="14sp"
         tools:text="새싹님이 입장하셨습니다" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -75,11 +74,10 @@
 
     <TextView
         android:id="@+id/tv_user_id"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
-        android:textColor="@color/black"
-        android:textSize="14sp"
         tools:text="새싹" />
 
     <androidx.constraintlayout.helper.widget.Flow
@@ -106,11 +104,10 @@
 
     <TextView
         android:id="@+id/tv_timestamp"
+        style="@style/BlackText.XSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/black"
-        android:textSize="11sp"
         tools:text="오후 04:58" />
 
     <TextView

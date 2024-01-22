@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.ui.joinstudylist
+package com.sesac.developer_study_platform.ui.mystudy
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
 
-class JoinStudyAdapter(private val clickListener: (UserStudy) -> Unit) :
-    ListAdapter<UserStudy, JoinStudyAdapter.ViewHolder>(UserStudyRoomDiffCallback()) {
+class MyStudyAdapter(private val clickListener: (UserStudy) -> Unit) :
+    ListAdapter<UserStudy, MyStudyAdapter.ViewHolder>(UserStudyRoomDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemStudyBinding.inflate(LayoutInflater.from(parent.context), parent, false)

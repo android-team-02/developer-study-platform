@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
 
     private fun setDetailButton() {
         binding.tvDetail.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeToJoinStudyList()
+            val action = HomeFragmentDirections.actionHomeToMyStudy()
             findNavController().navigate(action)
         }
     }
