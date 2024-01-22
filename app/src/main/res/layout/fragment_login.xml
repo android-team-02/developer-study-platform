@@ -10,7 +10,7 @@
         android:id="@+id/iv_logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="@string/login_logo_description"
+        android:contentDescription="@string/all_logo_description"
         android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
