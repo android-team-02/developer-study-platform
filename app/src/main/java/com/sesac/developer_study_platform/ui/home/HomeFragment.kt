@@ -69,19 +69,12 @@ class HomeFragment : Fragment() {
             kotlin.runCatching {
                 service.getUserStudyList(Firebase.auth.uid)
             }.onSuccess {
-                setUserStudyList(it)
+                studyAdapter.submitList(it.values.toList())
             }.onFailure {
+                binding.groupStudyForm.visibility = View.VISIBLE
+                binding.rvStudyList.visibility = View.GONE
                 Log.e("HomeFragment", it.message ?: "error occurred.")
             }
-        }
-    }
-
-    private fun setUserStudyList(userStudyList: Map<String, UserStudy>?) {
-        if (userStudyList != null) {
-            studyAdapter.submitList(userStudyList.values.toList())
-        } else {
-            binding.groupStudyForm.visibility = View.VISIBLE
-            binding.rvStudyList.visibility = View.GONE
         }
     }
 
