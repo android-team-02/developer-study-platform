@@ -135,7 +135,7 @@
                 style="@style/StudyCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_android"
+                android:background="@drawable/bg_peach_radius_12dp"
                 android:text="@string/all_android" />
 
             <TextView
@@ -143,7 +143,7 @@
                 style="@style/StudyCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_ios"
+                android:background="@drawable/bg_salomie_radius_12dp"
                 android:text="@string/all_ios" />
 
             <TextView
@@ -151,7 +151,7 @@
                 style="@style/StudyCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_front_end"
+                android:background="@drawable/bg_perfume_radius_12dp"
                 android:text="@string/all_front_end" />
 
             <TextView
@@ -159,7 +159,7 @@
                 style="@style/StudyCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_back_end"
+                android:background="@drawable/bg_alto_radius_12dp"
                 android:text="@string/all_back_end" />
 
             <TextView
@@ -167,7 +167,7 @@
                 style="@style/StudyCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_ai"
+                android:background="@drawable/bg_tropical_blue_radius_12dp"
                 android:text="@string/all_ai" />
 
             <TextView
@@ -175,7 +175,7 @@
                 style="@style/StudyCategory"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_etc"
+                android:background="@drawable/bg_french_pass_radius_12dp"
                 android:text="@string/all_etc" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

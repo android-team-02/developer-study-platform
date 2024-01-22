@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back"
+        app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/study_form_toolbar" />
 
     <androidx.core.widget.NestedScrollView
@@ -164,7 +164,7 @@
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
                 android:autofillHints="no"
-                android:background="@drawable/bg_study_input"
+                android:background="@drawable/bg_lilac_radius_12dp"
                 android:hint="@string/study_form_name_hint"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLength="20"
@@ -193,7 +193,7 @@
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
                 android:autofillHints="no"
-                android:background="@drawable/bg_study_input"
+                android:background="@drawable/bg_lilac_radius_12dp"
                 android:hint="@string/study_form_content_hint"
                 android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
                 android:maxLength="150"
@@ -258,7 +258,7 @@
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
-                android:background="@drawable/bg_study_input"
+                android:background="@drawable/bg_lilac_radius_12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_period" />
@@ -462,7 +462,7 @@
                 android:layout_marginTop="@dimen/space_x_large"
                 android:layout_marginEnd="@dimen/space_median"
                 android:layout_marginBottom="@dimen/space_median"
-                android:background="@drawable/bg_study_input"
+                android:background="@drawable/bg_lilac_radius_12dp"
                 android:backgroundTint="@color/black"
                 android:fontFamily="@font/pretendard_bold"
                 android:gravity="center"

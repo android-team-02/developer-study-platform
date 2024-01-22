@@ -66,7 +66,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="@dimen/space_x_small"
-        android:background="@drawable/bg_unread_count"
+        android:background="@drawable/bg_oval_red"
         android:fontFamily="@font/pretendard_medium"
         android:gravity="center"
         android:textColor="@color/white"

@@ -97,7 +97,7 @@
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_message_receiver"
+        android:background="@drawable/bg_alto_corners_radius_12dp"
         android:fontFamily="@font/pretendard_medium"
         android:padding="10dp"
         android:textColor="@color/black"
