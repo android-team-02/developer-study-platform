@@ -15,8 +15,9 @@ import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
-import com.sesac.developer_study_platform.ui.SpaceItemDecoration
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {

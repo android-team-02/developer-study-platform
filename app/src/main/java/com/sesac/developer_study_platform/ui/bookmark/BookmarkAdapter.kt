@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.util.setImage
 
 class BookmarkAdapter(private val clickListener: StudyClickListener) :

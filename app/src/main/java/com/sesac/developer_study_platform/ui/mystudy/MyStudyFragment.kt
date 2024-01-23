@@ -10,17 +10,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyStudyBinding
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import kotlinx.coroutines.launch
 
 class MyStudyFragment : Fragment() {
 
     private var _binding: FragmentMyStudyBinding? = null
     private val binding get() = _binding!!
-    private val myStudyAdapter = MyStudyAdapter(object : StudyClickListener {
+    private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
             val action = MyStudyFragmentDirections.actionMyStudyToDetail(sid)
             findNavController().navigate(action)
@@ -39,8 +41,15 @@ class MyStudyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvStudy.adapter = myStudyAdapter
+        setStudyAdapter()
         loadStudyList()
+    }
+
+    private fun setStudyAdapter() {
+        binding.rvStudyList.adapter = studyAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
     }
 
     private fun loadStudyList() {
@@ -48,28 +57,12 @@ class MyStudyFragment : Fragment() {
         lifecycleScope.launch {
             runCatching {
                 service.getUserStudyList(Firebase.auth.uid)
-            }.onSuccess { map ->
-                val studyRooms = map.values.map { userStudyRoom ->
-                    UserStudy(
-                        days = userStudyRoom.days,
-                        image = userStudyRoom.image,
-                        language = userStudyRoom.language,
-                        name = userStudyRoom.name,
-                        sid = userStudyRoom.sid
-                    )
-                }
-                setStudyList(studyRooms)
-            }.onFailure { exception ->
-                Log.e(
-                    "JoinStudyListFragment",
-                    "Failed to load user study rooms: ${exception.message}"
-                )
+            }.onSuccess {
+                studyAdapter.submitList(it.values.toList())
+            }.onFailure {
+                Log.e("MyStudyFragment", it.message ?: "error occurred.")
             }
         }
-    }
-
-    private fun setStudyList(studyRooms: List<UserStudy>) {
-        myStudyAdapter.submitList(studyRooms)
     }
 
     override fun onDestroyView() {

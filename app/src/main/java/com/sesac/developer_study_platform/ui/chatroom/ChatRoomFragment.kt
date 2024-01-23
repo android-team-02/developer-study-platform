@@ -13,7 +13,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentChatRoomBinding
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
 class ChatRoomFragment : Fragment() {

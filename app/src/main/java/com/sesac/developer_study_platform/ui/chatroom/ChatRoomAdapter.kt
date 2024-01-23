@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.data.UserChatRoom
 import com.sesac.developer_study_platform.databinding.ItemChatRoomBinding
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.util.setImage
 
 class ChatRoomAdapter(private val clickListener: StudyClickListener) :

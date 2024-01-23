@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
-import com.sesac.developer_study_platform.ui.SpaceItemDecoration
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
 class BookmarkFragment : Fragment() {

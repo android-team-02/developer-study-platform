@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.ui
+package com.sesac.developer_study_platform.ui.studyform
 
 import com.sesac.developer_study_platform.data.DayTime
 

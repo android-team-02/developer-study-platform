@@ -32,7 +32,6 @@ import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
-import com.sesac.developer_study_platform.ui.DayTimeClickListener
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

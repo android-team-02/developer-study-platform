@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
 class SearchResultFragment : Fragment() {
