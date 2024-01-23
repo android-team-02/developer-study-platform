@@ -9,7 +9,6 @@
     <string name="main_chat">채팅</string>
     <string name="main_my">마이</string>
 
-    <string name="all_uid_key">UID</string>
     <string name="all_access_token_key">ACCESS_TOKEN</string>
     <string name="all_no">아니요</string>
     <string name="all_yes">네</string>

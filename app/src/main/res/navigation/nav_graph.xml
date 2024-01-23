@@ -18,7 +18,6 @@
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
-
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/dest_home"
