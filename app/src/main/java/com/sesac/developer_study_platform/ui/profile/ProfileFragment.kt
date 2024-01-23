@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.source.remote.GithubService
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
+import com.sesac.developer_study_platform.util.setImage
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -53,7 +53,7 @@ class ProfileFragment : Fragment() {
                 studyService.getUserById(uid)
             }.onSuccess { user ->
                 binding.tvProfileName.text = user.userId
-                Glide.with(binding.ivProfileImage).load(user.image).into(binding.ivProfileImage)
+                binding.ivProfileImage.setImage(user.image)
 
                 val repositories = GithubService.create().listRepos(user.userId)
                 repositoryAdapter.submitList(repositories)

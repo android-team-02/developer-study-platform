@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
 import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.util.setImage
 
 class MyStudyAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserStudy, MyStudyAdapter.MyStudyViewHolder>(diffUtil) {
@@ -24,18 +24,15 @@ class MyStudyAdapter(private val clickListener: StudyClickListener) :
     class MyStudyViewHolder(private val binding: ItemStudyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(userStudyRoom: UserStudy, clickListener: StudyClickListener) {
+        fun bind(study: UserStudy, clickListener: StudyClickListener) {
             with(binding) {
-                Glide.with(itemView)
-                    .load(userStudyRoom.image)
-                    .centerCrop()
-                    .into(ivStudyImage)
-                tvStudyName.text = userStudyRoom.name
-                tvStudyLanguage.text = userStudyRoom.language
-                val daysOfWeekList = userStudyRoom.days.keys.toList()
+                ivStudyImage.setImage(study.image)
+                tvStudyName.text = study.name
+                tvStudyLanguage.text = study.language
+                val daysOfWeekList = study.days.keys.toList()
                 tvStudyDay.text = daysOfWeekList.joinToString(", ")
                 itemView.setOnClickListener {
-                    clickListener.onClick(userStudyRoom.sid)
+                    clickListener.onClick(study.sid)
                 }
             }
         }

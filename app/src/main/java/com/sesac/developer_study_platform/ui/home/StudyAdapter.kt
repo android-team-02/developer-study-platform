@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
 import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.util.setImage
 
 class StudyAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserStudy, StudyAdapter.StudyViewHolder>(diffUtil) {
@@ -26,11 +25,7 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(study: UserStudy, clickListener: StudyClickListener) {
-            Glide.with(itemView)
-                .load(study.image)
-                .centerCrop()
-                .placeholder(R.drawable.ic_person)
-                .into(binding.ivStudyImage)
+            binding.ivStudyImage.setImage(study.image)
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyDay.text = study.days.keys.joinToString(", ")

@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserChatRoom
 import com.sesac.developer_study_platform.databinding.ItemChatRoomBinding
 import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.util.setImage
 
 class ChatRoomAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserChatRoom, ChatRoomAdapter.ChatRoomViewHolder>(diffUtil) {
@@ -26,11 +25,7 @@ class ChatRoomAdapter(private val clickListener: StudyClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(userChatRoom: UserChatRoom, clickListener: StudyClickListener) {
-            Glide.with(itemView)
-                .load(userChatRoom.image)
-                .centerCrop()
-                .placeholder(R.drawable.ic_person)
-                .into(binding.ivStudyImage)
+            binding.ivStudyImage.setImage(userChatRoom.image)
             binding.tvStudyName.text = userChatRoom.name
             binding.tvLastMessage.text = userChatRoom.lastMessage
             binding.tvLastMessageTime.text = userChatRoom.lastMessageTime.toString()
