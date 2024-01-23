@@ -55,8 +55,8 @@ interface StudyService {
     ): Map<String, Study>
 
     @GET("studies/{sid}.json")
-    suspend fun getDetail(
-        @Path("sid") sid: String,
+    suspend fun getStudy(
+        @Path("sid") sid: String
     ): Study
 
     @GET("users/{uid}.json")

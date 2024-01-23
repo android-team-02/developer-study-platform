@@ -52,7 +52,8 @@
     <string name="detail_time">시간</string>
     <string name="detail_period">기간</string>
     <string name="detail_member">참여자</string>
-    <string name="detail_study_time_format">%s</string>
+    <string name="detail_study_time_format">%1$s:%2$s</string>
+    <string name="detail_study_day_time_format">%1$s %2$s ~ %3$s</string>
     <string name="detail_study_period_format">%1$s ~ %2$s</string>
     <string name="detail_bookmark_description">스터디 저장하기</string>
 

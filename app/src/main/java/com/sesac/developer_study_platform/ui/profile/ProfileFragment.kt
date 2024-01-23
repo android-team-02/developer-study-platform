@@ -72,7 +72,7 @@ class ProfileFragment : Fragment() {
     private fun checkMembershipInStudy(sid: String, firebaseUid: String) {
         lifecycleScope.launch {
             runCatching {
-                studyService.getDetail(sid)
+                studyService.getStudy(sid)
             }.onSuccess { studyDetail ->
                 val isLeader = studyDetail.members[firebaseUid] ?: false
                 Log.d("checkMembershipInStudy", "UID: $firebaseUid, isLeader: $isLeader")
