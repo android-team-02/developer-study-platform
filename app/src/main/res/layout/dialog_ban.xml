@@ -16,12 +16,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_logout"
+        android:id="@+id/tv_ban"
         style="@style/BlackText.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/dialog_logout"
+        android:text="@string/dialog_ban"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo" />
@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_yes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_logout" />
+        app:layout_constraintTop_toBottomOf="@id/tv_ban" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_yes"
@@ -55,6 +55,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_no"
-        app:layout_constraintTop_toBottomOf="@id/tv_logout" />
+        app:layout_constraintTop_toBottomOf="@id/tv_ban" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

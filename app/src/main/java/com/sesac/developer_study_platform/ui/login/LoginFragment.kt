@@ -33,7 +33,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun checkAutoLogin() {
-        val hasAutoLogin = sharedPref.getBoolean(getString(R.string.all_pref_auto_login_key), false)
+        val hasAutoLogin = sharedPref.getBoolean(getString(R.string.login_auto_login_key), false)
         if (hasAutoLogin) {
             findNavController().navigate(R.id.action_login_to_home)
         }
@@ -64,7 +64,7 @@ class LoginFragment : Fragment() {
             firebaseAuth.startActivityForSignInWithProvider(requireActivity(), provider.build())
                 .addOnSuccessListener { onGithubLoginSuccess(it) }
                 .addOnFailureListener {
-                    binding.root.showSnackbar(R.string.login_failure)
+                    binding.root.showSnackbar(R.string.login_error)
                     Log.e("LoginFragment", "Error: $it")
                 }
         }
@@ -79,9 +79,9 @@ class LoginFragment : Fragment() {
 
     private fun saveUserInfo(uid: String, accessToken: String) {
         with(sharedPref.edit()) {
-            putString(getString(R.string.all_pref_uid_key), uid)
-            putString(getString(R.string.all_pref_access_token_key), accessToken)
-            putBoolean(getString(R.string.all_pref_auto_login_key), true)
+            putString(getString(R.string.all_uid_key), uid)
+            putString(getString(R.string.all_access_token_key), accessToken)
+            putBoolean(getString(R.string.login_auto_login_key), true)
             apply()
         }
     }

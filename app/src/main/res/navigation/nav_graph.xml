@@ -32,17 +32,17 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_home_to_join_study_list"
-            app:destination="@id/dest_join_study_list" />
+            android:id="@+id/action_home_to_my_study"
+            app:destination="@id/dest_my_study" />
     </fragment>
 
     <fragment
-        android:id="@+id/dest_join_study_list"
-        android:name="com.sesac.developer_study_platform.ui.joinstudylist.JoinStudyListFragment"
-        android:label="fragment_join_study_list"
-        tools:layout="@layout/fragment_join_study_list">
+        android:id="@+id/dest_my_study"
+        android:name="com.sesac.developer_study_platform.ui.mystudy.MyStudyFragment"
+        android:label="fragment_my_study"
+        tools:layout="@layout/fragment_my_study">
         <action
-            android:id="@+id/action_join_study_list_to_detail"
+            android:id="@+id/action_my_study_to_detail"
             app:destination="@id/dest_detail" />
     </fragment>
 

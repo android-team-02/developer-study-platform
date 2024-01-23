@@ -1,64 +1,127 @@
 <resources>
     <string name="app_name">개발소</string>
 
-    <string name="study_form_toolbar">스터디 만들기</string>
+    <string name="application_pref_file_key">com.sesac.developer_study_platform.DEVELOPER_STUDY_APP</string>
+
+    <string name="main_home">홈</string>
+    <string name="main_search">검색</string>
+    <string name="main_study_form">방만들기</string>
+    <string name="main_chat">채팅</string>
+    <string name="main_my">마이</string>
+
+    <string name="all_uid_key">UID</string>
+    <string name="all_access_token_key">ACCESS_TOKEN</string>
+    <string name="all_no">아니요</string>
+    <string name="all_yes">네</string>
+    <string name="all_my_study">나의 스터디</string>
+    <string name="all_study_form">스터디 만들기</string>
+    <string name="all_study_people_format">%1$d/%2$d</string>
+    <string name="all_search_study_category">분야별 스터디 찾기</string>
+    <string name="all_android">Android</string>
+    <string name="all_ios">iOS</string>
+    <string name="all_front_end">Front-End</string>
+    <string name="all_back_end">Back-End</string>
+    <string name="all_ai">AI</string>
+    <string name="all_etc">기타</string>
+    <string name="all_monday">월</string>
+    <string name="all_tuesday">화</string>
+    <string name="all_wednesday">수</string>
+    <string name="all_thursday">목</string>
+    <string name="all_friday">금</string>
+    <string name="all_saturday">토</string>
+    <string name="all_sunday">일</string>
+    <string name="all_search_hint">스터디 검색</string>
+    <string name="all_icon_person_description">사람 모양의 아이콘</string>
+
+    <string name="login_auto_login_key">AUTO_LOGIN</string>
+    <string name="login_github">Login with Github</string>
+    <string name="login_error">로그인에 실패하였습니다. 다시 시도해주세요.</string>
+
+    <string name="home_detail">더보기</string>
+    <string name="home_icon_plus_description">플러스 모양의 아이콘</string>
+    <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
+    <string name="home_move_chat_room_description">채팅방으로 이동</string>
+
+    <string name="search_result_move_study_detail_description">스터디 상세 화면으로 이동</string>
+    <string name="search_result_move_search_description">검색 화면으로 이동</string>
+
+    <string name="detail_join_study">스터디 참여하기</string>
+    <string name="detail_category">분야</string>
+    <string name="detail_language">언어</string>
+    <string name="detail_people">인원</string>
+    <string name="detail_time">시간</string>
+    <string name="detail_period">기간</string>
+    <string name="detail_member">참여자</string>
+    <string name="detail_study_time_format">%s</string>
+    <string name="detail_study_period_format">%1$s ~ %2$s</string>
+    <string name="detail_bookmark_description">스터디 저장하기</string>
+
+    <string name="bookmark_title">북마크</string>
+    <string name="bookmark_no_data">저장한 스터디가 없습니다.</string>
+
+    <string name="dialog_join_study">스터디에 참여하시겠습니까?</string>
+    <string name="dialog_logout">로그아웃 하시겠습니까?</string>
+    <string name="dialog_ban">내보내기 하시겠습니까?</string>
+    <string name="dialog_chat_exit">채팅방을 나가시겠습니까?</string>
+
+    <string name="profile_ban">내보내기</string>
+    <string name="profile_repository">Repository</string>
+    <string name="profile_icon_ban_description">내보내기 모양의 아이콘</string>
+    <string name="profile_icon_fork_description">포크 모양의 아이콘</string>
+    <string name="profile_icon_star_description">별 모양의 아이콘</string>
+    <string name="profile_icon_issue_description">이슈 모양의 아이콘</string>
+
+    <string name="message_add_image">이미지 추가</string>
+    <string name="message_send_description">메시지 전송</string>
+
+    <string name="study_form_title">스터디 만들기</string>
     <string name="study_form_add_image">스터디 대표 이미지 추가하기</string>
     <string name="study_form_name">스터디 이름</string>
-    <string name="study_form_name_hint">스터디 이름을 입력하세요</string>
+    <string name="study_form_name_hint">스터디 이름을 입력하세요.</string>
     <string name="study_form_image_description">스터디 이미지</string>
     <string name="study_form_content">스터디 내용</string>
-    <string name="study_form_content_hint">스터디 내용을 입력하세요</string>
+    <string name="study_form_content_hint">스터디 내용을 입력하세요.</string>
     <string name="study_form_language">스터디 대표 언어</string>
-    <string name="study_form_language_label">language</string>
-    <string name="study_form_language_hint">언어를 선택하세요</string>
+    <string name="study_form_language_hint">언어를 선택하세요.</string>
     <string name="study_form_period">스터디 기간</string>
     <string name="study_form_day_time">스터디 요일/시간</string>
-    <string name="study_form_total_people">스터디 참여인원</string>
-    <string name="study_form_total_people_hint">인원을 선택하세요</string>
-    <string name="study_form_monday">월</string>
-    <string name="study_form_tuesday">화</string>
-    <string name="study_form_wednesday">수</string>
-    <string name="study_form_thursday">목</string>
-    <string name="study_form_friday">금</string>
-    <string name="study_form_saturday">토</string>
-    <string name="study_form_sunday">일</string>
-    <string name="study_form_total_people_label">total people</string>
-    <string name="study_form_start">시작일자</string>
-    <string name="study_form_end">종료일자</string>
+    <string name="study_form_people">스터디 참여인원</string>
+    <string name="study_form_people_hint">인원을 선택하세요.</string>
+    <string name="study_form_start_date">시작일자</string>
+    <string name="study_form_end_date">종료일자</string>
     <string name="study_form_connect">~</string>
-    <string name="study_form_time">00:00</string>
-    <string name="study_form_create_study">스터디 만들기</string>
-    <string name="study_form_validate_content">최대 150자까지 작성 가능합니다</string>
-    <string name="study_form_validate_name">최대 20자까지 작성 가능합니다</string>
-    <string name="study_form_validate_end_date">종료날짜는 시작날짜보다 뒤에 있어야 합니다</string>
-    <string name="study_form_validate_start_date">시작날짜는 종료날짜보다 앞에 있어야 합니다</string>
-    <string name="study_form_validate_start_input">시작날짜를 먼저 입력해주세요</string>
-    <string name="study_form_validate_start_time">시작시간은 종료시간보다 앞에 있어야 합니다</string>
-    <string name="study_form_validate_end_time">종료시간은 시작시간보다 앞에 있어야 합니다</string>
-    <string name="study_form_start_before_currentDate">시작날짜가 오늘 날짜보다 이전입니다</string>
-    <string name="study_form_end_before_currentDate">종료날짜가 오늘 날짜보다 이전입니다</string>
-    <string name="study_form_validate_all_image">스터디 이미지가 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_category">스터디 카테고리가 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_name">스터디 이름이 작성되지 않았습니다</string>
-    <string name="study_form_validate_all_content">스터디 내용이 작성되지 않았습니다</string>
-    <string name="study_form_validate_all_language">스터디 대표언어가 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_total">스터디 총 인원이 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_start_date">스터디 기간 시작날짜가 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_end_date">스터디 기간 종료날짜가 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_day_time_empty">스터디 요일이 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_day_time_start">스터디 요일 시작시간이 선택되지 않았습니다</string>
-    <string name="study_form_validate_all_day_time_end">스터디 요일 종료시간이 선택되지 않았습니다</string>
+    <string name="study_form_default_time">00:00</string>
+    <string name="study_form_validate_content">최대 150자까지 작성 가능합니다.</string>
+    <string name="study_form_validate_name">최대 20자까지 작성 가능합니다.</string>
+    <string name="study_form_validate_end_date">종료일자는 시작일자보다 뒤에 있어야 합니다.</string>
+    <string name="study_form_validate_start_date">시작일자는 종료일자보다 앞에 있어야 합니다.</string>
+    <string name="study_form_validate_start_date_input">시작일자를 먼저 입력해주세요.</string>
+    <string name="study_form_validate_start_time">시작시간은 종료시간보다 앞에 있어야 합니다.</string>
+    <string name="study_form_validate_end_time">종료시간은 시작시간보다 앞에 있어야 합니다.</string>
+    <string name="study_form_validate_start_date_before_today">시작일자가 오늘보다 이전입니다.</string>
+    <string name="study_form_validate_end_date_before_today">종료일자가 오늘보다 이전입니다.</string>
+    <string name="study_form_validate_select_image">스터디 이미지가 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_category">스터디 카테고리가 선택되지 않았습니다.</string>
+    <string name="study_form_validate_name_input">스터디 이름이 작성되지 않았습니다.</string>
+    <string name="study_form_validate_content_input">스터디 내용이 작성되지 않았습니다.</string>
+    <string name="study_form_validate_select_language">스터디 대표언어가 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_people">스터디 총 인원이 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_start_date">스터디 시작일자가 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_end_date">스터디 종료일자가 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_day">스터디 요일이 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_start_time">스터디 요일 시작시간이 선택되지 않았습니다.</string>
+    <string name="study_form_validate_select_end_time">스터디 요일 종료시간이 선택되지 않았습니다.</string>
     <string-array name="study_form_language">
-        <item>Java</item>
-        <item>Python</item>
         <item>Kotlin</item>
-        <item>JavaScript</item>
-        <item>CSS</item>
+        <item>Java</item>
         <item>Swift</item>
         <item>Html</item>
+        <item>CSS</item>
+        <item>JavaScript</item>
+        <item>Python</item>
         <item>기타</item>
     </string-array>
-    <string-array name="study_form_total_people">
+    <string-array name="study_form_people">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -68,71 +131,4 @@
         <item>7</item>
         <item>8</item>
     </string-array>
-
-    <string name="application_pref_file_key">com.sesac.developer_study_platform.DEVELOPER_STUDY_APP</string>
-    <string name="all_pref_uid_key">UID</string>
-    <string name="all_pref_access_token_key">ACCESS_TOKEN</string>
-    <string name="all_pref_auto_login_key">AUTO_LOGIN</string>
-    <string name="all_logo_description">앱 로고</string>
-    <string name="login_with_github">Login with Github</string>
-    <string name="login_failure">로그인에 실패하였습니다. 다시 시도해주세요.</string>
-
-    <string name="home">홈</string>
-    <string name="search">검색</string>
-    <string name="study_form">방만들기</string>
-    <string name="chat">채팅</string>
-    <string name="my">마이</string>
-
-    <string name="all_my_study">나의 스터디</string>
-    <string name="home_detail">더보기</string>
-    <string name="all_study_form">스터디 만들기</string>
-    <string name="all_study_people">%1$d/%2$d</string>
-    <string name="home_search_study_category">분야별 스터디 찾기</string>
-    <string name="all_android">Android</string>
-    <string name="all_ios">iOS</string>
-    <string name="all_front_end">Front-End</string>
-    <string name="all_back_end">Back-End</string>
-    <string name="all_ai">AI</string>
-    <string name="all_etc">기타</string>
-    <string name="home_icon_plus_description">플러스 모양의 아이콘</string>
-    <string name="home_icon_person_description">사람 모양의 아이콘</string>
-    <string name="home_icon_calendar_description">달력 모양의 아이콘</string>
-    <string name="home_move_study_detail_description">스터디 상세 화면으로 이동</string>
-
-    <string name="search_hint">스터디 검색</string>
-    <string name="search_back_btn_description">검색 화면으로 이동</string>
-
-    <string name="iv_arrow">홈 화면으로 이동</string>
-    <string name="join_study">스터디 참여하기</string>
-    <string name="category">분야</string>
-    <string name="language">언어</string>
-    <string name="people">인원</string>
-    <string name="time">시간</string>
-    <string name="period">기간</string>
-    <string name="participant">참여자</string>
-    <string name="study_time_format">%s</string>
-    <string name="study_period_format">%1$s ~ %2$s</string>
-
-    <string name="warning_dialog">레포지토리 확인 후 방장에 의하여 내보내질 수 있습니다.</string>
-    <string name="logout_dialog">로그아웃 하시겠습니까?</string>
-    <string name="export_dialog">내보내기 하시겠습니까?</string>
-    <string name="exit_dialog">채팅방을 나가시겠습니까?</string>
-    <string name="no">아니요</string>
-    <string name="yes">네</string>
-
-    <string name="profile_export">내보내기</string>
-    <string name="profile_ic_export">내보내기 모양의 아이콘</string>
-    <string name="profile_divider">레포지토리 시작을 알리는 구분선</string>
-    <string name="profile_repository">Repository</string>
-    <string name="profile_repository_fork">레포지토리 포크 모양의 아이콘</string>
-    <string name="profile_repository_stars">레포지토리 스타 모양의 아이콘</string>
-    <string name="profile_repository_issue">레포지토리 이슈 모양의 아이콘</string>
-    <string name="profile_repository_language_unknown">Unknown</string>
-
-    <string name="detail_bookmark_description">스터디 북마크하기</string>
-    <string name="bookmark_back_description">마이페이지 화면으로 이동</string>
-    <string name="bookmark_no_data">저장한 스터디가 없습니다.</string>
-
-    <string name="chat_select_image">이미지 추가</string>
-    <string name="chat_send_message_description">메시지 전송</string>
 </resources>

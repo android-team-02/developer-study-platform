@@ -12,8 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name"
-        app:titleTextAppearance="@style/HomeToolbar"
-        app:titleTextColor="@color/black" />
+        app:titleTextAppearance="@style/ToolbarText" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -31,23 +30,21 @@
 
             <TextView
                 android:id="@+id/tv_my_study"
+                style="@style/BlackText.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/all_my_study"
-                android:textColor="@color/black"
-                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_detail"
+                style="@style/ManateeText.XSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/home_detail"
-                android:textColor="@color/manatee"
-                android:textSize="11sp"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_my_study"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -107,12 +104,11 @@
 
             <TextView
                 android:id="@+id/tv_search_study_category"
+                style="@style/BlackText.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="@string/home_search_study_category"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:text="@string/all_search_study_category"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_study_list"
                 app:layout_goneMarginTop="152dp" />
@@ -132,50 +128,62 @@
 
             <TextView
                 android:id="@+id/tv_android"
-                style="@style/StudyCategory"
+                style="@style/BlackText.Small"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_android"
+                android:background="@drawable/bg_peach_radius_12dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
                 android:text="@string/all_android" />
 
             <TextView
                 android:id="@+id/tv_ios"
-                style="@style/StudyCategory"
+                style="@style/BlackText.Small"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_ios"
+                android:background="@drawable/bg_salomie_radius_12dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
                 android:text="@string/all_ios" />
 
             <TextView
                 android:id="@+id/tv_front_end"
-                style="@style/StudyCategory"
+                style="@style/BlackText.Small"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_front_end"
+                android:background="@drawable/bg_perfume_radius_12dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
                 android:text="@string/all_front_end" />
 
             <TextView
                 android:id="@+id/tv_back_end"
-                style="@style/StudyCategory"
+                style="@style/BlackText.Small"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_back_end"
+                android:background="@drawable/bg_alto_radius_12dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
                 android:text="@string/all_back_end" />
 
             <TextView
                 android:id="@+id/tv_ai"
-                style="@style/StudyCategory"
+                style="@style/BlackText.Small"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_ai"
+                android:background="@drawable/bg_tropical_blue_radius_12dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
                 android:text="@string/all_ai" />
 
             <TextView
                 android:id="@+id/tv_etc"
-                style="@style/StudyCategory"
+                style="@style/BlackText.Small"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_etc"
+                android:background="@drawable/bg_french_pass_radius_12dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:gravity="center"
                 android:text="@string/all_etc" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

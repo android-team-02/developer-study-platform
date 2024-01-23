@@ -6,34 +6,34 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_arrow_detail"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:contentDescription="@string/iv_arrow"
-        android:src="@drawable/ic_arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/space_median"
         app:layout_constraintBottom_toTopOf="@id/btn_join_study"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_arrow_detail">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/space_x_large"
+            android:layout_marginTop="@dimen/space_median">
 
             <TextView
                 android:id="@+id/tv_study_name"
-                android:layout_width="315dp"
+                style="@style/BlackText.XLarge"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_median"
                 android:fontFamily="@font/pretendard_bold"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,168 +41,123 @@
 
             <TextView
                 android:id="@+id/tv_study_content"
-                android:layout_width="315dp"
+                style="@style/RiverBedText.Medium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_median"
                 android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@id/tv_study_name"
-                app:layout_constraintStart_toStartOf="@id/tv_study_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_study_name"
-                tools:text="예비 안드로이드 개발자를 위한 스터디, 예비 안드로이드 개발자를 위한 스터디" />
+                tools:text="안드로이드 개발자로서의 취업을 목표로 하고있습니다.\n스터디 마지막에는 협업 프로젝트를 할 계획을 가지고 있어요." />
 
-            <TextView
-                android:id="@+id/tv_kr_category"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/category"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/tv_study_content"
+                android:layout_marginTop="50dp"
+                app:constraint_referenced_ids="tv_category_label,tv_category_value,tv_language_label,tv_language_value,tv_people_label,tv_people_value,tv_time_label,tv_time_value,tv_period_label,tv_period_value,tv_participant_label,tv_participant_value"
+                app:flow_horizontalStyle="packed"
+                app:flow_maxElementsWrap="2"
+                app:flow_verticalGap="@dimen/space_x_large"
+                app:flow_wrapMode="chain"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_study_content" />
 
             <TextView
-                android:id="@+id/tv_category"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_category_label"
+                style="@style/RiverBedText.Small"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tv_kr_category"
-                app:layout_constraintTop_toBottomOf="@id/tv_study_content"
+                android:text="@string/detail_category" />
+
+            <TextView
+                android:id="@+id/tv_category_value"
+                style="@style/RiverBedText.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_medium"
                 tools:text="Android" />
 
             <TextView
-                android:id="@+id/tv_kr_language"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_language_label"
+                style="@style/RiverBedText.Small"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/language"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/tv_kr_category"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_category" />
+                android:text="@string/detail_language" />
 
             <TextView
-                android:id="@+id/tv_language"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_language_value"
+                style="@style/RiverBedText.Small"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tv_kr_category"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_category"
                 tools:text="Kotlin" />
 
+            <TextView
+                android:id="@+id/tv_people_label"
+                style="@style/RiverBedText.Small"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/detail_people" />
 
             <TextView
-                android:id="@+id/tv_kr_people"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_people_value"
+                style="@style/RiverBedText.Small"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/people"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/tv_kr_language"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_language" />
-
-            <TextView
-                android:id="@+id/tv_people"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tv_kr_language"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_language"
                 tools:text="4/8" />
 
             <TextView
-                android:id="@+id/tv_kr_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:id="@+id/tv_time_label"
+                style="@style/RiverBedText.Small"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/time"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/tv_kr_people"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_people" />
+                android:text="@string/detail_time" />
 
             <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_time_value"
+                style="@style/RiverBedText.Small"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tv_kr_people"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_people"
-                tools:text="월요일 12:23부터 12:31까지" />
-
+                tools:text="월요일 12:00 ~ 14:00" />
 
             <TextView
-                android:id="@+id/tv_kr_period"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_period_label"
+                style="@style/RiverBedText.Small"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/period"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/tv_kr_time"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_time" />
+                android:text="@string/detail_period" />
 
             <TextView
-                android:id="@+id/tv_period"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_period_value"
+                style="@style/RiverBedText.Small"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tv_kr_time"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_time"
                 tools:text="2023/10/28 ~ 2023/11/28" />
 
+            <TextView
+                android:id="@+id/tv_participant_label"
+                style="@style/RiverBedText.Small"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="@string/detail_member" />
 
             <TextView
-                android:id="@+id/tv_kr_participants"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_participant_value"
+                style="@style/RiverBedText.Small"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/participant"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@id/tv_kr_period"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_period" />
-
-            <TextView
-                android:id="@+id/tv_participants"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:textColor="@color/manatee"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/tv_kr_period"
-                app:layout_constraintTop_toBottomOf="@id/tv_kr_period"
                 tools:text="0se0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -210,16 +165,15 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_join_study"
+        style="@style/WhiteText.Medium"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="52dp"
         android:layout_marginStart="@dimen/space_median"
         android:layout_marginEnd="@dimen/space_x_small"
         android:layout_marginBottom="@dimen/space_median"
         android:background="@drawable/selector_join_study"
         android:fontFamily="@font/pretendard_medium"
-        android:text="@string/join_study"
-        android:textColor="@color/white"
-        android:textSize="17sp"
+        android:text="@string/detail_join_study"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
         app:layout_constraintStart_toStartOf="parent" />
@@ -231,6 +185,7 @@
         android:layout_marginEnd="@dimen/space_median"
         android:contentDescription="@string/detail_bookmark_description"
         android:src="@drawable/selector_heart"
+        app:layout_constraintBottom_toBottomOf="@id/btn_join_study"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/btn_join_study" />
 

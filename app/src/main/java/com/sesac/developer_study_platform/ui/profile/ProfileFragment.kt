@@ -37,12 +37,12 @@ class ProfileFragment : Fragment() {
 
         val firebaseUid = Firebase.auth.uid
         if (firebaseUid != null) {
-            binding.rvRepository.adapter = repositoryAdapter
+            binding.rvRepositoryList.adapter = repositoryAdapter
             fetchUserProfileAndRepositories("kxg02ZurZAMTkgQOuNg8jN8WhiF3")
             checkMembershipInStudy("@make@abcd@time@20240111144250", firebaseUid)
         }
 
-        binding.toolbarArrowProfile.setOnClickListener {
+        binding.toolbar.setOnClickListener {
             findNavController().navigateUp()
         }
     }
@@ -60,7 +60,10 @@ class ProfileFragment : Fragment() {
 
                 Log.d("Repositories", "Repositories successfully loaded")
             }.onFailure { exception ->
-                Log.e("fetchUserProfileAndRepositories", "Error loading repositories: ${exception.message}")
+                Log.e(
+                    "fetchUserProfileAndRepositories",
+                    "Error loading repositories: ${exception.message}"
+                )
             }
         }
     }
@@ -82,19 +85,19 @@ class ProfileFragment : Fragment() {
 
     private fun updateUiForLeader(isLeader: Boolean) {
         if (isLeader) {
-            binding.ivExport.visibility = View.VISIBLE
-            binding.tvExport.visibility = View.VISIBLE
+            binding.ivBan.visibility = View.VISIBLE
+            binding.tvBan.visibility = View.VISIBLE
 
-            binding.ivExport.setOnClickListener {
+            binding.ivBan.setOnClickListener {
                 //다이얼로그
             }
 
-            binding.tvExport.setOnClickListener {
+            binding.tvBan.setOnClickListener {
                 //다이얼로그
             }
         } else {
-            binding.ivExport.visibility = View.GONE
-            binding.tvExport.visibility = View.GONE
+            binding.ivBan.visibility = View.GONE
+            binding.tvBan.visibility = View.GONE
         }
     }
 

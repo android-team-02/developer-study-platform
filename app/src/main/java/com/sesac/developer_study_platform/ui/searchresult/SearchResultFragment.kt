@@ -61,7 +61,7 @@ class SearchResultFragment : Fragment() {
     }
 
     private fun setBackBtn() {
-        binding.ivBack.setOnClickListener {
+        binding.ivArrowBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }

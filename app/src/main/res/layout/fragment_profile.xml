@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_arrow_profile"
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,77 +16,79 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_profile_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="150dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintDimensionRatio="1:1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/space_median"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_arrow_profile"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv_profile_name"
+        style="@style/BlackText.XLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_x_small"
         android:fontFamily="@font/pretendard_bold"
-        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_profile_image"
         tools:text="새싹" />
 
     <ImageView
-        android:id="@+id/iv_export"
+        android:id="@+id/iv_ban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/profile_export"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/profile_ban"
         android:src="@drawable/ic_export"
         app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_profile_name"
+        app:layout_constraintEnd_toStartOf="@id/tv_ban"
         app:layout_constraintTop_toTopOf="@id/tv_profile_name" />
 
     <TextView
-        android:id="@+id/tv_export"
+        android:id="@+id/tv_ban"
+        style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/space_median"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/profile_export"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_export"
+        android:text="@string/profile_ban"
+        app:layout_constraintBottom_toBottomOf="@id/iv_ban"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/iv_export"
-        app:layout_constraintTop_toTopOf="@id/iv_export" />
+        app:layout_constraintTop_toTopOf="@id/iv_ban" />
 
     <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/iv_divider"
-        android:layout_width="match_parent"
+        android:id="@+id/div"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_x_small"
         android:layout_marginTop="@dimen/space_small"
+        app:dividerInsetEnd="@dimen/space_median"
+        app:dividerInsetStart="@dimen/space_median"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
     <TextView
         android:id="@+id/tv_repository"
-        style="@style/StudyQuestion"
+        style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_median"
         android:layout_marginTop="@dimen/space_median"
+        android:fontFamily="@font/pretendard_bold"
         android:text="@string/profile_repository"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_divider" />
+        app:layout_constraintTop_toBottomOf="@id/div" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_repository"
+        android:id="@+id/rv_repository_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/space_median"
+        android:layout_marginTop="@dimen/space_median"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

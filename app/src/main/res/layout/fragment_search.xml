@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.search.SearchFragment">
+    android:layout_height="match_parent">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/sb_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/search_hint"
-        android:textAppearance="@style/SearchBar"
+        android:hint="@string/all_search_hint"
+        android:textAppearance="@style/SearchBarText"
         app:backgroundTint="@color/lilac"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_search_line" />
+        app:navigationIcon="@drawable/ic_search_24dp" />
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_category"
@@ -35,50 +33,62 @@
 
     <TextView
         android:id="@+id/tv_android"
-        style="@style/StudyCategory"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_android"
+        android:background="@drawable/bg_peach_radius_12dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
         android:text="@string/all_android" />
 
     <TextView
         android:id="@+id/tv_ios"
-        style="@style/StudyCategory"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_ios"
+        android:background="@drawable/bg_salomie_radius_12dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
         android:text="@string/all_ios" />
 
     <TextView
         android:id="@+id/tv_front_end"
-        style="@style/StudyCategory"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_front_end"
+        android:background="@drawable/bg_perfume_radius_12dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
         android:text="@string/all_front_end" />
 
     <TextView
         android:id="@+id/tv_back_end"
-        style="@style/StudyCategory"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_back_end"
+        android:background="@drawable/bg_alto_radius_12dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
         android:text="@string/all_back_end" />
 
     <TextView
         android:id="@+id/tv_ai"
-        style="@style/StudyCategory"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_ai"
+        android:background="@drawable/bg_tropical_blue_radius_12dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
         android:text="@string/all_ai" />
 
     <TextView
         android:id="@+id/tv_etc"
-        style="@style/StudyCategory"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_etc"
+        android:background="@drawable/bg_french_pass_radius_12dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
         android:text="@string/all_etc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

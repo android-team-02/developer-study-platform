@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.ui.joinstudylist
+package com.sesac.developer_study_platform.ui.mystudy
 
 import android.os.Bundle
 import android.util.Log
@@ -12,16 +12,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
-import com.sesac.developer_study_platform.databinding.FragmentJoinStudyListBinding
+import com.sesac.developer_study_platform.databinding.FragmentMyStudyBinding
 import kotlinx.coroutines.launch
 
-class JoinStudyListFragment : Fragment() {
+class MyStudyFragment : Fragment() {
 
-    private var _binding: FragmentJoinStudyListBinding? = null
+    private var _binding: FragmentMyStudyBinding? = null
     private val binding get() = _binding!!
-    private val joinStudyAdapter = JoinStudyAdapter { userStudyRoom ->
-        val action =
-            JoinStudyListFragmentDirections.actionJoinStudyListToDetail(userStudyRoom.sid)
+    private val myStudyAdapter = MyStudyAdapter { userStudyRoom ->
+        val action = MyStudyFragmentDirections.actionMyStudyToDetail(userStudyRoom.sid)
         findNavController().navigate(action)
     }
 
@@ -30,14 +29,14 @@ class JoinStudyListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentJoinStudyListBinding.inflate(inflater, container, false)
+        _binding = FragmentMyStudyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvStudy.adapter = joinStudyAdapter
+        binding.rvStudy.adapter = myStudyAdapter
         loadStudyList()
     }
 
@@ -67,7 +66,7 @@ class JoinStudyListFragment : Fragment() {
     }
 
     private fun setStudyList(studyRooms: List<UserStudy>) {
-        joinStudyAdapter.submitList(studyRooms)
+        myStudyAdapter.submitList(studyRooms)
     }
 
     override fun onDestroyView() {

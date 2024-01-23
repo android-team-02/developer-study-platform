@@ -32,7 +32,7 @@ class BookmarkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvStudy.adapter = bookmarkAdapter
+        binding.rvStudyList.adapter = bookmarkAdapter
         loadStudyList()
     }
 
@@ -42,7 +42,7 @@ class BookmarkFragment : Fragment() {
             if (bookmarkStudyList.isNotEmpty()) {
                 bookmarkAdapter.submitList(bookmarkStudyList.sortedByDescending { it.id })
             } else {
-                binding.rvStudy.visibility = View.GONE
+                binding.rvStudyList.visibility = View.GONE
                 binding.groupNoData.visibility = View.VISIBLE
             }
         }

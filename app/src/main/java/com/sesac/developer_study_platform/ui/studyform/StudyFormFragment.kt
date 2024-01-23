@@ -168,17 +168,17 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun setStartDatePicker() {
-        binding.tvStartPeriod.setOnClickListener {
-            setDatePicker(binding.tvStartPeriod, true)
+        binding.tvStartDate.setOnClickListener {
+            setDatePicker(binding.tvStartDate, true)
         }
     }
 
     private fun setEndDatePicker() {
-        binding.tvEndPeriod.setOnClickListener {
+        binding.tvEndDate.setOnClickListener {
             if (startDate != null) {
-                setDatePicker(binding.tvEndPeriod, false)
+                setDatePicker(binding.tvEndDate, false)
             } else {
-                binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_input)
+                binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_date_input)
             }
         }
     }
@@ -246,7 +246,7 @@ class StudyFormFragment : Fragment() {
         if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
             periodText.text = setPeriodText
         } else if (startDate?.before(currentDate) == true) {
-            binding.clStudyForm.showSnackbar(R.string.study_form_start_before_currentDate)
+            binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_date_before_today)
             startDate = saveStartPreviousDate
         } else {
             periodText.text = setPeriodText
@@ -266,7 +266,7 @@ class StudyFormFragment : Fragment() {
         } else if (dateFormat.format(currentDate) == startDate?.let { dateFormat.format(it) }) {
             periodText.text = setPeriodText
         } else if (startDate?.before(currentDate) == true) {
-            binding.clStudyForm.showSnackbar(R.string.study_form_start_before_currentDate)
+            binding.clStudyForm.showSnackbar(R.string.study_form_validate_start_date_before_today)
             startDate = saveStartPreviousDate
         } else {
             periodText.text = setPeriodText
@@ -380,10 +380,10 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun setTotalPeopleSelected() {
-        setDropdownAdapter(binding.tvTotalPeopleDropdown, R.array.study_form_total_people)
-        binding.tvTotalPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
+        setDropdownAdapter(binding.tvPeopleDropdown, R.array.study_form_people)
+        binding.tvPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
             totalSelectedItem = parent.getItemAtPosition(position).toString()
-            binding.tvTotalPeopleDropdown.setTextColor(Color.BLACK)
+            binding.tvPeopleDropdown.setTextColor(Color.BLACK)
         }
     }
 
@@ -391,47 +391,47 @@ class StudyFormFragment : Fragment() {
         binding.btnCreateStudy.setOnClickListener {
             when {
                 binding.ivImageInput.drawable == null -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_image)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_image)
                 }
 
                 categorySelectedItem.isEmpty() -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_category)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_category)
                 }
 
                 binding.etStudyNameInput.text.toString().isEmpty() -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_name)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_name_input)
                 }
 
                 binding.etStudyContentInput.text.toString().isEmpty() -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_content)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_content_input)
                 }
 
                 languageSelectedItem.isEmpty() -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_language)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_language)
                 }
 
                 startDate == null -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_start_date)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_start_date)
                 }
 
                 endDate == null -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_end_date)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_end_date)
                 }
 
                 dayTimeList.isEmpty() -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_day_time_empty)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_day)
                 }
 
                 dayTimeList.any { it.startTime == null } -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_day_time_start)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_start_time)
                 }
 
                 dayTimeList.any { it.endTime == null } -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_day_time_end)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_end_time)
                 }
 
                 totalSelectedItem.isEmpty() -> {
-                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_all_total)
+                    binding.clStudyForm.showSnackbar(R.string.study_form_validate_select_people)
                 }
 
                 else -> {
@@ -485,8 +485,8 @@ class StudyFormFragment : Fragment() {
             language = languageSelectedItem,
             totalMemberCount = totalSelectedItem.toInt(),
             days = formatDays(),
-            startDate = binding.tvStartPeriod.text.toString(),
-            endDate = binding.tvEndPeriod.text.toString(),
+            startDate = binding.tvStartDate.text.toString(),
+            endDate = binding.tvEndDate.text.toString(),
             members = mapOf(uid to true),
             banUsers = mapOf("default" to true)
         )

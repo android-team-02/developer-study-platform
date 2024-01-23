@@ -41,21 +41,20 @@
 
     <TextView
         android:id="@+id/tv_study_name"
+        style="@style/BlackText.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/pretendard_bold"
         android:maxLines="2"
-        android:textSize="14sp"
         tools:text="예비 안드로이드 개발자를 위한 스터디" />
 
     <TextView
         android:id="@+id/tv_study_language"
+        style="@style/ManateeText.XSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
-        android:textColor="@color/manatee"
-        android:textSize="11sp"
         tools:text="Kotlin" />
 
     <androidx.constraintlayout.helper.widget.Flow
@@ -77,11 +76,10 @@
 
     <TextView
         android:id="@+id/tv_study_day"
+        style="@style/RiverBedText.XSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_bold"
-        android:textColor="@color/riverBed"
-        android:textSize="11sp"
         tools:text="일" />
 
     <ImageView
@@ -89,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_small"
-        android:contentDescription="@string/home_move_study_detail_description"
+        android:contentDescription="@string/home_move_chat_room_description"
         android:src="@drawable/ic_arrow_forward"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,73 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  툴바 Text -->
-    <style name="ToolbarTextStyle">
-        <item name="android:textSize">18sp</item>
+    <style name="ToolbarText" parent="TextAppearance.M3.Sys.Typescale.TitleLarge">
         <item name="fontFamily">@font/pretendard_bold</item>
-    </style>
-
-    <!--  스터디 만들기 툴바  -->
-    <style name="ToolbarStyle">
-        <item name="titleCentered">true</item>
-        <item name="titleTextAppearance">@style/ToolbarTextStyle</item>
-        <item name="titleTextColor">@color/black</item>
-    </style>
-
-    <!--  스터디 만들기 ShapeableImageViewCircle  -->
-    <style name="ShapeableImageViewCircle">
-        <item name="cornerSize">12dp</item>
-    </style>
-
-    <!--  스터디 만들기 문항  -->
-    <style name="StudyQuestion">
-        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <!-- 스터디 만들기에서 많이 사용하는 텍스트 스타일 -->
-    <style name="StudyCustomTextStyle">
-        <item name="android:fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <!-- 스터디 만들기 드롭다운 힌트 스타일 -->
-    <style name="DropDownHintStyle">
-        <item name="android:fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/manatee</item>
-    </style>
-
-    <!-- 스터디 만들기 답변-->
-    <style name="StudyAnswer">
-        <item name="android:textAppearance">@style/StudyCustomTextStyle</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">@color/manatee</item>
-    </style>
-
-    <!-- 스터디 만들기 AppCompatButton Style-->
-    <style name="StudyAppCompatButton">
-        <item name="android:background">@drawable/selector_study_category_bg</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textAppearance">@style/StudyCustomTextStyle</item>
-        <item name="android:textColor">@color/selector_study_category</item>
-    </style>
-
-    <style name="HomeToolbar" parent="Widget.Material3.Toolbar">
         <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/pretendard_bold</item>
     </style>
 
-    <style name="StudyCategory">
-        <item name="android:fontFamily">@font/pretendard_bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="SearchCategoryTab" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
+    <style name="BottomNavigationView" parent="TextAppearance.M3.Sys.Typescale.LabelMedium">
         <item name="fontFamily">@font/pretendard_medium</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="SearchBarText" parent="TextAppearance.M3.Sys.Typescale.BodyLarge">
+        <item name="fontFamily">@font/pretendard_medium</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="SearchCategoryTabText" parent="TextAppearance.M3.Sys.Typescale.TitleSmall">
+        <item name="fontFamily">@font/pretendard_medium</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
     </style>
 
     <style name="StudyImage">
@@ -75,16 +27,75 @@
         <item name="cornerSizeTopRight">@dimen/space_small</item>
     </style>
 
-    <style name="BottomNavigationView" parent="TextAppearance.M3.Sys.Typescale.LabelMedium">
-        <item name="fontFamily">@font/pretendard_medium</item>
+    <style name="CategoryButton">
+        <item name="android:background">@drawable/selector_study_category</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/selector_study_category</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
     </style>
 
-    <style name="Repository">
-        <item name="android:fontFamily">@font/pretendard_medium</item>
+    <style name="BlackText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="BlackText.XLarge">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BlackText.Large">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BlackText.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BlackText.Small">
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="SearchBar" parent="TextAppearance.M3.Sys.Typescale.BodyLarge">
-        <item name="fontFamily">@font/pretendard_medium</item>
+    <style name="BlackText.XSmall">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="WhiteText">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="WhiteText.Large">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="WhiteText.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="RiverBedText">
+        <item name="android:textColor">@color/riverBed</item>
+    </style>
+
+    <style name="RiverBedText.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="RiverBedText.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RiverBedText.XSmall">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="ManateeText">
+        <item name="android:textColor">@color/manatee</item>
+    </style>
+
+    <style name="ManateeText.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ManateeText.XSmall">
+        <item name="android:textSize">11sp</item>
     </style>
 </resources>

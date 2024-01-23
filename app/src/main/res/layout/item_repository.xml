@@ -3,12 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="68dp"
-    android:layout_marginHorizontal="@dimen/space_median"
-    android:layout_marginTop="@dimen/space_small">
+    android:layout_height="90dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_repository_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/lilac"
@@ -19,13 +16,13 @@
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_all"
+        android:id="@+id/flow_repository"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_median"
         android:orientation="vertical"
-        app:constraint_referenced_ids="tv_repository_name, flow_repo_all"
-        app:flow_verticalGap="3dp"
+        app:constraint_referenced_ids="tv_repository_name,flow_repository_value"
+        app:flow_verticalGap="@dimen/space_x_small"
         app:flow_wrapMode="chain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,159 +31,88 @@
 
     <TextView
         android:id="@+id/tv_repository_name"
-        style="@style/ToolbarTextStyle"
+        style="@style/BlackText.Large"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="NewsApp_Project" />
+        android:fontFamily="@font/pretendard_bold"
+        tools:text="developer_study_platform" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_repo_all"
+        android:id="@+id/flow_repository_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:constraint_referenced_ids="flow_repo, tv_repository_created_at"
+        app:constraint_referenced_ids="iv_repository_language,tv_repository_language,iv_repository_star,tv_repository_star,iv_repository_fork,tv_repository_fork,iv_repository_issue,tv_repository_issue,tv_repository_created_at"
         app:flow_horizontalBias="0"
-        app:flow_horizontalGap="5dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_repo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:constraint_referenced_ids="flow_language, flow_stars, flow_fork, flow_issue"
-        app:flow_horizontalBias="0"
-        app:flow_horizontalGap="7dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="iv_repository_language, tv_repository_language"
-        app:flow_horizontalBias="0"
-        app:flow_horizontalGap="3dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
+        app:flow_horizontalGap="6dp"
+        app:flow_horizontalStyle="packed" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_repository_language"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:background="@color/perfume"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+        tools:background="@color/perfume" />
 
     <TextView
         android:id="@+id/tv_repository_language"
-        style="@style/Repository"
+        style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/iv_repository_stars"
-        app:layout_constraintStart_toEndOf="@id/iv_repository_language"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name"
+        android:fontFamily="@font/pretendard_medium"
         tools:text="Kotlin" />
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="iv_repository_stars, tv_repository_stars"
-        app:flow_horizontalBias="0"
-        app:flow_horizontalGap="1dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintStart_toEndOf="@id/flow_language"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
-
     <ImageView
-        android:id="@+id/iv_repository_stars"
+        android:id="@+id/iv_repository_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/profile_repository_stars"
+        android:contentDescription="@string/profile_icon_star_description"
         android:src="@drawable/ic_star" />
 
     <TextView
-        android:id="@+id/tv_repository_stars"
-        style="@style/Repository"
+        android:id="@+id/tv_repository_star"
+        style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/iv_repository_fork"
-        app:layout_constraintStart_toStartOf="@id/iv_repository_stars"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name"
+        android:fontFamily="@font/pretendard_medium"
         tools:text="1" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_fork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="iv_repository_fork,tv_repository_fork"
-        app:flow_horizontalBias="0"
-        app:flow_horizontalGap="2dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintStart_toEndOf="@id/flow_stars"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
 
     <ImageView
         android:id="@+id/iv_repository_fork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/profile_repository_fork"
+        android:contentDescription="@string/profile_icon_fork_description"
         android:src="@drawable/ic_fork" />
 
     <TextView
         android:id="@+id/tv_repository_fork"
-        style="@style/Repository"
+        style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
+        android:fontFamily="@font/pretendard_medium"
         tools:text="5" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_issue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="iv_repository_issue,tv_repository_issue"
-        app:flow_horizontalBias="0"
-        app:flow_horizontalGap="3dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintStart_toEndOf="@id/flow_fork"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name" />
 
     <ImageView
         android:id="@+id/iv_repository_issue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/profile_repository_issue"
+        android:contentDescription="@string/profile_icon_issue_description"
         android:src="@drawable/ic_issue" />
 
     <TextView
         android:id="@+id/tv_repository_issue"
-        style="@style/Repository"
+        style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_medium"
         tools:text="9" />
 
     <TextView
         android:id="@+id/tv_repository_created_at"
-        style="@style/Repository"
-        android:layout_width="wrap_content"
+        style="@style/BlackText.Small"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_repository_name"
+        android:fontFamily="@font/pretendard_medium"
+        android:gravity="end"
         tools:text="2023-05-20" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
