@@ -102,4 +102,10 @@
         android:name="com.sesac.developer_study_platform.ui.chatroom.ChatRoomFragment"
         android:label="fragment_chat_room"
         tools:layout="@layout/fragment_chat_room" />
+
+    <fragment
+        android:id="@+id/dest_bookmark"
+        android:name="com.sesac.developer_study_platform.ui.bookmark.BookmarkFragment"
+        android:label="fragment_bookmark"
+        tools:layout="@layout/fragment_bookmark" />
 </navigation>

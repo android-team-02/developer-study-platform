@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
+import com.sesac.developer_study_platform.ui.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.StudyClickListener
 import kotlinx.coroutines.launch
 
@@ -17,7 +20,8 @@ class BookmarkFragment : Fragment() {
     private val binding get() = _binding!!
     private val bookmarkAdapter = BookmarkAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // 상세 화면으로 이동
+            val action = BookmarkFragmentDirections.actionGlobalToDetail(sid)
+            findNavController().navigate(action)
         }
     })
 
@@ -32,15 +36,23 @@ class BookmarkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvStudyList.adapter = bookmarkAdapter
+
+        setBookmarkAdapter()
         loadStudyList()
+    }
+
+    private fun setBookmarkAdapter() {
+        binding.rvStudyList.adapter = bookmarkAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
     }
 
     private fun loadStudyList() {
         lifecycleScope.launch {
             val bookmarkStudyList = bookmarkDao.getAllBookmarkStudy()
             if (bookmarkStudyList.isNotEmpty()) {
-                bookmarkAdapter.submitList(bookmarkStudyList.sortedByDescending { it.id })
+                bookmarkAdapter.submitList(bookmarkStudyList)
             } else {
                 binding.rvStudyList.visibility = View.GONE
                 binding.groupNoData.visibility = View.VISIBLE
