@@ -150,7 +150,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/detail_participant" />
+                android:text="@string/detail_member" />
 
             <TextView
                 android:id="@+id/tv_participant_value"
@@ -173,7 +173,7 @@
         android:layout_marginBottom="@dimen/space_median"
         android:background="@drawable/selector_join_study"
         android:fontFamily="@font/pretendard_medium"
-        android:text="@string/join_study"
+        android:text="@string/detail_join_study"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
         app:layout_constraintStart_toStartOf="parent" />

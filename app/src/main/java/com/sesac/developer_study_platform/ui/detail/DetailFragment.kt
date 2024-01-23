@@ -81,7 +81,7 @@ class DetailFragment : Fragment() {
         binding.tvLanguageValue.text = study.language
         val currentMemberCount = study.members.keys.size
         binding.tvPeopleValue.text =
-            getString(R.string.all_study_people, currentMemberCount, study.totalMemberCount)
+            getString(R.string.all_study_people_format, currentMemberCount, study.totalMemberCount)
         val studyTime = study.days.entries.joinToString("\n") { (day, time) ->
             val parts = time.split("@")
             if (parts.size == 2) {
@@ -103,9 +103,9 @@ class DetailFragment : Fragment() {
             }
         }
 
-        binding.tvTimeValue.text = getString(R.string.study_time_format, studyTime)
+        binding.tvTimeValue.text = getString(R.string.detail_study_time_format, studyTime)
         binding.tvPeriodValue.text =
-            getString(R.string.study_period_format, study.startDate, study.endDate)
+            getString(R.string.detail_study_period_format, study.startDate, study.endDate)
 
         fetchStudyParticipants(study.members.keys)
     }

@@ -34,7 +34,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyPeople.text = itemView.context.getString(
-                R.string.all_study_people,
+                R.string.all_study_people_format,
                 study.members.count(),
                 study.totalMemberCount
             )

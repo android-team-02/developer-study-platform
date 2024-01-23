@@ -85,19 +85,19 @@ class ProfileFragment : Fragment() {
 
     private fun updateUiForLeader(isLeader: Boolean) {
         if (isLeader) {
-            binding.ivExport.visibility = View.VISIBLE
-            binding.tvExport.visibility = View.VISIBLE
+            binding.ivBan.visibility = View.VISIBLE
+            binding.tvBan.visibility = View.VISIBLE
 
-            binding.ivExport.setOnClickListener {
+            binding.ivBan.setOnClickListener {
                 //다이얼로그
             }
 
-            binding.tvExport.setOnClickListener {
+            binding.tvBan.setOnClickListener {
                 //다이얼로그
             }
         } else {
-            binding.ivExport.visibility = View.GONE
-            binding.tvExport.visibility = View.GONE
+            binding.ivBan.visibility = View.GONE
+            binding.tvBan.visibility = View.GONE
         }
     }
 

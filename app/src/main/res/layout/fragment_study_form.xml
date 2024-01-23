@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/study_form_toolbar"
+        app:title="@string/study_form_title"
         app:titleTextAppearance="@style/ToolbarText" />
 
     <androidx.core.widget.NestedScrollView
@@ -56,15 +56,12 @@
 
             <TextView
                 android:id="@+id/tv_add_image"
+                style="@style/ManateeText.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_x_small"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/study_form_add_image"
-
-                android:textColor="@color/manatee"
-                android:textSize="14sp"
-
                 app:layout_constraintEnd_toEndOf="@id/iv_image_input"
                 app:layout_constraintStart_toStartOf="@id/iv_image_input"
                 app:layout_constraintTop_toBottomOf="@id/iv_plus" />
@@ -217,7 +214,7 @@
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
-                android:hint="@string/study_form_language_label"
+                android:hint="@string/study_form_language_hint"
                 app:boxBackgroundColor="@color/lilac"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -231,7 +228,6 @@
                     android:background="@color/lilac"
                     android:fontFamily="@font/pretendard_medium"
                     android:inputType="none"
-                    android:text="@string/study_form_language_hint"
                     app:dropDownBackgroundTint="@color/lilac"
                     app:simpleItems="@array/study_form_language" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -261,14 +257,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_period" />
 
             <TextView
-                android:id="@+id/tv_start_period"
+                android:id="@+id/tv_start_date"
                 style="@style/BlackText.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center"
-                android:text="@string/study_form_start"
+                android:text="@string/study_form_start_date"
                 app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
                 app:layout_constraintEnd_toStartOf="@+id/tv_period_value"
                 app:layout_constraintStart_toStartOf="parent"
@@ -282,19 +278,19 @@
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/study_form_connect"
                 app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
-                app:layout_constraintEnd_toStartOf="@+id/tv_end_period"
-                app:layout_constraintStart_toEndOf="@+id/tv_start_period"
+                app:layout_constraintEnd_toStartOf="@+id/tv_end_date"
+                app:layout_constraintStart_toEndOf="@+id/tv_start_date"
                 app:layout_constraintTop_toTopOf="@+id/view_period_background" />
 
             <TextView
-                android:id="@+id/tv_end_period"
+                android:id="@+id/tv_end_date"
                 style="@style/BlackText.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space_median"
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center"
-                android:text="@string/study_form_end"
+                android:text="@string/study_form_end_date"
                 app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_period_value"
@@ -330,49 +326,49 @@
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_monday" />
+                android:text="@string/all_monday" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_tuesday"
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_tuesday" />
+                android:text="@string/all_tuesday" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_wednesday"
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_wednesday" />
+                android:text="@string/all_wednesday" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_thursday"
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_thursday" />
+                android:text="@string/all_thursday" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_friday"
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_friday" />
+                android:text="@string/all_friday" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_saturday"
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_saturday" />
+                android:text="@string/all_saturday" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_sunday"
                 style="@style/CategoryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/study_form_sunday" />
+                android:text="@string/all_sunday" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_day_time"
@@ -386,42 +382,41 @@
                 tools:listitem="@layout/item_day_time" />
 
             <TextView
-                android:id="@+id/tv_study_total_people"
+                android:id="@+id/tv_study_people"
                 style="@style/BlackText.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_x_small"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_total_people"
+                android:text="@string/study_form_people"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_day_time" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_total_people"
+                android:id="@+id/til_people"
                 style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
-                android:hint="@string/study_form_total_people_label"
+                android:hint="@string/study_form_people_hint"
                 app:boxBackgroundColor="@color/gallery"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_study_total_people">
+                app:layout_constraintTop_toBottomOf="@+id/tv_study_people">
 
                 <AutoCompleteTextView
-                    android:id="@+id/tv_total_people_dropdown"
+                    android:id="@+id/tv_people_dropdown"
                     style="@style/ManateeText.Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/lilac"
                     android:fontFamily="@font/pretendard_medium"
                     android:inputType="none"
-                    android:text="@string/study_form_total_people_hint"
                     app:dropDownBackgroundTint="@color/lilac"
-                    app:simpleItems="@array/study_form_total_people" />
+                    app:simpleItems="@array/study_form_people" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -438,11 +433,11 @@
                 android:fontFamily="@font/pretendard_bold"
                 android:gravity="center"
                 android:padding="@dimen/space_median"
-                android:text="@string/study_form_create_study"
+                android:text="@string/study_form_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_total_people" />
+                app:layout_constraintTop_toBottomOf="@+id/til_people" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
