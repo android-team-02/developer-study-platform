@@ -12,10 +12,11 @@ import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputEditText
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
@@ -42,28 +43,30 @@ class SearchResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setSearchView()
-        setBackBtn()
-        binding.rvStudyList.adapter = searchAdapter
+        showSoftKeyboard(binding.etSearch)
+        setBackButton()
+        setSearchAdapter()
         searchStudy()
     }
 
-    private fun setSearchView() {
-        with(binding.etSearch) {
-            this.requestFocus()
-            showKeyboard(this)
+    private fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm = context?.getSystemService(InputMethodManager::class.java)
+            imm?.showSoftInput(view, SHOW_IMPLICIT)
         }
     }
 
-    private fun showKeyboard(textInputEditText: TextInputEditText) {
-        val imm = context?.getSystemService(InputMethodManager::class.java)
-        imm?.showSoftInput(textInputEditText, SHOW_IMPLICIT)
-    }
-
-    private fun setBackBtn() {
+    private fun setBackButton() {
         binding.ivArrowBack.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         }
+    }
+
+    private fun setSearchAdapter() {
+        binding.rvStudyList.adapter = searchAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
     }
 
     private fun searchStudy() {
@@ -73,7 +76,6 @@ class SearchResultFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                Log.d("SearchResultFragment1", s.toString())
                 if (s.isNullOrEmpty()) {
                     searchAdapter.submitList(emptyList())
                 } else {
