@@ -12,23 +12,19 @@ import java.util.Date
 import java.util.Locale
 
 class RepositoryAdapter :
-    ListAdapter<Repository, RepositoryAdapter.ViewHolder>(RepositoryDiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemRepositoryBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ViewHolder(binding)
+    ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(diffUtil) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
+        return RepositoryViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repository = getItem(position)
-        holder.bind(repository)
+    override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
+        holder.bind(currentList[position])
     }
 
-    class ViewHolder(private val binding: ItemRepositoryBinding) :
+    class RepositoryViewHolder(private val binding: ItemRepositoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(repository: Repository) {
             binding.tvRepositoryName.text = repository.name
             binding.tvRepositoryLanguage.text = repository.language ?: "Unknown"
@@ -41,15 +37,29 @@ class RepositoryAdapter :
             val date: Date = inputFormat.parse(repository.createdAt) ?: Date()
             binding.tvRepositoryCreatedAt.text = outputFormat.format(date)
         }
+
+        companion object {
+            fun from(parent: ViewGroup): RepositoryViewHolder {
+                return RepositoryViewHolder(
+                    ItemRepositoryBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+        }
     }
 
-    private class RepositoryDiffCallback : DiffUtil.ItemCallback<Repository>() {
-        override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean {
-            return oldItem.createdAt == newItem.createdAt
-        }
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<Repository>() {
+            override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean {
+                return oldItem.createdAt == newItem.createdAt
+            }
 
-        override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

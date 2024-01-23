@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserChatRoom
 import com.sesac.developer_study_platform.databinding.ItemChatRoomBinding
-import com.sesac.developer_study_platform.ui.ChatRoomClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 
-class ChatRoomAdapter(private val clickListener: ChatRoomClickListener) :
+class ChatRoomAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserChatRoom, ChatRoomAdapter.ChatRoomViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
@@ -25,7 +25,7 @@ class ChatRoomAdapter(private val clickListener: ChatRoomClickListener) :
     class ChatRoomViewHolder(private val binding: ItemChatRoomBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(userChatRoom: UserChatRoom, clickListener: ChatRoomClickListener) {
+        fun bind(userChatRoom: UserChatRoom, clickListener: StudyClickListener) {
             Glide.with(itemView)
                 .load(userChatRoom.image)
                 .centerCrop()

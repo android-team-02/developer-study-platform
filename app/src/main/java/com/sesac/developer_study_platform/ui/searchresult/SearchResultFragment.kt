@@ -16,14 +16,14 @@ import com.google.android.material.textfield.TextInputEditText
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
-import com.sesac.developer_study_platform.ui.SearchClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 import kotlinx.coroutines.launch
 
 class SearchResultFragment : Fragment() {
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
-    private val searchAdapter = SearchAdapter(object : SearchClickListener {
+    private val searchAdapter = SearchAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
             val action = SearchResultFragmentDirections.actionGlobalToDetail(sid)
             findNavController().navigate(action)

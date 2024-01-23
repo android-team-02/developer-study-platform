@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.databinding.ItemSearchBinding
-import com.sesac.developer_study_platform.ui.SearchClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 
-class SearchAdapter(private val clickListener: SearchClickListener) :
+class SearchAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<Study, SearchAdapter.SearchViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -25,7 +25,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     class SearchViewHolder(private val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(study: Study, clickListener: SearchClickListener) {
+        fun bind(study: Study, clickListener: StudyClickListener) {
             Glide.with(itemView)
                 .load(study.image)
                 .centerCrop()

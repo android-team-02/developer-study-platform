@@ -13,19 +13,18 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
 import com.sesac.developer_study_platform.ui.SpaceItemDecoration
-import com.sesac.developer_study_platform.ui.UserStudyClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val studyAdapter = StudyAdapter(object : UserStudyClickListener {
-        override fun onClick(userStudy: UserStudy) {}
+    private val studyAdapter = StudyAdapter(object : StudyClickListener {
+        override fun onClick(sid: String) {}
     })
 
     override fun onCreateView(

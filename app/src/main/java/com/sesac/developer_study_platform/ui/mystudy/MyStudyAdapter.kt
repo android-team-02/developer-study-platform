@@ -8,24 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
+import com.sesac.developer_study_platform.ui.StudyClickListener
 
-class MyStudyAdapter(private val clickListener: (UserStudy) -> Unit) :
-    ListAdapter<UserStudy, MyStudyAdapter.ViewHolder>(UserStudyRoomDiffCallback()) {
+class MyStudyAdapter(private val clickListener: StudyClickListener) :
+    ListAdapter<UserStudy, MyStudyAdapter.MyStudyViewHolder>(diffUtil) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemStudyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyStudyViewHolder {
+        return MyStudyViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val userStudyRoom = getItem(position)
-        holder.bind(userStudyRoom, clickListener)
+    override fun onBindViewHolder(holder: MyStudyViewHolder, position: Int) {
+        holder.bind(currentList[position], clickListener)
     }
 
-    class ViewHolder(private val binding: ItemStudyBinding) :
+    class MyStudyViewHolder(private val binding: ItemStudyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(userStudyRoom: UserStudy, clickListener: (UserStudy) -> Unit) {
+        fun bind(userStudyRoom: UserStudy, clickListener: StudyClickListener) {
             with(binding) {
                 Glide.with(itemView)
                     .load(userStudyRoom.image)
@@ -35,18 +34,34 @@ class MyStudyAdapter(private val clickListener: (UserStudy) -> Unit) :
                 tvStudyLanguage.text = userStudyRoom.language
                 val daysOfWeekList = userStudyRoom.days.keys.toList()
                 tvStudyDay.text = daysOfWeekList.joinToString(", ")
-                root.setOnClickListener { clickListener(userStudyRoom) }
+                itemView.setOnClickListener {
+                    clickListener.onClick(userStudyRoom.sid)
+                }
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): MyStudyViewHolder {
+                return MyStudyViewHolder(
+                    ItemStudyBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
             }
         }
     }
 
-    private class UserStudyRoomDiffCallback : DiffUtil.ItemCallback<UserStudy>() {
-        override fun areItemsTheSame(oldItem: UserStudy, newItem: UserStudy): Boolean {
-            return oldItem.sid == newItem.sid
-        }
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<UserStudy>() {
+            override fun areItemsTheSame(oldItem: UserStudy, newItem: UserStudy): Boolean {
+                return oldItem.sid == newItem.sid
+            }
 
-        override fun areContentsTheSame(oldItem: UserStudy, newItem: UserStudy): Boolean {
-            return oldItem == newItem
+            override fun areContentsTheSame(oldItem: UserStudy, newItem: UserStudy): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

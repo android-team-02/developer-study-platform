@@ -13,16 +13,19 @@ import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyStudyBinding
+import com.sesac.developer_study_platform.ui.StudyClickListener
 import kotlinx.coroutines.launch
 
 class MyStudyFragment : Fragment() {
 
     private var _binding: FragmentMyStudyBinding? = null
     private val binding get() = _binding!!
-    private val myStudyAdapter = MyStudyAdapter { userStudyRoom ->
-        val action = MyStudyFragmentDirections.actionMyStudyToDetail(userStudyRoom.sid)
-        findNavController().navigate(action)
-    }
+    private val myStudyAdapter = MyStudyAdapter(object : StudyClickListener {
+        override fun onClick(sid: String) {
+            val action = MyStudyFragmentDirections.actionMyStudyToDetail(sid)
+            findNavController().navigate(action)
+        }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,

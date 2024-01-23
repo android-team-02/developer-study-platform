@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
-import com.sesac.developer_study_platform.ui.UserStudyClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 
-class StudyAdapter(private val clickListener: UserStudyClickListener) :
+class StudyAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserStudy, StudyAdapter.StudyViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudyViewHolder {
@@ -25,7 +25,7 @@ class StudyAdapter(private val clickListener: UserStudyClickListener) :
     class StudyViewHolder(private val binding: ItemStudyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(study: UserStudy, clickListener: UserStudyClickListener) {
+        fun bind(study: UserStudy, clickListener: StudyClickListener) {
             Glide.with(itemView)
                 .load(study.image)
                 .centerCrop()
@@ -35,7 +35,7 @@ class StudyAdapter(private val clickListener: UserStudyClickListener) :
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyDay.text = study.days.keys.joinToString(", ")
             itemView.setOnClickListener {
-                clickListener.onClick(study)
+                clickListener.onClick(study.sid)
             }
         }
 

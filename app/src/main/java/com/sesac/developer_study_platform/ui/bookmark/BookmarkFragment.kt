@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
-import com.sesac.developer_study_platform.ui.BookmarkClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 import kotlinx.coroutines.launch
 
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
-    private val bookmarkAdapter = BookmarkAdapter(object : BookmarkClickListener {
+    private val bookmarkAdapter = BookmarkAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
             // 상세 화면으로 이동
         }

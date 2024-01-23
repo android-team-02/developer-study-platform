@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
-import com.sesac.developer_study_platform.ui.BookmarkClickListener
+import com.sesac.developer_study_platform.ui.StudyClickListener
 
-class BookmarkAdapter(private val clickListener: BookmarkClickListener) :
+class BookmarkAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<BookmarkStudy, BookmarkAdapter.BookmarkViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
@@ -25,7 +25,7 @@ class BookmarkAdapter(private val clickListener: BookmarkClickListener) :
     class BookmarkViewHolder(private val binding: ItemStudyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(study: BookmarkStudy, clickListener: BookmarkClickListener) {
+        fun bind(study: BookmarkStudy, clickListener: StudyClickListener) {
             Glide.with(itemView)
                 .load(study.image)
                 .centerCrop()

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentCategoryBinding
 import com.sesac.developer_study_platform.ui.GridSpaceItemDecoration
@@ -22,7 +21,7 @@ class CategoryFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var category: String
     private val categoryAdapter = CategoryAdapter(object : StudyClickListener {
-        override fun onClick(study: Study) {}
+        override fun onClick(sid: String) {}
     })
 
     override fun onCreate(savedInstanceState: Bundle?) {

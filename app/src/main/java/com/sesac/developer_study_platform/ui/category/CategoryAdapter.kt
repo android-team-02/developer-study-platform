@@ -39,7 +39,7 @@ class CategoryAdapter(private val clickListener: StudyClickListener) :
                 study.totalMemberCount
             )
             itemView.setOnClickListener {
-                clickListener.onClick(study)
+                clickListener.onClick(study.sid)
             }
         }
 
