@@ -20,6 +20,8 @@ import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
 import com.sesac.developer_study_platform.util.formatDate
+import com.sesac.developer_study_platform.util.getAllDayList
+import com.sesac.developer_study_platform.util.getDayList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -151,12 +153,12 @@ class DetailFragment : Fragment() {
                 deleteBookmarkStudyBySid()
             } else {
                 binding.ivBookmark.isSelected = true
-                insertBookmarkStudy()
+                insertBookmarkStudy(it)
             }
         }
     }
 
-    private fun insertBookmarkStudy() {
+    private fun insertBookmarkStudy(view: View) {
         lifecycleScope.launch {
             bookmarkDao.insertBookmarkStudy(
                 BookmarkStudy(
@@ -164,7 +166,7 @@ class DetailFragment : Fragment() {
                     study.name,
                     study.image,
                     study.language,
-                    study.days.keys.joinToString(", ")
+                    study.days.keys.getDayList(view.getAllDayList())
                 )
             )
         }

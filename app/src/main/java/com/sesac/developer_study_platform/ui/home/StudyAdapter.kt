@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
 import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.util.getAllDayList
+import com.sesac.developer_study_platform.util.getDayList
 import com.sesac.developer_study_platform.util.setImage
 
 class StudyAdapter(private val clickListener: StudyClickListener) :
@@ -28,7 +30,7 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
             binding.ivStudyImage.setImage(study.image)
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
-            binding.tvStudyDay.text = study.days.keys.joinToString(", ")
+            binding.tvStudyDay.text = study.days.keys.getDayList(itemView.getAllDayList())
             itemView.setOnClickListener {
                 clickListener.onClick(study.sid)
             }

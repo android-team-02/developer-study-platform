@@ -24,7 +24,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
-        override fun onClick(sid: String) {}
+        override fun onClick(sid: String) {
+            // TODO 채팅 화면으로 이동
+        }
     })
 
     override fun onCreateView(
@@ -39,11 +41,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setStudyAdapter()
         setDetailButton()
-        binding.rvStudyList.adapter = studyAdapter
-        binding.rvStudyList.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
-        )
         loadStudyList()
         with(binding) {
             setCategoryButton(tvAndroid)
@@ -53,6 +52,13 @@ class HomeFragment : Fragment() {
             setCategoryButton(tvAi)
             setCategoryButton(tvEtc)
         }
+    }
+
+    private fun setStudyAdapter() {
+        binding.rvStudyList.adapter = studyAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
     }
 
     private fun setDetailButton() {
