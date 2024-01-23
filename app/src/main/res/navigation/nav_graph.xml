@@ -108,4 +108,10 @@
         android:name="com.sesac.developer_study_platform.ui.bookmark.BookmarkFragment"
         android:label="fragment_bookmark"
         tools:layout="@layout/fragment_bookmark" />
+
+    <fragment
+        android:id="@+id/dest_category"
+        android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
 </navigation>

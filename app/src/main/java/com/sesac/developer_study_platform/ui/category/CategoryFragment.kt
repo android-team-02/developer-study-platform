@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.source.remote.StudyService
@@ -21,7 +22,10 @@ class CategoryFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var category: String
     private val categoryAdapter = CategoryAdapter(object : StudyClickListener {
-        override fun onClick(sid: String) {}
+        override fun onClick(sid: String) {
+            val action = CategoryFragmentDirections.actionGlobalToDetail(sid)
+            findNavController().navigate(action)
+        }
     })
 
     override fun onCreate(savedInstanceState: Bundle?) {
