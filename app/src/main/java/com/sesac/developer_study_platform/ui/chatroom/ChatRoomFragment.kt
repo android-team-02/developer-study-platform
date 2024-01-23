@@ -22,7 +22,7 @@ class ChatRoomFragment : Fragment() {
     private val binding get() = _binding!!
     private val chatRoomAdapter = ChatRoomAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // 채팅 화면으로 이동
+            // TODO 채팅 화면으로 이동
         }
     })
 
@@ -55,7 +55,6 @@ class ChatRoomFragment : Fragment() {
                 service.getUserChatRoomList(Firebase.auth.uid)
             }.onSuccess {
                 chatRoomAdapter.submitList(it.values.toList())
-                Log.d("ChatRoomFragment", it.toString())
             }.onFailure {
                 Log.d("ChatRoomFragment", it.message ?: "error occurred.")
             }
