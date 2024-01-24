@@ -13,11 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.util.sortStudyList
 import kotlinx.coroutines.launch
 
 class SearchResultFragment : Fragment() {
@@ -91,31 +91,16 @@ class SearchResultFragment : Fragment() {
             kotlin.runCatching {
                 service.getSearchStudyList("\"${searchKeyword}\"", "\"${searchKeyword}\\uf8ff\"")
             }.onSuccess {
-                setSearchStudyList(it)
+                val searchStudyList = it.values.toList().sortStudyList()
+                searchAdapter.submitList(searchStudyList)
             }.onFailure {
                 Log.e("SearchResultFragment", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun setSearchStudyList(searchStudyMap: Map<String, Study>) {
-        val searchStudyList = searchStudyMap.values.toList().sortedBy {
-            val comparator = it.totalMemberCount - it.members.count()
-            if (comparator != 0) {
-                comparator
-            } else {
-                MAX_MEMBER_COUNT
-            }
-        }
-        searchAdapter.submitList(searchStudyList)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val MAX_MEMBER_COUNT = 8
     }
 }

@@ -14,6 +14,7 @@ import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentCategoryBinding
 import com.sesac.developer_study_platform.ui.common.GridSpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.util.sortStudyList
 import kotlinx.coroutines.launch
 
 class CategoryFragment : Fragment() {
@@ -66,7 +67,8 @@ class CategoryFragment : Fragment() {
             kotlin.runCatching {
                 service.getStudyList("\"${category}\"")
             }.onSuccess {
-                categoryAdapter.submitList(it.values.toList())
+                val studyList = it.values.toList().sortStudyList()
+                categoryAdapter.submitList(studyList)
             }.onFailure {
                 Log.e("CategoryFragment", it.message ?: "error occurred.")
             }
