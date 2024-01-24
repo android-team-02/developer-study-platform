@@ -46,12 +46,13 @@
         app:flow_horizontalGap="6dp"
         app:flow_horizontalStyle="packed" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/iv_repository_language"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
-        tools:background="@color/perfume" />
+        android:contentDescription="@string/profile_icon_language_description"
+        android:src="@drawable/ic_language"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
     <TextView
         android:id="@+id/tv_repository_language"

@@ -16,8 +16,10 @@ interface GithubService {
     @GET("user")
     suspend fun getUser(): User
 
-    @GET("users/{user}/repos")
-    suspend fun listRepos(@Path("user") user: String): List<Repository>
+    @GET("users/{userId}/repos")
+    suspend fun getRepositoryList(
+        @Path("userId") userId: String
+    ): List<Repository>
 
     companion object {
         private val ACCESS_TOKEN = sharedPref.getString("ACCESS_TOKEN", "") ?: ""

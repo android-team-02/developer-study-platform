@@ -7,17 +7,20 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
-fun String.formatDate(): String {
+fun String.formatDate(
+    localDateTimePattern: String,
+    simpleDateFormatPattern: String
+): String {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val dateTime = LocalDateTime.parse(
             this,
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+            DateTimeFormatter.ofPattern(localDateTimePattern)
         )
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
         dateTime.format(formatter)
     } else {
-        val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault())
-        val newDateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat(simpleDateFormatPattern, Locale.getDefault())
+        val newDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         val date = dateFormat.parse(this) ?: Date()
         newDateFormat.format(date)
     }

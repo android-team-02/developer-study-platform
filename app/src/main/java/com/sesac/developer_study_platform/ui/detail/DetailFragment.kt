@@ -125,7 +125,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun setJoinStudyButton() {
-        val isExpire = getToday().formatDate().toInt() > study.endDate.replace("/", "").toInt()
+        val localDateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        val simpleDateFormatPattern = "EEE MMM dd HH:mm:ss z yyyy"
+        val isExpire =
+            getToday().formatDate(localDateTimePattern, simpleDateFormatPattern) > study.endDate
         val hasFullMember = study.members.count() == study.totalMemberCount
         val isBanUser = study.banUsers.containsKey(Firebase.auth.uid)
         binding.btnJoinStudy.isEnabled = !(isExpire || hasFullMember || isBanUser)

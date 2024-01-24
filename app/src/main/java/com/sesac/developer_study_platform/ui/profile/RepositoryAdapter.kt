@@ -1,15 +1,14 @@
 package com.sesac.developer_study_platform.ui.profile
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.data.Repository
 import com.sesac.developer_study_platform.databinding.ItemRepositoryBinding
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.sesac.developer_study_platform.util.formatDate
 
 class RepositoryAdapter :
     ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(diffUtil) {
@@ -25,17 +24,20 @@ class RepositoryAdapter :
     class RepositoryViewHolder(private val binding: ItemRepositoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+
         fun bind(repository: Repository) {
             binding.tvRepositoryName.text = repository.name
-            binding.tvRepositoryLanguage.text = repository.language ?: "Unknown"
-            binding.tvRepositoryStar.text = repository.stargazersCount.toString()
-            binding.tvRepositoryFork.text = repository.forksCount.toString()
-            binding.tvRepositoryIssue.text = repository.openIssuesCount.toString()
-
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date: Date = inputFormat.parse(repository.createdAt) ?: Date()
-            binding.tvRepositoryCreatedAt.text = outputFormat.format(date)
+            if (repository.language.isNullOrEmpty()) {
+                binding.ivRepositoryLanguage.visibility = View.GONE
+                binding.tvRepositoryLanguage.visibility = View.GONE
+            } else {
+                binding.tvRepositoryLanguage.text = repository.language
+            }
+            binding.tvRepositoryStar.text = repository.star.toString()
+            binding.tvRepositoryFork.text = repository.fork.toString()
+            binding.tvRepositoryIssue.text = repository.issue.toString()
+            binding.tvRepositoryCreatedAt.text = repository.createdAt?.formatDate(pattern, pattern)
         }
 
         companion object {
@@ -54,7 +56,7 @@ class RepositoryAdapter :
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Repository>() {
             override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean {
-                return oldItem.createdAt == newItem.createdAt
+                return oldItem.hashCode() == newItem.hashCode()
             }
 
             override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean {

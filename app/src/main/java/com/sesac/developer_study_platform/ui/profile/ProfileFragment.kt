@@ -10,9 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.source.remote.GithubService
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.util.setImage
 import kotlinx.coroutines.launch
 
@@ -20,8 +22,8 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val studyService = StudyService.create()
     private val repositoryAdapter = RepositoryAdapter()
+    private val uid = Firebase.auth.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,69 +37,49 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firebaseUid = Firebase.auth.uid
-        if (firebaseUid != null) {
-            binding.rvRepositoryList.adapter = repositoryAdapter
-            fetchUserProfileAndRepositories("kxg02ZurZAMTkgQOuNg8jN8WhiF3")
-            checkMembershipInStudy("@make@abcd@time@20240111144250", firebaseUid)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
-
-        binding.toolbar.setOnClickListener {
-            findNavController().navigateUp()
-        }
+        setRepositoryAdapter()
+        loadUser()
     }
 
-    private fun fetchUserProfileAndRepositories(uid: String) {
+    private fun setRepositoryAdapter() {
+        binding.rvRepositoryList.adapter = repositoryAdapter
+        binding.rvRepositoryList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
+    }
+
+    private fun loadUser() {
+        val studyService = StudyService.create()
         lifecycleScope.launch {
             runCatching {
-                studyService.getUserById(uid)
-            }.onSuccess { user ->
-                binding.tvProfileName.text = user.userId
-                binding.ivProfileImage.setImage(user.image)
-
-                val repositories = GithubService.create().listRepos(user.userId)
-                repositoryAdapter.submitList(repositories)
-
-                Log.d("Repositories", "Repositories successfully loaded")
-            }.onFailure { exception ->
-                Log.e(
-                    "fetchUserProfileAndRepositories",
-                    "Error loading repositories: ${exception.message}"
-                )
+                uid?.let {
+                    studyService.getUserById(uid)
+                }
+            }.onSuccess {
+                it?.let {
+                    binding.tvProfileName.text = it.userId
+                    binding.ivProfileImage.setImage(it.image)
+                    loadRepositoryList(it.userId)
+                }
+            }.onFailure {
+                Log.e("ProfileFragment-loadUser", it.message ?: "error occurred.")
             }
         }
     }
 
-
-    private fun checkMembershipInStudy(sid: String, firebaseUid: String) {
+    private fun loadRepositoryList(userId: String) {
+        val githubService = GithubService.create()
         lifecycleScope.launch {
             runCatching {
-                studyService.getStudy(sid)
-            }.onSuccess { studyDetail ->
-                val isLeader = studyDetail.members[firebaseUid] ?: false
-                Log.d("checkMembershipInStudy", "UID: $firebaseUid, isLeader: $isLeader")
-                updateUiForLeader(isLeader)
-            }.onFailure { exception ->
-                Log.e("checkMembershipInStudy", "Error checking membership in study", exception)
+                githubService.getRepositoryList(userId)
+            }.onSuccess {
+                repositoryAdapter.submitList(it)
+            }.onFailure {
+                Log.e("ProfileFragment-loadRepositoryList", it.message ?: "error occurred.")
             }
-        }
-    }
-
-    private fun updateUiForLeader(isLeader: Boolean) {
-        if (isLeader) {
-            binding.ivBan.visibility = View.VISIBLE
-            binding.tvBan.visibility = View.VISIBLE
-
-            binding.ivBan.setOnClickListener {
-                //다이얼로그
-            }
-
-            binding.tvBan.setOnClickListener {
-                //다이얼로그
-            }
-        } else {
-            binding.ivBan.visibility = View.GONE
-            binding.tvBan.visibility = View.GONE
         }
     }
 
