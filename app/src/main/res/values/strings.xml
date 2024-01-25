@@ -67,7 +67,6 @@
     <string name="profile_ban">내보내기</string>
     <string name="profile_repository">Repository</string>
     <string name="profile_icon_ban_description">내보내기 모양의 아이콘</string>
-    <string name="profile_icon_language_description">프로그래밍 언어 아이콘</string>
     <string name="profile_icon_fork_description">포크 모양의 아이콘</string>
     <string name="profile_icon_star_description">별 모양의 아이콘</string>
     <string name="profile_icon_issue_description">이슈 모양의 아이콘</string>

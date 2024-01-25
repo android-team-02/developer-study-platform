@@ -17,12 +17,13 @@ import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.util.setImage
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val repositoryAdapter = RepositoryAdapter()
+    private lateinit var repositoryAdapter: RepositoryAdapter
     private val uid = Firebase.auth.uid
 
     override fun onCreateView(
@@ -40,8 +41,22 @@ class ProfileFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+        decodeLanguageColorJson()
         setRepositoryAdapter()
         loadUser()
+    }
+
+    private fun decodeLanguageColorJson() {
+        kotlin.runCatching {
+            val assetManager = resources.assets
+            val inputStream = assetManager.open("github-language-colors.json")
+            val reader = inputStream.bufferedReader()
+            Json.decodeFromString<Map<String, String?>>(reader.readText())
+        }.onSuccess {
+            repositoryAdapter = RepositoryAdapter(it)
+        }.onFailure {
+            Log.e("ProfileFragment", it.message ?: "error occurred.")
+        }
     }
 
     private fun setRepositoryAdapter() {
