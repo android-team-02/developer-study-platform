@@ -102,16 +102,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_my_study" />
 
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="rv_study_list,view_study_form" />
+
             <TextView
                 android:id="@+id/tv_search_study_category"
                 style="@style/BlackText.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_small"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/all_search_study_category"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_study_list"
-                app:layout_goneMarginTop="152dp" />
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="0dp"
