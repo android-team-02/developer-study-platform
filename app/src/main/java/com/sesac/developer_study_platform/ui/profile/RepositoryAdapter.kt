@@ -22,29 +22,35 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
         holder.bind(currentList[position], languageList)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
-    }
-
     class RepositoryViewHolder(private val binding: ItemRepositoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private val pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
         fun bind(repository: Repository, languageList: Map<String, String?>) {
-            binding.tvRepositoryName.text = repository.name
-            if (repository.language.isNullOrEmpty()) {
-                binding.ivRepositoryLanguage.visibility = View.GONE
-                binding.tvRepositoryLanguage.visibility = View.GONE
-            } else {
-                val color = languageList.getValue(repository.language.toString())
-                binding.ivRepositoryLanguage.setBackgroundColor(Color.parseColor(color))
-                binding.tvRepositoryLanguage.text = repository.language
+            with(binding) {
+                tvRepositoryName.text = repository.name
+                setLanguage(repository, languageList)
+                tvRepositoryStar.text = repository.star.toString()
+                tvRepositoryFork.text = repository.fork.toString()
+                tvRepositoryIssue.text = repository.issue.toString()
+                tvRepositoryCreatedAt.text = repository.createdAt?.formatDate(pattern, pattern)
             }
-            binding.tvRepositoryStar.text = repository.star.toString()
-            binding.tvRepositoryFork.text = repository.fork.toString()
-            binding.tvRepositoryIssue.text = repository.issue.toString()
-            binding.tvRepositoryCreatedAt.text = repository.createdAt?.formatDate(pattern, pattern)
+        }
+
+        private fun setLanguage(repository: Repository, languageList: Map<String, String?>) {
+            with(binding) {
+                if (repository.language.isNullOrEmpty()) {
+                    ivRepositoryLanguage.visibility = View.GONE
+                    tvRepositoryLanguage.visibility = View.GONE
+                } else {
+                    val color = languageList.getValue(repository.language.toString())
+                    ivRepositoryLanguage.visibility = View.VISIBLE
+                    tvRepositoryLanguage.visibility = View.VISIBLE
+                    ivRepositoryLanguage.setBackgroundColor(Color.parseColor(color))
+                    tvRepositoryLanguage.text = repository.language
+                }
+            }
         }
 
         companion object {
