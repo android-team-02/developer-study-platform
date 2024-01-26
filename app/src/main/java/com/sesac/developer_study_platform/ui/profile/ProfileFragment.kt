@@ -41,12 +41,12 @@ class ProfileFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-        decodeLanguageColorJson()
+        parseJson()
         setRepositoryAdapter()
         loadUser()
     }
 
-    private fun decodeLanguageColorJson() {
+    private fun parseJson() {
         kotlin.runCatching {
             val assetManager = resources.assets
             val inputStream = assetManager.open("github-language-colors.json")
