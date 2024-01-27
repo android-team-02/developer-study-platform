@@ -17,6 +17,7 @@ import com.sesac.developer_study_platform.databinding.ItemImageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemImageSenderBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageSenderBinding
+import com.sesac.developer_study_platform.util.formatDate
 import com.sesac.developer_study_platform.util.formatTime
 
 class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(diffUtil) {
@@ -32,10 +33,37 @@ class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is MessageReceiverViewHolder -> holder.bind(getItem(position))
-            is MessageSenderViewHolder -> holder.bind(getItem(position))
-            is ImageReceiverViewHolder -> holder.bind(getItem(position))
-            is ImageSenderViewHolder -> holder.bind(getItem(position))
+            is MessageReceiverViewHolder -> {
+                if (position >= 1) {
+                    holder.bind(getItem(position), getItem(position - 1))
+                } else {
+                    holder.bind(getItem(position))
+                }
+            }
+
+            is MessageSenderViewHolder -> {
+                if (position >= 1) {
+                    holder.bind(getItem(position), getItem(position - 1))
+                } else {
+                    holder.bind(getItem(position))
+                }
+            }
+
+            is ImageReceiverViewHolder -> {
+                if (position >= 1) {
+                    holder.bind(getItem(position), getItem(position - 1))
+                } else {
+                    holder.bind(getItem(position))
+                }
+            }
+
+            is ImageSenderViewHolder -> {
+                if (position >= 1) {
+                    holder.bind(getItem(position), getItem(position - 1))
+                } else {
+                    holder.bind(getItem(position))
+                }
+            }
         }
     }
 
@@ -79,9 +107,20 @@ class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(diffUtil) {
 class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(message: Message) {
+    fun bind(message: Message, previousMessage: Message? = null) {
         val count = message.totalMemberCount - message.readUsers.count()
 
+        if (previousMessage != null) {
+            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = message.timestamp.formatDate()
+            } else {
+                binding.flowSystemMessage.visibility = View.GONE
+            }
+        } else {
+            binding.flowSystemMessage.visibility = View.VISIBLE
+            binding.tvSystemMessage.text = message.timestamp.formatDate()
+        }
         Glide.with(itemView)
             .load(message.studyUser?.image)
             .centerCrop()
@@ -114,9 +153,20 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
 class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(message: Message) {
+    fun bind(message: Message, previousMessage: Message? = null) {
         val count = message.totalMemberCount - message.readUsers.count()
 
+        if (previousMessage != null) {
+            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = message.timestamp.formatDate()
+            } else {
+                binding.flowSystemMessage.visibility = View.GONE
+            }
+        } else {
+            binding.flowSystemMessage.visibility = View.VISIBLE
+            binding.tvSystemMessage.text = message.timestamp.formatDate()
+        }
         binding.tvMessage.text = message.message
         binding.tvTimestamp.text = message.timestamp.formatTime()
         if (count > 0) {
@@ -146,10 +196,21 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) :
     private val imageAdapter = ImageAdapter()
     private val storageRef = Firebase.storage.reference
 
-    fun bind(message: Message) {
+    fun bind(message: Message, previousMessage: Message? = null) {
         val count = message.totalMemberCount - message.readUsers.count()
         val listRef = storageRef.child("${message.sid}/${message.uid}/${message.timestamp}")
 
+        if (previousMessage != null) {
+            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = message.timestamp.formatDate()
+            } else {
+                binding.flowSystemMessage.visibility = View.GONE
+            }
+        } else {
+            binding.flowSystemMessage.visibility = View.VISIBLE
+            binding.tvSystemMessage.text = message.timestamp.formatDate()
+        }
         Glide.with(itemView)
             .load(message.studyUser?.image)
             .centerCrop()
@@ -190,10 +251,21 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) :
     private val imageAdapter = ImageAdapter()
     private val storageRef = Firebase.storage.reference
 
-    fun bind(message: Message) {
+    fun bind(message: Message, previousMessage: Message? = null) {
         val count = message.totalMemberCount - message.readUsers.count()
         val listRef = storageRef.child("${message.sid}/${message.uid}/${message.timestamp}")
 
+        if (previousMessage != null) {
+            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = message.timestamp.formatDate()
+            } else {
+                binding.flowSystemMessage.visibility = View.GONE
+            }
+        } else {
+            binding.flowSystemMessage.visibility = View.VISIBLE
+            binding.tvSystemMessage.text = message.timestamp.formatDate()
+        }
         listRef.listAll().addOnSuccessListener {
             binding.rvImageList.adapter = imageAdapter
             imageAdapter.submitList(it.items)
