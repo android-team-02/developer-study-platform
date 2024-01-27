@@ -117,6 +117,13 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
             } else {
                 binding.flowSystemMessage.visibility = View.GONE
             }
+            if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
+            }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
             binding.tvSystemMessage.text = message.timestamp.formatDate()
@@ -163,6 +170,13 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) :
             } else {
                 binding.flowSystemMessage.visibility = View.GONE
             }
+            if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
+            }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
             binding.tvSystemMessage.text = message.timestamp.formatDate()
@@ -206,6 +220,13 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) :
                 binding.tvSystemMessage.text = message.timestamp.formatDate()
             } else {
                 binding.flowSystemMessage.visibility = View.GONE
+            }
+            if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
             }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
@@ -261,6 +282,13 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) :
                 binding.tvSystemMessage.text = message.timestamp.formatDate()
             } else {
                 binding.flowSystemMessage.visibility = View.GONE
+            }
+            if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                binding.flowSystemMessage.visibility = View.VISIBLE
+                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
             }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
