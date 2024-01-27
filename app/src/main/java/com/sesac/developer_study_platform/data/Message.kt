@@ -18,7 +18,7 @@ data class Message(
     val type: ViewType,
     val images: List<String>? = null,
 ) {
-    val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    var timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         LocalDateTime.now().toString()
     } else {
         Date().toString()

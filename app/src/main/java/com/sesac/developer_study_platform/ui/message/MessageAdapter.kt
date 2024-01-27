@@ -1,5 +1,6 @@
 package com.sesac.developer_study_platform.ui.message
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.Message
+import com.sesac.developer_study_platform.databinding.ItemImageReceiverBinding
+import com.sesac.developer_study_platform.databinding.ItemImageSenderBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageSenderBinding
 import com.sesac.developer_study_platform.util.formatTime
@@ -19,8 +23,10 @@ class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ViewType.RECEIVER.ordinal -> MessageReceiverViewHolder.from(parent)
-            else -> MessageSenderViewHolder.from(parent)
+            ViewType.MESSAGE_RECEIVER.ordinal -> MessageReceiverViewHolder.from(parent)
+            ViewType.MESSAGE_SENDER.ordinal -> MessageSenderViewHolder.from(parent)
+            ViewType.IMAGE_RECEIVER.ordinal -> ImageReceiverViewHolder.from(parent)
+            else -> ImageSenderViewHolder.from(parent)
         }
     }
 
@@ -28,17 +34,32 @@ class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(diffUtil) {
         when (holder) {
             is MessageReceiverViewHolder -> holder.bind(getItem(position))
             is MessageSenderViewHolder -> holder.bind(getItem(position))
+            is ImageReceiverViewHolder -> holder.bind(getItem(position))
+            is ImageSenderViewHolder -> holder.bind(getItem(position))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val messageUid = getItem(position).uid
         val uid = Firebase.auth.uid
+        val type = getItem(position).type
 
-        return if (messageUid == uid) {
-            ViewType.SENDER.ordinal
-        } else {
-            ViewType.RECEIVER.ordinal
+        return when (messageUid) {
+            uid -> {
+                if (type == ViewType.MESSAGE) {
+                    ViewType.MESSAGE_SENDER.ordinal
+                } else {
+                    ViewType.IMAGE_SENDER.ordinal
+                }
+            }
+
+            else -> {
+                if (type == ViewType.MESSAGE) {
+                    ViewType.MESSAGE_RECEIVER.ordinal
+                } else {
+                    ViewType.IMAGE_RECEIVER.ordinal
+                }
+            }
         }
     }
 
@@ -110,6 +131,88 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) :
         fun from(parent: ViewGroup): MessageSenderViewHolder {
             return MessageSenderViewHolder(
                 ItemMessageSenderBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        }
+    }
+}
+
+class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    private val imageAdapter = ImageAdapter()
+    private val storageRef = Firebase.storage.reference
+
+    fun bind(message: Message) {
+        val count = message.totalMemberCount - message.readUsers.count()
+        val listRef = storageRef.child("${message.sid}/${message.uid}/${message.timestamp}")
+
+        Glide.with(itemView)
+            .load(message.studyUser?.image)
+            .centerCrop()
+            .into(binding.ivUserImage)
+        binding.ivAdmin.isVisible = message.isAdmin
+        binding.tvUserId.text = message.studyUser?.userId
+        listRef.listAll().addOnSuccessListener {
+            binding.rvImageList.adapter = imageAdapter
+            imageAdapter.submitList(it.items)
+        }.addOnFailureListener {
+            Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
+        }
+        binding.tvTimestamp.text = message.timestamp.formatTime()
+        if (count > 0) {
+            binding.tvUnreadUserCount.visibility = View.VISIBLE
+            binding.tvUnreadUserCount.text = count.toString()
+        } else {
+            binding.tvUnreadUserCount.visibility = View.GONE
+        }
+    }
+
+    companion object {
+        fun from(parent: ViewGroup): ImageReceiverViewHolder {
+            return ImageReceiverViewHolder(
+                ItemImageReceiverBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        }
+    }
+}
+
+class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    private val imageAdapter = ImageAdapter()
+    private val storageRef = Firebase.storage.reference
+
+    fun bind(message: Message) {
+        val count = message.totalMemberCount - message.readUsers.count()
+        val listRef = storageRef.child("${message.sid}/${message.uid}/${message.timestamp}")
+
+        listRef.listAll().addOnSuccessListener {
+            binding.rvImageList.adapter = imageAdapter
+            imageAdapter.submitList(it.items)
+        }.addOnFailureListener {
+            Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
+        }
+        binding.tvTimestamp.text = message.timestamp.formatTime()
+        if (count > 0) {
+            binding.tvUnreadUserCount.visibility = View.VISIBLE
+            binding.tvUnreadUserCount.text = count.toString()
+        } else {
+            binding.tvUnreadUserCount.visibility = View.GONE
+        }
+    }
+
+    companion object {
+        fun from(parent: ViewGroup): ImageSenderViewHolder {
+            return ImageSenderViewHolder(
+                ItemImageSenderBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
