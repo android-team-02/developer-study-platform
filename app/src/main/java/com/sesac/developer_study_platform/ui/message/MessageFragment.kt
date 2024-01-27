@@ -1,6 +1,7 @@
 package com.sesac.developer_study_platform.ui.message
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.util.Date
 
 class MessageFragment : Fragment() {
 
@@ -29,7 +32,7 @@ class MessageFragment : Fragment() {
     private val uid = Firebase.auth.uid
     private val storageRef = Firebase.storage.reference
     private val pickMultipleMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(9)) { uriList ->
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) { uriList ->
             saveMultipleMedia(uriList)
         }
 
@@ -56,13 +59,52 @@ class MessageFragment : Fragment() {
     }
 
     private fun saveMultipleMedia(uriList: List<Uri>) {
+        val timestamp = getTimestamp()
         if (uriList.isNotEmpty()) {
             uriList.forEach { uri ->
-                val imagesRef = storageRef.child("$chatRoomId/image_${uri.lastPathSegment}.jpg")
+                val imagesRef =
+                    storageRef.child("${chatRoomId}/${uid}/${timestamp}/${uri.lastPathSegment}.jpg")
                 val uploadTask = imagesRef.putFile(uri)
                 uploadTask.addOnFailureListener {
-                    Log.e("MessageFragment-selectMultipleMedia", it.message ?: "error occurred.")
+                    Log.e("MessageFragment-saveMultipleMedia", it.message ?: "error occurred.")
                 }
+            }
+            sendImage(uriList, timestamp)
+        }
+    }
+
+    private fun getTimestamp(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().toString()
+        } else {
+            Date().toString()
+        }
+    }
+
+    private fun sendImage(uriList: List<Uri>, timestamp: String) {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            val message = Message(
+                uid,
+                chatRoomId,
+                getUser(),
+                isAdmin(),
+                binding.etMessageInput.text.toString(),
+                getStudyMemberCount(),
+                mapOf(uid to true),
+                ViewType.IMAGE,
+                uriList.map { it.toString() },
+            ).apply {
+                this.timestamp = timestamp
+            }
+            kotlin.runCatching {
+                service.addMessage(chatRoomId, message)
+            }.onSuccess {
+                loadMessageList()
+                getStudyMemberList()
+                updateLastMessage(message)
+            }.onFailure {
+                Log.e("MessageFragment-sendImage", it.message ?: "error occurred.")
             }
         }
     }
@@ -126,11 +168,13 @@ class MessageFragment : Fragment() {
         lifecycleScope.launch {
             val message = Message(
                 uid,
+                chatRoomId,
                 getUser(),
                 isAdmin(),
                 binding.etMessageInput.text.toString(),
                 getStudyMemberCount(),
-                mapOf(uid to true)
+                mapOf(uid to true),
+                ViewType.MESSAGE
             )
             kotlin.runCatching {
                 service.addMessage(chatRoomId, message)
@@ -239,5 +283,9 @@ class MessageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val MAX_ITEM_COUNT = 9
     }
 }
