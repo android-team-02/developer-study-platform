@@ -30,7 +30,7 @@ class MessageFragment : Fragment() {
     private val chatRoomId = "@make@abcd@time@20240111144250"
     private val messageAdapter = MessageAdapter()
     private val uid = Firebase.auth.uid
-    private val storageRef = Firebase.storage.reference
+    private val service = StudyService.create()
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) { uriList ->
             saveMultipleMedia(uriList)
@@ -62,8 +62,8 @@ class MessageFragment : Fragment() {
         val timestamp = getTimestamp()
         if (uriList.isNotEmpty()) {
             uriList.forEach { uri ->
-                val imagesRef =
-                    storageRef.child("${chatRoomId}/${uid}/${timestamp}/${uri.lastPathSegment}.jpg")
+                val imagesRef = Firebase.storage.reference
+                    .child("${chatRoomId}/${uid}/${timestamp}/${uri.lastPathSegment}.jpg")
                 val uploadTask = imagesRef.putFile(uri)
                 uploadTask.addOnFailureListener {
                     Log.e("MessageFragment-saveMultipleMedia", it.message ?: "error occurred.")
@@ -82,7 +82,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun sendImage(uriList: List<Uri>, timestamp: String) {
-        val service = StudyService.create()
         lifecycleScope.launch {
             val message = Message(
                 uid,
@@ -101,7 +100,7 @@ class MessageFragment : Fragment() {
                 service.addMessage(chatRoomId, message)
             }.onSuccess {
                 loadMessageList()
-                getStudyMemberList()
+                loadStudyMemberList()
                 updateLastMessage(message)
             }.onFailure {
                 Log.e("MessageFragment-sendImage", it.message ?: "error occurred.")
@@ -110,7 +109,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun loadMessageList() {
-        val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.getMessageList(chatRoomId)
@@ -127,7 +125,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun updateReadUserList(messageId: String) {
-        val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.updateReadUserList(chatRoomId, messageId, getReadUserList(messageId))
@@ -138,7 +135,6 @@ class MessageFragment : Fragment() {
     }
 
     private suspend fun getReadUserList(messageId: String): Map<String, Boolean> {
-        val service = StudyService.create()
         return lifecycleScope.async {
             kotlin.runCatching {
                 service.getReadUserList(chatRoomId, messageId)
@@ -153,7 +149,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun updateUnreadUserCount() {
-        val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.updateUnreadUserCount(chatRoomId, uid)
@@ -164,7 +159,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun sendMessage() {
-        val service = StudyService.create()
         lifecycleScope.launch {
             val message = Message(
                 uid,
@@ -180,7 +174,7 @@ class MessageFragment : Fragment() {
                 service.addMessage(chatRoomId, message)
             }.onSuccess {
                 loadMessageList()
-                getStudyMemberList()
+                loadStudyMemberList()
                 updateLastMessage(message)
                 binding.etMessageInput.text.clear()
             }.onFailure {
@@ -190,7 +184,6 @@ class MessageFragment : Fragment() {
     }
 
     private suspend fun getUser(): StudyUser? {
-        val service = StudyService.create()
         return lifecycleScope.async {
             kotlin.runCatching {
                 uid?.let { service.getUserById(it) }
@@ -201,7 +194,6 @@ class MessageFragment : Fragment() {
     }
 
     private suspend fun isAdmin(): Boolean {
-        val service = StudyService.create()
         return lifecycleScope.async {
             kotlin.runCatching {
                 service.isAdmin(chatRoomId, uid)
@@ -212,7 +204,6 @@ class MessageFragment : Fragment() {
     }
 
     private suspend fun getStudyMemberCount(): Int {
-        val service = StudyService.create()
         return lifecycleScope.async {
             kotlin.runCatching {
                 service.getStudyMemberList(chatRoomId)
@@ -224,15 +215,14 @@ class MessageFragment : Fragment() {
         }.await()
     }
 
-    private fun getStudyMemberList() {
-        val service = StudyService.create()
+    private fun loadStudyMemberList() {
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.getStudyMemberList(chatRoomId)
             }.onSuccess {
                 it.keys.forEach { member ->
-                    if (messageAdapter.currentList.isNotEmpty() && member != uid) {
-                        getUnreadUserList(member)
+                    if (member != uid) {
+                        loadUnreadUserList(member)
                     }
                 }
             }.onFailure {
@@ -241,8 +231,7 @@ class MessageFragment : Fragment() {
         }
     }
 
-    private fun getUnreadUserList(member: String) {
-        val service = StudyService.create()
+    private fun loadUnreadUserList(member: String) {
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.getUnreadUserList(chatRoomId)
@@ -255,7 +244,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun updateUnreadUserCount(member: String, unreadUserList: Map<String, Int>) {
-        val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.updateUnreadUserCount(
@@ -270,7 +258,6 @@ class MessageFragment : Fragment() {
     }
 
     private fun updateLastMessage(message: Message) {
-        val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.updateLastMessage(chatRoomId, message)
