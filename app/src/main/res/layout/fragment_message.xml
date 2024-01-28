@@ -12,12 +12,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_toolbar"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/app_name"
         app:titleCentered="true"
         app:titleTextAppearance="@style/HomeToolbar"
-        app:titleTextColor="@color/black" />
+        app:titleTextColor="@color/black">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/space_median"
+            android:contentDescription="@string/message_menu_description"
+            android:src="@drawable/ic_menu" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_message_list"

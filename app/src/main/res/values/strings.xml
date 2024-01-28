@@ -112,4 +112,5 @@
 
     <string name="chat_select_image">이미지 추가</string>
     <string name="chat_send_message_description">메시지 전송</string>
+    <string name="message_menu_description">채팅 메뉴</string>
 </resources>
