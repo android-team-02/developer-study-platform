@@ -48,6 +48,7 @@ class MessageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadStudyName()
         binding.rvMessageList.adapter = messageAdapter
         loadMessageList()
         binding.ivPlus.setOnClickListener {
@@ -55,6 +56,18 @@ class MessageFragment : Fragment() {
         }
         binding.ivSend.setOnClickListener {
             sendMessage()
+        }
+    }
+
+    private fun loadStudyName() {
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getDetail(chatRoomId)
+            }.onSuccess {
+                binding.toolbar.title = it.name
+            }.onFailure {
+                Log.e("MessageFragment-getStudyName", it.message ?: "error occurred.")
+            }
         }
     }
 
