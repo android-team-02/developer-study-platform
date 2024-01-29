@@ -27,7 +27,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setBottomNavigationView()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bnv.setupWithNavController(navController)
+
+        hideBottomNavigationView(navController)
     }
 
     private fun startSplash() {
@@ -41,13 +45,6 @@ class MainActivity : AppCompatActivity() {
                 start()
             }
         }
-    }
-
-    private fun setBottomNavigationView() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bnv.setupWithNavController(navController)
-        hideBottomNavigationView(navController)
     }
 
     private fun hideBottomNavigationView(navController: NavController) {

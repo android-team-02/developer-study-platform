@@ -13,19 +13,21 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
-import com.sesac.developer_study_platform.ui.SpaceItemDecoration
-import com.sesac.developer_study_platform.ui.UserStudyClickListener
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val studyAdapter = StudyAdapter(object : UserStudyClickListener {
-        override fun onClick(userStudy: UserStudy) {}
+    private val studyAdapter = StudyAdapter(object : StudyClickListener {
+        override fun onClick(sid: String) {
+            // TODO 채팅 화면으로 이동
+        }
     })
 
     override fun onCreateView(
@@ -40,11 +42,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewStudyForm.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_study_form)
+        }
+        setStudyAdapter()
         setDetailButton()
-        binding.rvStudyList.adapter = studyAdapter
-        binding.rvStudyList.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
-        )
         loadStudyList()
         with(binding) {
             setCategoryButton(tvAndroid)
@@ -54,6 +56,13 @@ class HomeFragment : Fragment() {
             setCategoryButton(tvAi)
             setCategoryButton(tvEtc)
         }
+    }
+
+    private fun setStudyAdapter() {
+        binding.rvStudyList.adapter = studyAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
     }
 
     private fun setDetailButton() {

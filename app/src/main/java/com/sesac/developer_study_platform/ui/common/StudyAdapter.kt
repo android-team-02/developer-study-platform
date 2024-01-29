@@ -1,17 +1,20 @@
-package com.sesac.developer_study_platform.ui.home
+package com.sesac.developer_study_platform.ui.common
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.sesac.developer_study_platform.R
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
-import com.sesac.developer_study_platform.ui.UserStudyClickListener
+import com.sesac.developer_study_platform.util.getAllDayList
+import com.sesac.developer_study_platform.util.getDayList
+import com.sesac.developer_study_platform.util.setImage
 
-class StudyAdapter(private val clickListener: UserStudyClickListener) :
+class StudyAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserStudy, StudyAdapter.StudyViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudyViewHolder {
@@ -25,17 +28,19 @@ class StudyAdapter(private val clickListener: UserStudyClickListener) :
     class StudyViewHolder(private val binding: ItemStudyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(study: UserStudy, clickListener: UserStudyClickListener) {
-            Glide.with(itemView)
-                .load(study.image)
-                .centerCrop()
-                .placeholder(R.drawable.ic_person)
-                .into(binding.ivStudyImage)
+        fun bind(study: UserStudy, clickListener: StudyClickListener) {
+            val storageRef = Firebase.storage.reference
+            val imageRef = storageRef.child("${study.sid}/${study.image}")
+            imageRef.downloadUrl.addOnSuccessListener {
+                binding.ivStudyImage.setImage(it.toString())
+            }.addOnFailureListener {
+                Log.e("StudyAdapter", it.message ?: "error occurred.")
+            }
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
-            binding.tvStudyDay.text = study.days.keys.joinToString(", ")
+            binding.tvStudyDay.text = study.days.keys.getDayList(itemView.getAllDayList())
             itemView.setOnClickListener {
-                clickListener.onClick(study)
+                clickListener.onClick(study.sid)
             }
         }
 

@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserChatRoom
 import com.sesac.developer_study_platform.databinding.ItemChatRoomBinding
-import com.sesac.developer_study_platform.ui.ChatRoomClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.util.setImage
 
-class ChatRoomAdapter(private val clickListener: ChatRoomClickListener) :
+class ChatRoomAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserChatRoom, ChatRoomAdapter.ChatRoomViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
@@ -25,12 +24,8 @@ class ChatRoomAdapter(private val clickListener: ChatRoomClickListener) :
     class ChatRoomViewHolder(private val binding: ItemChatRoomBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(userChatRoom: UserChatRoom, clickListener: ChatRoomClickListener) {
-            Glide.with(itemView)
-                .load(userChatRoom.image)
-                .centerCrop()
-                .placeholder(R.drawable.ic_person)
-                .into(binding.ivStudyImage)
+        fun bind(userChatRoom: UserChatRoom, clickListener: StudyClickListener) {
+            binding.ivStudyImage.setImage(userChatRoom.image)
             binding.tvStudyName.text = userChatRoom.name
             binding.tvLastMessage.text = userChatRoom.lastMessage
             binding.tvLastMessageTime.text = userChatRoom.lastMessageTime.toString()

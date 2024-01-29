@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -29,6 +28,7 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         checkAutoLogin()
     }
 
@@ -62,54 +62,52 @@ class LoginFragment : Fragment() {
 
         if (firebaseAuth.pendingAuthResult == null) {
             firebaseAuth.startActivityForSignInWithProvider(requireActivity(), provider.build())
-                .addOnSuccessListener { onGithubLoginSuccess(it) }
+                .addOnSuccessListener {
+                    val accessToken = "Bearer ${(it.credential as OAuthCredential).accessToken}"
+                    saveUserInfo(accessToken)
+                    loadUser()
+                }
                 .addOnFailureListener {
                     binding.root.showSnackbar(R.string.login_error)
-                    Log.e("LoginFragment", "Error: $it")
+                    Log.e("LoginFragment", it.message ?: "error occurred.")
                 }
         }
     }
 
-    private fun onGithubLoginSuccess(result: AuthResult) {
-        val uid = result.user?.uid.orEmpty()
-        val accessToken = "Bearer ${(result.credential as OAuthCredential).accessToken}"
-        saveUserInfo(uid, accessToken)
-        tryGetUser(uid)
-    }
-
-    private fun saveUserInfo(uid: String, accessToken: String) {
+    private fun saveUserInfo(accessToken: String) {
         with(sharedPref.edit()) {
-            putString(getString(R.string.all_uid_key), uid)
             putString(getString(R.string.all_access_token_key), accessToken)
             putBoolean(getString(R.string.login_auto_login_key), true)
             apply()
         }
     }
 
-    private fun tryGetUser(uid: String) {
+    private fun loadUser() {
         val githubService = GithubService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
                 githubService.getUser()
             }.onSuccess {
-                tryPutUser(uid, StudyUser(it.userId, it.image))
-                Log.d("LoginFragment-getUser", it.toString())
+                saveUser(StudyUser(it.userId, it.image))
             }.onFailure {
-                Log.e("LoginFragment-getUser", it.message ?: "error occurred.")
+                Log.e("LoginFragment-loadUser", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun tryPutUser(uid: String, user: StudyUser) {
+    private fun saveUser(user: StudyUser) {
         val studyService = StudyService.create()
+        val uid = Firebase.auth.uid
+
         lifecycleScope.launch {
             kotlin.runCatching {
-                studyService.putUser(uid, user)
+                if (uid != null) {
+                    studyService.putUser(uid, user)
+                }
             }.onSuccess {
                 findNavController().navigate(R.id.action_login_to_home)
-                Log.d("LoginFragment-putUser", "success")
             }.onFailure {
-                Log.e("LoginFragment-putUser", it.message ?: "error occurred.")
+                Log.e("LoginFragment-saveUser", it.message ?: "error occurred.")
             }
         }
     }

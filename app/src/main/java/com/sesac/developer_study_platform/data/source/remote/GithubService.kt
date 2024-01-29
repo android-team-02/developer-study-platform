@@ -9,33 +9,32 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 
 interface GithubService {
 
-    @Headers("Accept: application/vnd.github+json")
     @GET("user")
     suspend fun getUser(): User
 
-    @Headers("Accept: application/vnd.github+json")
-    @GET("users/{user}/repos")
-    suspend fun listRepos(@Path("user") user: String): List<Repository>
+    @GET("users/{userId}/repos")
+    suspend fun getRepositoryList(
+        @Path("userId") userId: String
+    ): List<Repository>
 
     companion object {
-
         private val ACCESS_TOKEN = sharedPref.getString("ACCESS_TOKEN", "") ?: ""
         private const val BASE_URL = "https://api.github.com/"
+        private val contentType = "application/json".toMediaType()
+        private val jsonConfig = Json { ignoreUnknownKeys = true }
 
         private val client = OkHttpClient.Builder().addInterceptor { chain ->
             val builder = chain.request().newBuilder()
+            builder.addHeader("Accept", "application/vnd.github+json")
             builder.addHeader("Authorization", ACCESS_TOKEN)
             chain.proceed(builder.build())
         }.build()
 
         fun create(): GithubService {
-            val jsonConfig = Json { ignoreUnknownKeys = true }
-            val contentType = "application/json".toMediaType()
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)

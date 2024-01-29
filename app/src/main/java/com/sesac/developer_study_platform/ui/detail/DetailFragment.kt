@@ -1,8 +1,5 @@
 package com.sesac.developer_study_platform.ui.detail
 
-import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,26 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.Day
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
-import com.sesac.developer_study_platform.databinding.DialogChatExitBinding
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
+import com.sesac.developer_study_platform.util.formatYearMonthDay
+import com.sesac.developer_study_platform.util.getAllDayList
+import com.sesac.developer_study_platform.util.getDayList
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
-    private val args: DetailFragmentArgs by navArgs()
-    private var currentStudy: Study? = null
-    private lateinit var bookmarkStudy: Study
+    private val args by navArgs<DetailFragmentArgs>()
+    private lateinit var study: Study
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,152 +43,91 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val studySid = args.studyId
-        fetchStudyDetails(studySid)
-
-        binding.toolbar.setOnClickListener {
-            findNavController().navigateUp()
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
-
-        binding.btnJoinStudy.setOnClickListener {
-            showWarningDialog()
-        }
-
+        loadStudy()
         loadBookmarkButtonState()
         setBookmarkButton()
     }
 
-    private fun fetchStudyDetails(studyId: String) {
+    private fun loadStudy() {
         val service = StudyService.create()
         lifecycleScope.launch {
-            runCatching {
-                service.getDetail("@make@abcd@time@20240111144250")
-            }.onSuccess { studies ->
-                bookmarkStudy = studies
-                displayStudyDetails(studies)
-            }.onFailure { exception ->
-                Log.e("DetailFragment2", "Failed to load study details: ${exception.message}")
+            kotlin.runCatching {
+                service.getStudy(args.studyId)
+            }.onSuccess {
+                study = it
+                setStudy()
+                setJoinStudyButton()
+            }.onFailure {
+                Log.e("DetailFragment-loadStudy", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun displayStudyDetails(study: Study) {
+    private suspend fun setStudy() {
         binding.tvStudyName.text = study.name
         binding.tvStudyContent.text = study.content
         binding.tvCategoryValue.text = study.category
         binding.tvLanguageValue.text = study.language
-        val currentMemberCount = study.members.keys.size
-        binding.tvPeopleValue.text =
-            getString(R.string.all_study_people_format, currentMemberCount, study.totalMemberCount)
-        val studyTime = study.days.entries.joinToString("\n") { (day, time) ->
-            val parts = time.split("@")
-            if (parts.size == 2) {
-                val dayOfWeek = when (day) {
-                    "월" -> "월요일"
-                    "화" -> "화요일"
-                    "수" -> "수요일"
-                    "목" -> "목요일"
-                    "금" -> "금요일"
-                    "토" -> "토요일"
-                    "일" -> "일요일"
-                    else -> day
-                }
-                val startTime = formatTime(parts[0])
-                val endTime = formatTime(parts[1])
-                "$dayOfWeek $startTime ~ $endTime"
-            } else {
-                "$day $time"
-            }
-        }
-
-        binding.tvTimeValue.text = getString(R.string.detail_study_time_format, studyTime)
+        binding.tvPeopleValue.text = getString(
+            R.string.all_study_people_format,
+            study.members.count(),
+            study.totalMemberCount
+        )
+        binding.tvTimeValue.text = getDayTimeList()
         binding.tvPeriodValue.text =
             getString(R.string.detail_study_period_format, study.startDate, study.endDate)
-
-        fetchStudyParticipants(study.members.keys)
+        binding.tvMemberValue.text = getStudyMemberList(study.members.keys).joinToString("\n")
     }
 
-    private fun fetchStudyParticipants(uids: Set<String>) {
-        val service = StudyService.create()
-        val participantNames = mutableListOf<String>()
-
-        uids.forEach { uid ->
-            lifecycleScope.launch {
-                runCatching {
-                    service.getUserById(uid)
-                }.onSuccess { user ->
-                    participantNames.add(user.userId)
-                    if (participantNames.size == uids.size) {
-                        updateParticipantsUI(participantNames)
-                    }
-                    joinStudy()
-                }.onFailure { exception ->
-                    Log.e("DetailFragment", "Failed to load user details: ${exception.message}")
+    private fun getDayTimeList(): String {
+        val dayTimeList = mutableMapOf<Int, String>()
+        study.days.entries.forEach {
+            Day.entries.forEach { day ->
+                if (getString(day.resId) == it.key) {
+                    dayTimeList[day.ordinal] = formatDayTime(it.key, it.value)
                 }
             }
         }
+        return dayTimeList.toSortedMap().values.joinToString("\n")
     }
 
-    private fun updateParticipantsUI(participantNames: List<String>) {
-        val participantsText = participantNames.joinToString("\n")
-        binding.tvParticipantValue.text = participantsText
+    private fun formatDayTime(day: String, time: String): String {
+        val startTime = time.split("@").first()
+        val endTime = time.split("@").last()
+        return getString(R.string.detail_study_day_time_format, day, startTime, endTime)
     }
 
-    private fun joinStudy() {
-        currentStudy?.let { study ->
-            binding.btnJoinStudy.isEnabled =
-                !(isDeadline(study) || isMemberLimit(study) || isUserBanned(study))
-        }
+    private suspend fun getStudyMemberList(uidList: Set<String>): List<String> {
+        val service = StudyService.create()
+        return lifecycleScope.async {
+            val memberList = mutableListOf<String>()
+            uidList.forEach {
+                kotlin.runCatching {
+                    service.getUserById(it)
+                }.onSuccess {
+                    memberList.add(it.userId)
+                }.onFailure {
+                    Log.e("DetailFragment-getStudyMemberList", it.message ?: "error occurred.")
+                }
+            }
+            memberList
+        }.await()
     }
 
-    private fun showWarningDialog() {
-        val dialogBinding = DialogChatExitBinding.inflate(layoutInflater)
-        val dialogBuilder = AlertDialog.Builder(context)
-            .setView(dialogBinding.root)
-
-        val dialog = dialogBuilder.show()
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialogLogic(dialogBinding, dialog)
-    }
-
-    private fun isDeadline(study: Study): Boolean {
-        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        val today = Calendar.getInstance()
-        val currentDate = dateFormat.format(today.time).replace("/", "")
-        val formattedEndDate = study.endDate.replace("/", "")
-        return currentDate > formattedEndDate
-    }
-
-    private fun isMemberLimit(study: Study): Boolean {
-        return study.members.keys.size >= study.totalMemberCount
-    }
-
-    private fun isUserBanned(study: Study): Boolean {
-        val currentUser = FirebaseAuth.getInstance().currentUser?.uid
-        return currentUser in study.banUsers.keys
-    }
-
-    private fun dialogLogic(binding: DialogChatExitBinding, dialog: AlertDialog) {
-        binding.btnYes.setOnClickListener {
-            //participateInStudy()
-            dialog.dismiss()
-        }
-
-        binding.btnNo.setOnClickListener {
-            dialog.dismiss()
-        }
-    }
-
-    private fun formatTime(time: String): String {
-        val hour = time.substring(0, 2)
-        val minute = time.substring(2)
-        return "$hour:$minute"
+    private fun setJoinStudyButton() {
+        val isExpire = formatYearMonthDay() > study.endDate
+        val hasFullMember = study.members.count() == study.totalMemberCount
+        val isBanUser = study.banUsers.containsKey(Firebase.auth.uid)
+        binding.btnJoinStudy.isEnabled = !(isExpire || hasFullMember || isBanUser)
     }
 
     private fun loadBookmarkButtonState() {
         lifecycleScope.launch {
             binding.ivBookmark.isSelected =
-                bookmarkDao.getBookmarkStudyBySid("@make@abcd@time@20240111144250").isNotEmpty()
+                bookmarkDao.getBookmarkStudyBySid(args.studyId).isNotEmpty()
         }
     }
 
@@ -201,20 +138,20 @@ class DetailFragment : Fragment() {
                 deleteBookmarkStudyBySid()
             } else {
                 binding.ivBookmark.isSelected = true
-                insertBookmarkStudy()
+                insertBookmarkStudy(it)
             }
         }
     }
 
-    private fun insertBookmarkStudy() {
+    private fun insertBookmarkStudy(view: View) {
         lifecycleScope.launch {
             bookmarkDao.insertBookmarkStudy(
                 BookmarkStudy(
-                    bookmarkStudy.sid,
-                    bookmarkStudy.name,
-                    bookmarkStudy.image,
-                    bookmarkStudy.language,
-                    bookmarkStudy.days.keys.joinToString(", ")
+                    study.sid,
+                    study.name,
+                    study.image,
+                    study.language,
+                    study.days.keys.getDayList(view.getAllDayList())
                 )
             )
         }
@@ -222,7 +159,7 @@ class DetailFragment : Fragment() {
 
     private fun deleteBookmarkStudyBySid() {
         lifecycleScope.launch {
-            bookmarkDao.deleteBookmarkStudyBySid("@make@abcd@time@20240111144250")
+            bookmarkDao.deleteBookmarkStudyBySid(args.studyId)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.ui
+package com.sesac.developer_study_platform.ui.common
 
 import android.graphics.Rect
 import android.view.View
