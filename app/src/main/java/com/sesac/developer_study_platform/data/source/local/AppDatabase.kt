@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.data.local
+package com.sesac.developer_study_platform.data.source.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

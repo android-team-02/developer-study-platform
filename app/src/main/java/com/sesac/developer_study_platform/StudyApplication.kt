@@ -3,8 +3,8 @@ package com.sesac.developer_study_platform
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.sesac.developer_study_platform.data.local.AppDatabase
-import com.sesac.developer_study_platform.data.local.BookmarkDao
+import com.sesac.developer_study_platform.data.source.local.AppDatabase
+import com.sesac.developer_study_platform.data.source.local.BookmarkDao
 
 class StudyApplication : Application() {
 
