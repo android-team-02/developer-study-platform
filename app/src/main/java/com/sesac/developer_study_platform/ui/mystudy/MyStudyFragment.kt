@@ -24,7 +24,7 @@ class MyStudyFragment : Fragment() {
     private val binding get() = _binding!!
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            val action = MyStudyFragmentDirections.actionMyStudyToDetail(sid)
+            val action = MyStudyFragmentDirections.actionGlobalToDetail(sid)
             findNavController().navigate(action)
         }
     })
@@ -41,6 +41,9 @@ class MyStudyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
         setStudyAdapter()
         loadStudyList()
     }

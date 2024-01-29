@@ -54,7 +54,7 @@ class DetailFragment : Fragment() {
     private fun loadStudy() {
         val service = StudyService.create()
         lifecycleScope.launch {
-            runCatching {
+            kotlin.runCatching {
                 service.getStudy(args.studyId)
             }.onSuccess {
                 study = it
@@ -105,7 +105,7 @@ class DetailFragment : Fragment() {
         return lifecycleScope.async {
             val memberList = mutableListOf<String>()
             uidList.forEach {
-                runCatching {
+                kotlin.runCatching {
                     service.getUserById(it)
                 }.onSuccess {
                     memberList.add(it.userId)

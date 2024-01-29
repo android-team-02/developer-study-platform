@@ -29,7 +29,9 @@ class SearchCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setViewPager()
-        binding.tl.getTabAt(args.position)?.select()
+        binding.tl.post {
+            binding.tl.getTabAt(args.position)?.select()
+        }
     }
 
     private fun setViewPager() {

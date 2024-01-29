@@ -42,6 +42,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewStudyForm.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_study_form)
+        }
         setStudyAdapter()
         setDetailButton()
         loadStudyList()
