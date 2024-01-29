@@ -23,7 +23,6 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/space_median"
@@ -84,7 +83,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_profile_name"
                 app:mcv_dateTextAppearance="@color/black"
                 app:mcv_selectionColor="@color/alto"
-                app:mcv_showOtherDates="all" />
+                app:mcv_showOtherDates="other_months" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group_my_study"
@@ -112,7 +111,10 @@
                 android:layout_marginStart="@dimen/space_median"
                 android:layout_marginTop="@dimen/space_median"
                 android:layout_marginEnd="@dimen/space_median"
+                android:layout_marginBottom="@dimen/space_median"
                 android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_study"
