@@ -1,8 +1,6 @@
 package com.sesac.developer_study_platform.ui.searchresult
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +15,7 @@ import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.ui.studyform.CustomTextWatcher
 import com.sesac.developer_study_platform.util.sortStudyList
 import kotlinx.coroutines.launch
 
@@ -70,19 +69,15 @@ class SearchResultFragment : Fragment() {
     }
 
     private fun searchStudy() {
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
+        binding.etSearch.addTextChangedListener(
+            CustomTextWatcher {
+                if (it.isEmpty()) {
                     searchAdapter.submitList(emptyList())
                 } else {
-                    loadSearchStudyList(s.toString())
+                    loadSearchStudyList(it)
                 }
             }
-        })
+        )
     }
 
     private fun loadSearchStudyList(searchKeyword: String) {

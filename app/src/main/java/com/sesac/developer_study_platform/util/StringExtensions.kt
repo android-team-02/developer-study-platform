@@ -4,24 +4,54 @@ import android.os.Build
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
+import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 import java.util.Date
 import java.util.Locale
 
-fun String.formatDate(
-    localDateTimePattern: String,
-    simpleDateFormatPattern: String
-): String {
+fun String.formatDate(): String {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val dateTime = LocalDateTime.parse(
             this,
-            DateTimeFormatter.ofPattern(localDateTimePattern)
+            DateTimeFormatter.ofPattern(DateFormats.LOCAL_DATE_TIME_FORMAT.pattern)
         )
-        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        dateTime.format(ISO_LOCAL_DATE)
+    } else {
+        val dateFormat =
+            SimpleDateFormat(DateFormats.LOCAL_DATE_TIME_FORMAT.pattern, Locale.getDefault())
+        val newDateFormat =
+            SimpleDateFormat(DateFormats.LOCAL_DATE_FORMAT.pattern, Locale.getDefault())
+        val date = dateFormat.parse(this) ?: Date()
+        newDateFormat.format(date)
+    }
+}
+
+fun formatYearMonthDay(): String {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val dateTime = LocalDateTime.parse(LocalDateTime.now().toString(), ISO_LOCAL_DATE_TIME)
+        val formatter = DateTimeFormatter.ofPattern(DateFormats.YEAR_MONTH_DAY_FORMAT.pattern)
         dateTime.format(formatter)
     } else {
-        val dateFormat = SimpleDateFormat(simpleDateFormatPattern, Locale.getDefault())
-        val newDateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        val date = dateFormat.parse(this) ?: Date()
+        val dateFormat =
+            SimpleDateFormat(DateFormats.SIMPLE_DATE_TIME_FORMAT.pattern, Locale.getDefault())
+        val newDateFormat =
+            SimpleDateFormat(DateFormats.YEAR_MONTH_DAY_FORMAT.pattern, Locale.getDefault())
+        val date = dateFormat.parse(Date().toString()) ?: Date()
+        newDateFormat.format(date)
+    }
+}
+
+fun formatTimestamp(): String {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val dateTime = LocalDateTime.parse(LocalDateTime.now().toString(), ISO_LOCAL_DATE_TIME)
+        val formatter = DateTimeFormatter.ofPattern(DateFormats.TIMESTAMP_FORMAT.pattern)
+        dateTime.format(formatter)
+    } else {
+        val dateFormat =
+            SimpleDateFormat(DateFormats.SIMPLE_DATE_TIME_FORMAT.pattern, Locale.getDefault())
+        val newDateFormat =
+            SimpleDateFormat(DateFormats.TIMESTAMP_FORMAT.pattern, Locale.getDefault())
+        val date = dateFormat.parse(Date().toString()) ?: Date()
         newDateFormat.format(date)
     }
 }

@@ -1,6 +1,5 @@
 package com.sesac.developer_study_platform.ui.detail
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,13 +18,11 @@ import com.sesac.developer_study_platform.data.BookmarkStudy
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
-import com.sesac.developer_study_platform.util.formatDate
+import com.sesac.developer_study_platform.util.formatYearMonthDay
 import com.sesac.developer_study_platform.util.getAllDayList
 import com.sesac.developer_study_platform.util.getDayList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.util.Date
 
 class DetailFragment : Fragment() {
 
@@ -98,13 +95,9 @@ class DetailFragment : Fragment() {
     }
 
     private fun formatDayTime(day: String, time: String): String {
-        val startTime = formatTime(time.split("@").first())
-        val endTime = formatTime(time.split("@").last())
+        val startTime = time.split("@").first()
+        val endTime = time.split("@").last()
         return getString(R.string.detail_study_day_time_format, day, startTime, endTime)
-    }
-
-    private fun formatTime(time: String): String {
-        return getString(R.string.detail_study_time_format, time.take(2), time.takeLast(2))
     }
 
     private suspend fun getStudyMemberList(uidList: Set<String>): List<String> {
@@ -125,21 +118,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun setJoinStudyButton() {
-        val localDateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-        val simpleDateFormatPattern = "EEE MMM dd HH:mm:ss z yyyy"
-        val isExpire =
-            getToday().formatDate(localDateTimePattern, simpleDateFormatPattern) > study.endDate
+        val isExpire = formatYearMonthDay() > study.endDate
         val hasFullMember = study.members.count() == study.totalMemberCount
         val isBanUser = study.banUsers.containsKey(Firebase.auth.uid)
         binding.btnJoinStudy.isEnabled = !(isExpire || hasFullMember || isBanUser)
-    }
-
-    private fun getToday(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().toString()
-        } else {
-            Date().toString()
-        }
     }
 
     private fun loadBookmarkButtonState() {

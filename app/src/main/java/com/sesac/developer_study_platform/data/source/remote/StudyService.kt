@@ -30,7 +30,7 @@ interface StudyService {
     )
 
     @PUT("userStudyRooms/{uid}/{sid}.json")
-    suspend fun putUserStudyRoom(
+    suspend fun putUserStudy(
         @Path("uid") uid: String,
         @Path("sid") sid: String,
         @Body userStudy: UserStudy

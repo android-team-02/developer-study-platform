@@ -4,5 +4,5 @@ import com.sesac.developer_study_platform.data.DayTime
 
 interface DayTimeClickListener {
 
-    fun onClick(dayTime: DayTime, isStartTime: Boolean)
+    fun onClick(isStartTime: Boolean, dayTime: DayTime)
 }

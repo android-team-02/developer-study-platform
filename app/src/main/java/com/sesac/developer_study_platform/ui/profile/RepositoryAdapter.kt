@@ -25,8 +25,6 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
     class RepositoryViewHolder(private val binding: ItemRepositoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-
         fun bind(repository: Repository, languageList: Map<String, String?>) {
             with(binding) {
                 tvRepositoryName.text = repository.name
@@ -34,7 +32,7 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
                 tvRepositoryStar.text = repository.star.toString()
                 tvRepositoryFork.text = repository.fork.toString()
                 tvRepositoryIssue.text = repository.issue.toString()
-                tvRepositoryCreatedAt.text = repository.createdAt?.formatDate(pattern, pattern)
+                tvRepositoryCreatedAt.text = repository.createdAt?.formatDate()
             }
         }
 

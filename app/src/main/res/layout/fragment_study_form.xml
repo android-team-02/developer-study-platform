@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_study_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,7 +29,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_image_input"
+                android:id="@+id/iv_image"
                 android:layout_width="0dp"
                 android:layout_height="140dp"
                 android:layout_marginStart="@dimen/space_median"
@@ -50,9 +49,9 @@
                 android:layout_marginTop="45dp"
                 android:contentDescription="@string/study_form_image_description"
                 android:src="@drawable/ic_plus_home"
-                app:layout_constraintEnd_toEndOf="@id/iv_image_input"
-                app:layout_constraintStart_toStartOf="@id/iv_image_input"
-                app:layout_constraintTop_toTopOf="@id/iv_image_input" />
+                app:layout_constraintEnd_toEndOf="@id/iv_image"
+                app:layout_constraintStart_toStartOf="@id/iv_image"
+                app:layout_constraintTop_toTopOf="@id/iv_image" />
 
             <TextView
                 android:id="@+id/tv_add_image"
@@ -62,8 +61,8 @@
                 android:layout_marginTop="@dimen/space_x_small"
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/study_form_add_image"
-                app:layout_constraintEnd_toEndOf="@id/iv_image_input"
-                app:layout_constraintStart_toStartOf="@id/iv_image_input"
+                app:layout_constraintEnd_toEndOf="@id/iv_image"
+                app:layout_constraintStart_toStartOf="@id/iv_image"
                 app:layout_constraintTop_toBottomOf="@id/iv_plus" />
 
             <androidx.constraintlayout.widget.Group
@@ -85,7 +84,7 @@
                 app:flow_wrapMode="aligned"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_image_input" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_image" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_android"
@@ -215,7 +214,7 @@
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
                 android:hint="@string/study_form_language_hint"
-                app:boxBackgroundColor="@color/lilac"
+                android:textColorHint="@color/manatee"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_study_language">
@@ -228,6 +227,7 @@
                     android:background="@color/lilac"
                     android:fontFamily="@font/pretendard_medium"
                     android:inputType="none"
+                    android:textColor="@color/black"
                     app:dropDownBackgroundTint="@color/lilac"
                     app:simpleItems="@array/study_form_language" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -402,6 +402,7 @@
                 android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
                 android:hint="@string/study_form_people_hint"
+                android:textColorHint="@color/manatee"
                 app:boxBackgroundColor="@color/gallery"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -415,6 +416,7 @@
                     android:background="@color/lilac"
                     android:fontFamily="@font/pretendard_medium"
                     android:inputType="none"
+                    android:textColor="@color/black"
                     app:dropDownBackgroundTint="@color/lilac"
                     app:simpleItems="@array/study_form_people" />
             </com.google.android.material.textfield.TextInputLayout>

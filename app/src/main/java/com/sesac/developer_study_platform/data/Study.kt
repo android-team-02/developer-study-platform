@@ -27,6 +27,8 @@ data class UserStudy(
     val image: String,
     val language: String,
     val days: Map<String, String>,
+    val startDate: String,
+    val endDate: String,
 )
 
 @Entity(tableName = "bookmark_studies")
