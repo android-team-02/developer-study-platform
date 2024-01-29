@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_profile_name" />
 
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-                android:id="@+id/mcv_day_calender"
+                android:id="@+id/mcv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="tv_my_study,rv_my_list" />
+                app:constraint_referenced_ids="tv_my_study,rv_my_study_list" />
 
             <TextView
                 android:id="@+id/tv_my_study"
@@ -102,10 +102,10 @@
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/my_page_my_study"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mcv_day_calender" />
+                app:layout_constraintTop_toBottomOf="@+id/mcv" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_my_list"
+                android:id="@+id/rv_my_study_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
