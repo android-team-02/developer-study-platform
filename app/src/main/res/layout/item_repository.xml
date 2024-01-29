@@ -51,7 +51,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
-        tools:background="@color/perfume" />
+        tools:background="@color/manatee" />
 
     <TextView
         android:id="@+id/tv_repository_language"

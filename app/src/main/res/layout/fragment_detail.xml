@@ -54,8 +54,8 @@
             <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_x_large"
-                app:constraint_referenced_ids="tv_category_label,tv_category_value,tv_language_label,tv_language_value,tv_people_label,tv_people_value,tv_time_label,tv_time_value,tv_period_label,tv_period_value,tv_participant_label,tv_participant_value"
+                android:layout_marginTop="50dp"
+                app:constraint_referenced_ids="tv_category_label,tv_category_value,tv_language_label,tv_language_value,tv_people_label,tv_people_value,tv_time_label,tv_time_value,tv_period_label,tv_period_value,tv_member_label,tv_member_value"
                 app:flow_horizontalStyle="packed"
                 app:flow_maxElementsWrap="2"
                 app:flow_verticalGap="@dimen/space_x_large"
@@ -67,7 +67,7 @@
             <TextView
                 android:id="@+id/tv_category_label"
                 style="@style/RiverBedText.Small"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/detail_category" />
@@ -83,7 +83,7 @@
             <TextView
                 android:id="@+id/tv_language_label"
                 style="@style/RiverBedText.Small"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/detail_language" />
@@ -99,7 +99,7 @@
             <TextView
                 android:id="@+id/tv_people_label"
                 style="@style/RiverBedText.Small"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/detail_people" />
@@ -115,8 +115,8 @@
             <TextView
                 android:id="@+id/tv_time_label"
                 style="@style/RiverBedText.Small"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/detail_time" />
 
@@ -131,7 +131,7 @@
             <TextView
                 android:id="@+id/tv_period_label"
                 style="@style/RiverBedText.Small"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="@string/detail_period" />
@@ -145,15 +145,15 @@
                 tools:text="2023/10/28 ~ 2023/11/28" />
 
             <TextView
-                android:id="@+id/tv_participant_label"
+                android:id="@+id/tv_member_label"
                 style="@style/RiverBedText.Small"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="@string/detail_participant" />
+                android:text="@string/detail_member" />
 
             <TextView
-                android:id="@+id/tv_participant_value"
+                android:id="@+id/tv_member_value"
                 style="@style/RiverBedText.Small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
         android:layout_marginBottom="@dimen/space_median"
         android:background="@drawable/selector_join_study"
         android:fontFamily="@font/pretendard_medium"
-        android:text="@string/join_study"
+        android:text="@string/detail_join_study"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
         app:layout_constraintStart_toStartOf="parent" />

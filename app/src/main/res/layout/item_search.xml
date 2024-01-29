@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_small"
-        android:contentDescription="@string/search_move_study_detail_description"
+        android:contentDescription="@string/search_result_move_study_detail_description"
         android:src="@drawable/ic_arrow_forward"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

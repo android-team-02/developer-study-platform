@@ -18,7 +18,6 @@
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
-
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/dest_home"
@@ -34,17 +33,16 @@
         <action
             android:id="@+id/action_home_to_my_study"
             app:destination="@id/dest_my_study" />
+        <action
+            android:id="@+id/action_home_to_study_form"
+            app:destination="@id/dest_study_form" />
     </fragment>
 
     <fragment
         android:id="@+id/dest_my_study"
         android:name="com.sesac.developer_study_platform.ui.mystudy.MyStudyFragment"
         android:label="fragment_my_study"
-        tools:layout="@layout/fragment_my_study">
-        <action
-            android:id="@+id/action_my_study_to_detail"
-            app:destination="@id/dest_detail" />
-    </fragment>
+        tools:layout="@layout/fragment_my_study" />
 
     <fragment
         android:id="@+id/dest_detail"
@@ -54,9 +52,6 @@
         <argument
             android:name="studyId"
             app:argType="string" />
-        <action
-            android:id="@+id/action_dest_detail_to_profileFragment"
-            app:destination="@id/dest_profile" />
     </fragment>
 
     <fragment
@@ -94,7 +89,7 @@
     <fragment
         android:id="@+id/dest_profile"
         android:name="com.sesac.developer_study_platform.ui.profile.ProfileFragment"
-        android:label="ProfileFragment"
+        android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
@@ -108,4 +103,16 @@
         android:name="com.sesac.developer_study_platform.ui.mypage.MyPageFragment"
         android:label="fragment_my_page"
         tools:layout="@layout/fragment_my_page" />
+
+    <fragment
+        android:id="@+id/dest_bookmark"
+        android:name="com.sesac.developer_study_platform.ui.bookmark.BookmarkFragment"
+        android:label="fragment_bookmark"
+        tools:layout="@layout/fragment_bookmark" />
+
+    <fragment
+        android:id="@+id/dest_category"
+        android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
 </navigation>

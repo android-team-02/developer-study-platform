@@ -30,7 +30,7 @@ interface StudyService {
     )
 
     @PUT("userStudyRooms/{uid}/{sid}.json")
-    suspend fun putUserStudyRoom(
+    suspend fun putUserStudy(
         @Path("uid") uid: String,
         @Path("sid") sid: String,
         @Body userStudy: UserStudy
@@ -55,8 +55,8 @@ interface StudyService {
     ): Map<String, Study>
 
     @GET("studies/{sid}.json")
-    suspend fun getDetail(
-        @Path("sid") sid: String,
+    suspend fun getStudy(
+        @Path("sid") sid: String
     ): Study
 
     @GET("users/{uid}.json")

@@ -26,7 +26,7 @@
         android:drawableStart="@drawable/ic_github"
         android:fontFamily="@font/pretendard_bold"
         android:paddingHorizontal="@dimen/space_median"
-        android:text="@string/login_with_github"
+        android:text="@string/login_github"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

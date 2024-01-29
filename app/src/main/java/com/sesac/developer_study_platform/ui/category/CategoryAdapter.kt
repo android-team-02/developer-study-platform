@@ -1,15 +1,18 @@
 package com.sesac.developer_study_platform.ui.category
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.databinding.ItemStudyCategoryBinding
-import com.sesac.developer_study_platform.ui.StudyClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
+import com.sesac.developer_study_platform.util.setImage
 
 class CategoryAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<Study, CategoryAdapter.CategoryViewHolder>(diffUtil) {
@@ -26,20 +29,22 @@ class CategoryAdapter(private val clickListener: StudyClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(study: Study, clickListener: StudyClickListener) {
-            Glide.with(itemView)
-                .load(study.image)
-                .centerCrop()
-                .placeholder(R.drawable.ic_person)
-                .into(binding.ivStudyImage)
+            val storageRef = Firebase.storage.reference
+            val imageRef = storageRef.child("${study.sid}/${study.image}")
+            imageRef.downloadUrl.addOnSuccessListener {
+                binding.ivStudyImage.setImage(it.toString())
+            }.addOnFailureListener {
+                Log.e("CategoryAdapter", it.message ?: "error occurred.")
+            }
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyPeople.text = itemView.context.getString(
-                R.string.all_study_people,
+                R.string.all_study_people_format,
                 study.members.count(),
                 study.totalMemberCount
             )
             itemView.setOnClickListener {
-                clickListener.onClick(study)
+                clickListener.onClick(study.sid)
             }
         }
 

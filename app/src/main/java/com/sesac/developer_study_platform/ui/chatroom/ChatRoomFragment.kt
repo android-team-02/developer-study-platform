@@ -13,16 +13,16 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentChatRoomBinding
-import com.sesac.developer_study_platform.ui.ChatRoomClickListener
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
 class ChatRoomFragment : Fragment() {
 
     private var _binding: FragmentChatRoomBinding? = null
     private val binding get() = _binding!!
-    private val chatRoomAdapter = ChatRoomAdapter(object : ChatRoomClickListener {
+    private val chatRoomAdapter = ChatRoomAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // 채팅 화면으로 이동
+            // TODO 채팅 화면으로 이동
         }
     })
 
@@ -55,7 +55,6 @@ class ChatRoomFragment : Fragment() {
                 service.getUserChatRoomList(Firebase.auth.uid)
             }.onSuccess {
                 chatRoomAdapter.submitList(it.values.toList())
-                Log.d("ChatRoomFragment", it.toString())
             }.onFailure {
                 Log.d("ChatRoomFragment", it.message ?: "error occurred.")
             }

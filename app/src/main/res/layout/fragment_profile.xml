@@ -38,27 +38,27 @@
         tools:text="새싹" />
 
     <ImageView
-        android:id="@+id/iv_export"
+        android:id="@+id/iv_ban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:contentDescription="@string/profile_export"
+        android:contentDescription="@string/profile_ban"
         android:src="@drawable/ic_export"
         app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
-        app:layout_constraintEnd_toStartOf="@id/tv_export"
+        app:layout_constraintEnd_toStartOf="@id/tv_ban"
         app:layout_constraintTop_toTopOf="@id/tv_profile_name" />
 
     <TextView
-        android:id="@+id/tv_export"
+        android:id="@+id/tv_ban"
         style="@style/BlackText.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_median"
         android:fontFamily="@font/pretendard_bold"
-        android:text="@string/profile_export"
-        app:layout_constraintBottom_toBottomOf="@id/iv_export"
+        android:text="@string/profile_ban"
+        app:layout_constraintBottom_toBottomOf="@id/iv_ban"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_export" />
+        app:layout_constraintTop_toTopOf="@id/iv_ban" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/div"

@@ -8,7 +8,7 @@
         android:id="@+id/sb_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/search_hint"
+        android:hint="@string/all_search_hint"
         android:textAppearance="@style/SearchBarText"
         app:backgroundTint="@color/lilac"
         app:layout_constraintEnd_toEndOf="parent"

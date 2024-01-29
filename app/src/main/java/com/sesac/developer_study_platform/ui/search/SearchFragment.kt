@@ -28,6 +28,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.sbSearch.setOnClickListener {
             findNavController().navigate(R.id.action_search_to_search_result)
         }
