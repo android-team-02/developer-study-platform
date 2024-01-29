@@ -128,4 +128,8 @@
         <item>7</item>
         <item>8</item>
     </string-array>
+
+    <string name="my_page_icon_bookmark_description">북마크 모양의 아이콘</string>
+    <string name="my_page_logout">로그아웃</string>
+    <string name="my_page_my_study">나의 스터디</string>
 </resources>
