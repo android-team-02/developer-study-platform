@@ -1,10 +1,13 @@
 package com.sesac.developer_study_platform.ui.searchresult
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.databinding.ItemSearchBinding
@@ -28,7 +31,13 @@ class SearchAdapter(private val clickListener: StudyClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(study: Study, clickListener: StudyClickListener) {
-            binding.ivStudyImage.setImage(study.image)
+            val storageRef = Firebase.storage.reference
+            val imageRef = storageRef.child("${study.sid}/${study.image}")
+            imageRef.downloadUrl.addOnSuccessListener {
+                binding.ivStudyImage.setImage(it.toString())
+            }.addOnFailureListener {
+                Log.e("SearchAdapter", it.message ?: "error occurred.")
+            }
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyPeople.text = itemView.context.getString(

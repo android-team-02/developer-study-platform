@@ -1,10 +1,13 @@
 package com.sesac.developer_study_platform.ui.common
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
 import com.sesac.developer_study_platform.util.getAllDayList
@@ -26,7 +29,13 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(study: UserStudy, clickListener: StudyClickListener) {
-            binding.ivStudyImage.setImage(study.image)
+            val storageRef = Firebase.storage.reference
+            val imageRef = storageRef.child("${study.sid}/${study.image}")
+            imageRef.downloadUrl.addOnSuccessListener {
+                binding.ivStudyImage.setImage(it.toString())
+            }.addOnFailureListener {
+                Log.e("StudyAdapter", it.message ?: "error occurred.")
+            }
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
             binding.tvStudyDay.text = study.days.keys.getDayList(itemView.getAllDayList())
