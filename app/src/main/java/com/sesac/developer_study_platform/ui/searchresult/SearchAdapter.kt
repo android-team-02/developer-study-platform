@@ -12,8 +12,6 @@ import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.databinding.ItemSearchBinding
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import com.sesac.developer_study_platform.util.getAllDayList
-import com.sesac.developer_study_platform.util.getDayList
 import com.sesac.developer_study_platform.util.setImage
 
 class SearchAdapter(private val clickListener: StudyClickListener) :
@@ -45,7 +43,7 @@ class SearchAdapter(private val clickListener: StudyClickListener) :
                 study.members.count(),
                 study.totalMemberCount
             )
-            binding.tvStudyDay.text = study.days.keys.getDayList(itemView.getAllDayList())
+            binding.tvStudyDay.text = study.days.joinToString("\n")
             itemView.setOnClickListener {
                 clickListener.onClick(study.sid)
             }

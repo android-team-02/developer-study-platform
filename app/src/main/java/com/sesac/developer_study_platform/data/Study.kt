@@ -13,7 +13,7 @@ data class Study(
     val category: String,
     val language: String,
     val totalMemberCount: Int,
-    val days: Map<String, String>,
+    val days: List<String>,
     val startDate: String,
     val endDate: String,
     val members: Map<String, Boolean>,
@@ -26,7 +26,7 @@ data class UserStudy(
     val name: String,
     val image: String,
     val language: String,
-    val days: Map<String, String>,
+    val days: List<String>,
     val startDate: String,
     val endDate: String,
 )

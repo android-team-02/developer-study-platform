@@ -267,8 +267,7 @@ class StudyFormFragment : Fragment() {
         } else {
             dayTimeList.removeAt(index)
         }
-        dayTimeList.sortBy { getDaySort(it.day) }
-        dayTimeAdapter.submitList(dayTimeList.toList())
+        dayTimeAdapter.submitList(dayTimeList.sortedBy { getDaySort(it.day) }.toList())
     }
 
     private fun getDaySort(day: String): Int {
@@ -409,8 +408,12 @@ class StudyFormFragment : Fragment() {
         )
     }
 
-    private fun formatDayTimeList() = dayTimeList.associate {
-        it.day to "${it.startTime}@${it.endTime}"
+    private fun formatDayTimeList(): List<String> {
+        val list = mutableListOf<String>()
+        dayTimeList.forEach {
+            list.add("${it.day} ${it.startTime}~${it.endTime}")
+        }
+        return list
     }
 
     override fun onDestroyView() {

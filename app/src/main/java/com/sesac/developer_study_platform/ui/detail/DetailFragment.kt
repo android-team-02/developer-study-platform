@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.sesac.developer_study_platform.Day
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
 import com.sesac.developer_study_platform.data.BookmarkStudy
@@ -19,8 +18,6 @@ import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
 import com.sesac.developer_study_platform.util.formatYearMonthDay
-import com.sesac.developer_study_platform.util.getAllDayList
-import com.sesac.developer_study_platform.util.getDayList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -76,28 +73,10 @@ class DetailFragment : Fragment() {
             study.members.count(),
             study.totalMemberCount
         )
-        binding.tvTimeValue.text = getDayTimeList()
+        binding.tvTimeValue.text = study.days.joinToString("\n")
         binding.tvPeriodValue.text =
             getString(R.string.detail_study_period_format, study.startDate, study.endDate)
         binding.tvMemberValue.text = getStudyMemberList(study.members.keys).joinToString("\n")
-    }
-
-    private fun getDayTimeList(): String {
-        val dayTimeList = mutableMapOf<Int, String>()
-        study.days.entries.forEach {
-            Day.entries.forEach { day ->
-                if (getString(day.resId) == it.key) {
-                    dayTimeList[day.ordinal] = formatDayTime(it.key, it.value)
-                }
-            }
-        }
-        return dayTimeList.toSortedMap().values.joinToString("\n")
-    }
-
-    private fun formatDayTime(day: String, time: String): String {
-        val startTime = time.split("@").first()
-        val endTime = time.split("@").last()
-        return getString(R.string.detail_study_day_time_format, day, startTime, endTime)
     }
 
     private suspend fun getStudyMemberList(uidList: Set<String>): List<String> {
@@ -151,7 +130,7 @@ class DetailFragment : Fragment() {
                     study.name,
                     study.image,
                     study.language,
-                    study.days.keys.getDayList(view.getAllDayList())
+                    study.days.joinToString("\n")
                 )
             )
         }

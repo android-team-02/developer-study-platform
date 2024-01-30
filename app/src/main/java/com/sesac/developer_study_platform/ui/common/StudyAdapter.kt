@@ -10,8 +10,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
-import com.sesac.developer_study_platform.util.getAllDayList
-import com.sesac.developer_study_platform.util.getDayList
 import com.sesac.developer_study_platform.util.setImage
 
 class StudyAdapter(private val clickListener: StudyClickListener) :
@@ -38,7 +36,7 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
             }
             binding.tvStudyName.text = study.name
             binding.tvStudyLanguage.text = study.language
-            binding.tvStudyDay.text = study.days.keys.getDayList(itemView.getAllDayList())
+            binding.tvStudyDay.text = study.days.joinToString(", ") { it.split(" ").first() }
             itemView.setOnClickListener {
                 clickListener.onClick(study.sid)
             }

@@ -55,15 +55,3 @@ fun formatTimestamp(): String {
         newDateFormat.format(date)
     }
 }
-
-fun Set<String>.getDayList(allDayList: List<String>): String {
-    val dayList = mutableMapOf<Int, String>()
-    this.forEach {
-        allDayList.forEachIndexed { index, day ->
-            if (it == day) {
-                dayList[index] = day
-            }
-        }
-    }
-    return dayList.toSortedMap().values.joinToString(", ")
-}
