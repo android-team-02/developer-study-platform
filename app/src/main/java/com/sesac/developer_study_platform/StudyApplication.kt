@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.sesac.developer_study_platform.data.source.local.AppDatabase
 import com.sesac.developer_study_platform.data.source.local.BookmarkDao
+import com.sesac.developer_study_platform.data.source.local.BookmarkRepository
+import com.sesac.developer_study_platform.data.source.remote.StudyRepository
 
 class StudyApplication : Application() {
 
@@ -20,6 +22,8 @@ class StudyApplication : Application() {
             .fallbackToDestructiveMigration()
             .build()
         bookmarkDao = db.bookmarkDao()
+        studyRepository = StudyRepository()
+        bookmarkRepository = BookmarkRepository()
     }
 
     override fun onTerminate() {
@@ -30,5 +34,7 @@ class StudyApplication : Application() {
     companion object {
         lateinit var sharedPref: SharedPreferences
         lateinit var bookmarkDao: BookmarkDao
+        lateinit var studyRepository: StudyRepository
+        lateinit var bookmarkRepository: BookmarkRepository
     }
 }
