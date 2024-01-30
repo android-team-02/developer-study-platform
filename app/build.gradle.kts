@@ -7,6 +7,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "1.9.21"
+    kotlin("kapt")
 }
 
 android {
@@ -43,6 +44,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        dataBinding = true
     }
 }
 
