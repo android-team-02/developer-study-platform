@@ -1,24 +1,18 @@
 package com.sesac.developer_study_platform.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.StudyApplication.Companion.bookmarkDao
-import com.sesac.developer_study_platform.data.BookmarkStudy
-import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
-import com.sesac.developer_study_platform.util.formatYearMonthDay
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
@@ -26,87 +20,54 @@ class DetailFragment : Fragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<DetailFragmentArgs>()
-    private lateinit var study: Study
+    private val viewModel by viewModels<DetailViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        setBackButton()
         loadStudy()
         loadBookmarkButtonState()
         setBookmarkButton()
+        setNavigation()
     }
 
-    private fun loadStudy() {
-        val service = StudyService.create()
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getStudy(args.studyId)
-            }.onSuccess {
-                study = it
-                setStudy()
-                setJoinStudyButton()
-            }.onFailure {
-                Log.e("DetailFragment-loadStudy", it.message ?: "error occurred.")
-            }
+    private fun setBackButton() {
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.moveToBack()
         }
     }
 
-    private suspend fun setStudy() {
-        binding.tvStudyName.text = study.name
-        binding.tvStudyContent.text = study.content
-        binding.tvCategoryValue.text = study.category
-        binding.tvLanguageValue.text = study.language
-        binding.tvPeopleValue.text = getString(
-            R.string.all_study_people_format,
-            study.members.count(),
-            study.totalMemberCount
-        )
-        binding.tvTimeValue.text = study.days.joinToString("\n")
-        binding.tvPeriodValue.text =
-            getString(R.string.detail_study_period_format, study.startDate, study.endDate)
-        binding.tvMemberValue.text = getStudyMemberList(study.members.keys).joinToString("\n")
-    }
-
-    private suspend fun getStudyMemberList(uidList: Set<String>): List<String> {
-        val service = StudyService.create()
-        return lifecycleScope.async {
-            val memberList = mutableListOf<String>()
-            uidList.forEach {
-                kotlin.runCatching {
-                    service.getUserById(it)
-                }.onSuccess {
-                    memberList.add(it.userId)
-                }.onFailure {
-                    Log.e("DetailFragment-getStudyMemberList", it.message ?: "error occurred.")
-                }
+    private fun loadStudy() {
+        lifecycleScope.launch {
+            viewModel.loadStudy(args.studyId)
+        }
+        viewModel.studyEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.study = it
             }
-            memberList
-        }.await()
-    }
-
-    private fun setJoinStudyButton() {
-        val isExpire = formatYearMonthDay() > study.endDate
-        val hasFullMember = study.members.count() == study.totalMemberCount
-        val isBanUser = study.banUsers.containsKey(Firebase.auth.uid)
-        binding.btnJoinStudy.isEnabled = !(isExpire || hasFullMember || isBanUser)
+        )
+        viewModel.studyMemberListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.tvMemberValue.text = it.joinToString("\n")
+            }
+        )
     }
 
     private fun loadBookmarkButtonState() {
         lifecycleScope.launch {
-            binding.ivBookmark.isSelected =
-                bookmarkDao.getBookmarkStudyBySid(args.studyId).isNotEmpty()
+            binding.ivBookmark.isSelected = viewModel.isBookmarkSelected(args.studyId)
         }
     }
 
@@ -117,29 +78,30 @@ class DetailFragment : Fragment() {
                 deleteBookmarkStudyBySid()
             } else {
                 binding.ivBookmark.isSelected = true
-                insertBookmarkStudy(it)
+                insertBookmarkStudy()
             }
         }
     }
 
-    private fun insertBookmarkStudy(view: View) {
+    private fun insertBookmarkStudy() {
         lifecycleScope.launch {
-            bookmarkDao.insertBookmarkStudy(
-                BookmarkStudy(
-                    study.sid,
-                    study.name,
-                    study.image,
-                    study.language,
-                    study.days.joinToString("\n")
-                )
-            )
+            viewModel.insertBookmarkStudy(viewModel.study)
         }
     }
 
     private fun deleteBookmarkStudyBySid() {
         lifecycleScope.launch {
-            bookmarkDao.deleteBookmarkStudyBySid(args.studyId)
+            viewModel.deleteBookmarkStudyBySid(args.studyId)
         }
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
     }
 
     override fun onDestroyView() {
