@@ -16,6 +16,9 @@ import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.StudyAdapter
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.util.formatCalendarDate
 import com.sesac.developer_study_platform.util.setImage
 import kotlinx.coroutines.launch
@@ -30,6 +33,11 @@ class MyPageFragment : Fragment() {
     private val uid = Firebase.auth.uid
     private val studyList = mutableListOf<UserStudy>()
     private val calendar = Calendar.getInstance()
+    private val studyAdapter = StudyAdapter(object : StudyClickListener {
+        override fun onClick(sid: String) {
+            //채팅방으로 이동하기
+        }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +56,16 @@ class MyPageFragment : Fragment() {
         binding.ivBookmark.setOnClickListener {
             findNavController().navigate(R.id.action_my_to_bookmark)
         }
+        setStudyAdapter()
         loadUser()
         loadStudyList()
+    }
+
+    private fun setStudyAdapter() {
+        binding.rvMyStudyList.adapter = studyAdapter
+        binding.rvMyStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
     }
 
     private fun loadUser() {
