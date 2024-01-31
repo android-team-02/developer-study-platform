@@ -1,23 +1,23 @@
 package com.sesac.developer_study_platform.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
-import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -29,6 +29,7 @@ class HomeFragment : Fragment() {
             // TODO 채팅 화면으로 이동
         }
     })
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,12 +43,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewStudyForm.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_study_form)
-        }
         setStudyAdapter()
-        setDetailButton()
         loadStudyList()
+        setDetailButton()
+        setStudyFormButton()
         with(binding) {
             setCategoryButton(tvAndroid)
             setCategoryButton(tvIos)
@@ -56,6 +55,7 @@ class HomeFragment : Fragment() {
             setCategoryButton(tvAi)
             setCategoryButton(tvEtc)
         }
+        setNavigation()
     }
 
     private fun setStudyAdapter() {
@@ -65,34 +65,42 @@ class HomeFragment : Fragment() {
         )
     }
 
+    private fun loadStudyList() {
+        lifecycleScope.launch {
+            Firebase.auth.uid?.let { viewModel.loadStudyList(it) }
+        }
+        viewModel.myStudyListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                studyAdapter.submitList(it)
+            }
+        )
+        viewModel.studyFormButtonEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                if (it) {
+                    binding.groupStudyForm.visibility = View.VISIBLE
+                    binding.rvStudyList.visibility = View.GONE
+                }
+            }
+        )
+    }
+
     private fun setDetailButton() {
         binding.tvDetail.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeToMyStudy()
-            findNavController().navigate(action)
+            viewModel.moveToMyStudy()
         }
     }
 
-    private fun loadStudyList() {
-        val service = StudyService.create()
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getUserStudyList(Firebase.auth.uid)
-            }.onSuccess {
-                studyAdapter.submitList(it.values.toList())
-            }.onFailure {
-                binding.groupStudyForm.visibility = View.VISIBLE
-                binding.rvStudyList.visibility = View.GONE
-                Log.e("HomeFragment", it.message ?: "error occurred.")
-            }
+    private fun setStudyFormButton() {
+        binding.viewStudyForm.setOnClickListener {
+            viewModel.moveToStudyForm()
         }
     }
 
     private fun setCategoryButton(view: TextView) {
         view.setOnClickListener {
-            val action = HomeFragmentDirections.actionGlobalToSearchCategory(
-                getPosition(view.text.toString())
-            )
-            findNavController().navigate(action)
+            viewModel.moveToCategory(view.text.toString())
         }
     }
 
@@ -104,6 +112,31 @@ class HomeFragment : Fragment() {
                 category.replace("-", "").uppercase()
             ).ordinal
         }
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToMyStudyEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = HomeFragmentDirections.actionHomeToMyStudy()
+                findNavController().navigate(action)
+            }
+        )
+        viewModel.moveToStudyFormEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().navigate(R.id.action_home_to_study_form)
+            }
+        )
+        viewModel.moveToCategoryEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = HomeFragmentDirections.actionGlobalToSearchCategory(
+                    getPosition(it)
+                )
+                findNavController().navigate(action)
+            }
+        )
     }
 
     override fun onDestroyView() {
