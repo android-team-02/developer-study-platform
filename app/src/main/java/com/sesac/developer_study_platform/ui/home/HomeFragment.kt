@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,7 +37,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return binding.root
     }
 
@@ -78,10 +79,7 @@ class HomeFragment : Fragment() {
         viewModel.studyFormButtonEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                if (it) {
-                    binding.groupStudyForm.visibility = View.VISIBLE
-                    binding.rvStudyList.visibility = View.GONE
-                }
+                binding.isMyStudyListEmpty = it
             }
         )
     }
