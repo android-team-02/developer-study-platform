@@ -55,3 +55,8 @@ fun formatTimestamp(): String {
         newDateFormat.format(date)
     }
 }
+
+fun String.formatCalendarDate(): Date {
+    val dateFormat = SimpleDateFormat(DateFormats.YEAR_MONTH_DAY_FORMAT.pattern, Locale.getDefault())
+    return dateFormat.parse(this) as Date
+}

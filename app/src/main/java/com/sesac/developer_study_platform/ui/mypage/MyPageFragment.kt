@@ -1,5 +1,6 @@
 package com.sesac.developer_study_platform.ui.mypage
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,12 +11,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
+import com.sesac.developer_study_platform.util.formatCalendarDate
 import com.sesac.developer_study_platform.util.setImage
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class MyPageFragment : Fragment() {
 
@@ -23,6 +29,7 @@ class MyPageFragment : Fragment() {
     private val binding get() = _binding!!
     private val uid = Firebase.auth.uid
     private val studyList = mutableListOf<UserStudy>()
+    private val calendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,10 +77,45 @@ class MyPageFragment : Fragment() {
                 service.getUserStudyList(uid)
             }.onSuccess {
                 studyList.addAll(it.values)
+                setDaysDotSpan()
             }.onFailure {
                 Log.e("MyPageFragment", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun setDaysDotSpan() {
+        studyList.forEach {
+            val days = getDotSpanDays(
+                it.startDate.formatCalendarDate(),
+                it.endDate.formatCalendarDate(),
+                formatDays(it.days)
+            )
+            binding.mcv.addDecorators(DotSpanDecorator(Color.BLACK, days))
+        }
+    }
+
+    private fun getDotSpanDays(startDate: Date, endDate: Date, days: List<String>): List<CalendarDay> {
+        val dotSpanDay = ArrayList<CalendarDay>()
+        calendar.time = startDate
+        while (calendar.time <= endDate) {
+            val calendarDays = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()) ?: ""
+            if (days.contains(calendarDays)) {
+                dotSpanDay.add(
+                    CalendarDay.from(
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH) + 1,
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                    )
+                )
+            }
+            calendar.add(Calendar.DATE, 1)
+        }
+        return dotSpanDay
+    }
+
+    private fun formatDays(days: List<String>): List<String> {
+        return days.map { it.substringBefore(" ") }.toList()
     }
 
     override fun onDestroyView() {
