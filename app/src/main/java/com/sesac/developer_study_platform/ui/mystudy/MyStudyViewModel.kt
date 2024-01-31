@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class MyStudyViewModel : ViewModel() {
 
-    private val _userStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
-    val userStudyListEvent: LiveData<Event<List<UserStudy>>> = _userStudyListEvent
+    private val _myStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
+    val myStudyListEvent: LiveData<Event<List<UserStudy>>> = _myStudyListEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
@@ -25,7 +25,7 @@ class MyStudyViewModel : ViewModel() {
             runCatching {
                 studyRepository.getUserStudyList(Firebase.auth.uid)
             }.onSuccess {
-                _userStudyListEvent.value = Event(it.values.toList())
+                _myStudyListEvent.value = Event(it.values.toList())
             }.onFailure {
                 Log.e("loadStudyList", it.message ?: "error occurred.")
             }

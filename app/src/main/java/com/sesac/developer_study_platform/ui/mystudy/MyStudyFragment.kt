@@ -62,7 +62,7 @@ class MyStudyFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.loadStudyList()
         }
-        viewModel.userStudyListEvent.observe(
+        viewModel.myStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 studyAdapter.submitList(it)

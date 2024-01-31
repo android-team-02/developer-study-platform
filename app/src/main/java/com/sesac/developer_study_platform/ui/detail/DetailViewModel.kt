@@ -17,9 +17,8 @@ class DetailViewModel : ViewModel() {
     private val _studyEvent: MutableLiveData<Event<Study>> = MutableLiveData()
     val studyEvent: LiveData<Event<Study>> = _studyEvent
 
-    private val _studyMemberListEvent: MutableLiveData<Event<MutableList<String>>> =
-        MutableLiveData()
-    val studyMemberListEvent: LiveData<Event<MutableList<String>>> = _studyMemberListEvent
+    private val _studyMemberListEvent: MutableLiveData<Event<List<String>>> = MutableLiveData()
+    val studyMemberListEvent: LiveData<Event<List<String>>> = _studyMemberListEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent

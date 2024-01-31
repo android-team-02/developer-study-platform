@@ -2,6 +2,7 @@ package com.sesac.developer_study_platform.ui
 
 import android.util.Log
 import android.widget.ImageView
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
@@ -40,5 +41,14 @@ fun loadImage(view: ImageView, study: UserStudy) {
         view.setImage(it.toString())
     }.addOnFailureListener {
         Log.e("loadImage", it.message ?: "error occurred.")
+    }
+}
+
+@BindingAdapter("visible")
+fun setVisibility(view: View, value: Boolean) {
+    if (value) {
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.GONE
     }
 }
