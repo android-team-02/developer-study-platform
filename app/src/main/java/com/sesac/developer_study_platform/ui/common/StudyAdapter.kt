@@ -1,16 +1,14 @@
 package com.sesac.developer_study_platform.ui.common
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Firebase
-import com.google.firebase.storage.storage
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.ItemStudyBinding
-import com.sesac.developer_study_platform.util.setImage
 
 class StudyAdapter(private val clickListener: StudyClickListener) :
     ListAdapter<UserStudy, StudyAdapter.StudyViewHolder>(diffUtil) {
@@ -27,26 +25,16 @@ class StudyAdapter(private val clickListener: StudyClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(study: UserStudy, clickListener: StudyClickListener) {
-            val storageRef = Firebase.storage.reference
-            val imageRef = storageRef.child("${study.sid}/${study.image}")
-            imageRef.downloadUrl.addOnSuccessListener {
-                binding.ivStudyImage.setImage(it.toString())
-            }.addOnFailureListener {
-                Log.e("StudyAdapter", it.message ?: "error occurred.")
-            }
-            binding.tvStudyName.text = study.name
-            binding.tvStudyLanguage.text = study.language
-            binding.tvStudyDay.text = study.days.joinToString(", ") { it.split(" ").first() }
-            itemView.setOnClickListener {
-                clickListener.onClick(study.sid)
-            }
+            binding.userStudy = study
+            binding.clickListener = clickListener
         }
 
         companion object {
             fun from(parent: ViewGroup): StudyViewHolder {
                 return StudyViewHolder(
-                    ItemStudyBinding.inflate(
+                    DataBindingUtil.inflate(
                         LayoutInflater.from(parent.context),
+                        R.layout.item_study,
                         parent,
                         false
                     )

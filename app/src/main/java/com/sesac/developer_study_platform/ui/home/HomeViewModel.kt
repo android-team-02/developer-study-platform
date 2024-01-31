@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Event
 import kotlinx.coroutines.launch
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
@@ -12,11 +14,11 @@ import com.sesac.developer_study_platform.data.UserStudy
 
 class HomeViewModel : ViewModel() {
 
-    private val _myStudyListEvent: MutableLiveData<Event<List<UserStudy>>> =
-        MutableLiveData()
+    private val _myStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
     val myStudyListEvent: LiveData<Event<List<UserStudy>>> = _myStudyListEvent
 
-    private val _studyFormButtonEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    private val _studyFormButtonEvent: MutableLiveData<Event<Boolean>> =
+        MutableLiveData(Event(false))
     val studyFormButtonEvent: LiveData<Event<Boolean>> = _studyFormButtonEvent
 
     private val _moveToMyStudyEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
@@ -28,15 +30,15 @@ class HomeViewModel : ViewModel() {
     private val _moveToCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToCategoryEvent: LiveData<Event<String>> = _moveToCategoryEvent
 
-    suspend fun loadStudyList(uid: String) {
+    suspend fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.getUserStudyList(uid)
+                studyRepository.getUserStudyList(Firebase.auth.uid)
             }.onSuccess {
                 _myStudyListEvent.value = Event(it.values.toList())
             }.onFailure {
                 _studyFormButtonEvent.value = Event(true)
-                Log.e("HomeFragment", it.message ?: "error occurred.")
+                Log.e("loadStudyList", it.message ?: "error occurred.")
             }
         }
     }

@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
@@ -68,7 +66,7 @@ class HomeFragment : Fragment() {
 
     private fun loadStudyList() {
         lifecycleScope.launch {
-            Firebase.auth.uid?.let { viewModel.loadStudyList(it) }
+            viewModel.loadStudyList()
         }
         viewModel.myStudyListEvent.observe(
             viewLifecycleOwner,
