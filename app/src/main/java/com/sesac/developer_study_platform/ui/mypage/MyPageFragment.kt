@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
 import com.sesac.developer_study_platform.util.setImage
@@ -21,6 +22,7 @@ class MyPageFragment : Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
     private val uid = Firebase.auth.uid
+    private val studyList = mutableListOf<UserStudy>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +42,7 @@ class MyPageFragment : Fragment() {
             findNavController().navigate(R.id.action_my_to_bookmark)
         }
         loadUser()
+        loadStudyList()
     }
 
     private fun loadUser() {
@@ -56,6 +59,19 @@ class MyPageFragment : Fragment() {
                 }
             }.onFailure {
                 Log.e("MyPageFragment-loadUser", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun loadStudyList() {
+        val service = StudyService.create()
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getUserStudyList(uid)
+            }.onSuccess {
+                studyList.addAll(it.values)
+            }.onFailure {
+                Log.e("MyPageFragment", it.message ?: "error occurred.")
             }
         }
     }
