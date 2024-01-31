@@ -49,7 +49,8 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
+        binding.mcv.addDecorators(TodayDecorator())
         binding.tvLogout.setOnClickListener {
             //로그아웃 다이얼로그로 이동하기
         }
