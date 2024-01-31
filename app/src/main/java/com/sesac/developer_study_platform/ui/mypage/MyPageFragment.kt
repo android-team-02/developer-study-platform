@@ -1,16 +1,24 @@
 package com.sesac.developer_study_platform.ui.mypage
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
+import com.sesac.developer_study_platform.util.setImage
+import kotlinx.coroutines.launch
 
 class MyPageFragment : Fragment() {
 
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
+    private val uid = Firebase.auth.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,6 +26,30 @@ class MyPageFragment : Fragment() {
     ): View {
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        loadUser()
+    }
+
+    private fun loadUser() {
+        val studyService = StudyService.create()
+        lifecycleScope.launch {
+            runCatching {
+                uid?.let {
+                    studyService.getUserById(uid)
+                }
+            }.onSuccess {
+                if (it != null) {
+                    binding.tvProfileName.text = it.userId
+                    binding.ivProfileImage.setImage(it.image)
+                }
+            }.onFailure {
+                Log.e("MyPageFragment-loadUser", it.message ?: "error occurred.")
+            }
+        }
     }
 
     override fun onDestroyView() {
