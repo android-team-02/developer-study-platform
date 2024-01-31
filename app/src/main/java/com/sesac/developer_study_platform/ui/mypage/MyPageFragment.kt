@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
 import com.sesac.developer_study_platform.util.setImage
@@ -31,6 +33,12 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tvLogout.setOnClickListener {
+            //로그아웃 다이얼로그로 이동하기
+        }
+        binding.ivBookmark.setOnClickListener {
+            findNavController().navigate(R.id.action_my_to_bookmark)
+        }
         loadUser()
     }
 
