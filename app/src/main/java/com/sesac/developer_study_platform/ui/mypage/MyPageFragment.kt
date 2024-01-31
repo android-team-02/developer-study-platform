@@ -59,6 +59,7 @@ class MyPageFragment : Fragment() {
         setStudyAdapter()
         loadUser()
         loadStudyList()
+        updateSelectedDayStudyList()
     }
 
     private fun setStudyAdapter() {
@@ -128,6 +129,45 @@ class MyPageFragment : Fragment() {
             calendar.add(Calendar.DATE, 1)
         }
         return dotSpanDay
+    }
+
+    private fun updateSelectedDayStudyList() {
+        binding.mcv.setOnDateChangedListener { _, date, _ ->
+            val concurStudyDay = filterStudyDay(date)
+            if (concurStudyDay.isEmpty()) {
+                binding.groupMyStudy.visibility = View.GONE
+            } else {
+                binding.groupMyStudy.visibility = View.VISIBLE
+                studyAdapter.submitList(concurStudyDay)
+            }
+        }
+    }
+
+    private fun filterStudyDay(calendarDay: CalendarDay): List<UserStudy> {
+        val formatCalendarDay = getFormatCalendarDay(calendarDay)
+        return studyList.filter {
+            val startDate = it.startDate.formatCalendarDate()
+            val endDate = it.endDate.formatCalendarDate()
+            val selectedDate = "${calendarDay.year}/${calendarDay.month}/${calendarDay.day}".formatCalendarDate()
+
+            val isInDateRange = selectedDate in startDate..endDate
+            val isConcurDay = formatDays(it.days).contains(formatCalendarDay)
+            isInDateRange && isConcurDay
+        }
+    }
+
+    private fun getFormatCalendarDay(date: CalendarDay): String {
+        calendar.set(date.year, date.month - 1, date.day)
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> getString(R.string.all_monday)
+            Calendar.TUESDAY -> getString(R.string.all_tuesday)
+            Calendar.WEDNESDAY -> getString(R.string.all_wednesday)
+            Calendar.THURSDAY -> getString(R.string.all_thursday)
+            Calendar.FRIDAY -> getString(R.string.all_friday)
+            Calendar.SATURDAY -> getString(R.string.all_saturday)
+            Calendar.SUNDAY -> getString(R.string.all_sunday)
+            else -> ""
+        }
     }
 
     private fun formatDays(days: List<String>): List<String> {
