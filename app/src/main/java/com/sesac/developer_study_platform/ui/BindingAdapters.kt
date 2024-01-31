@@ -1,5 +1,6 @@
 package com.sesac.developer_study_platform.ui
 
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
@@ -19,5 +20,14 @@ fun setEnabled(view: AppCompatButton, study: Study?) {
         view.isEnabled = !(formatYearMonthDay() > study.endDate
                 || study.members.count() == study.totalMemberCount
                 || study.banUsers.containsKey(Firebase.auth.uid))
+    }
+}
+
+@BindingAdapter("visible")
+fun setVisibility(view: View, value: Boolean) {
+    if (value) {
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.GONE
     }
 }
