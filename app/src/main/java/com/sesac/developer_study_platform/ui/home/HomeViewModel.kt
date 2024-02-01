@@ -8,9 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Event
-import kotlinx.coroutines.launch
+import com.sesac.developer_study_platform.StudyApplication.Companion.myStudyRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.UserStudy
+import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
 
@@ -30,16 +31,29 @@ class HomeViewModel : ViewModel() {
     private val _moveToCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToCategoryEvent: LiveData<Event<String>> = _moveToCategoryEvent
 
+    init {
+        viewModelScope.launch {
+            _myStudyListEvent.value = Event(myStudyRepository.getMyStudyList())
+        }
+    }
+
     suspend fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.getUserStudyList(Firebase.auth.uid)
             }.onSuccess {
-                _myStudyListEvent.value = Event(it.values.toList())
+                refreshMyStudyList(it.values.toList())
             }.onFailure {
                 _studyFormButtonEvent.value = Event(true)
                 Log.e("loadStudyList", it.message ?: "error occurred.")
             }
+        }
+    }
+
+    private suspend fun refreshMyStudyList(myStudyList: List<UserStudy>) {
+        viewModelScope.launch {
+            myStudyRepository.refreshMyStudyList(myStudyList)
+            _myStudyListEvent.value = Event(myStudyList)
         }
     }
 
