@@ -44,8 +44,10 @@ class HomeViewModel : ViewModel() {
             }.onSuccess {
                 refreshMyStudyList(it.values.toList())
             }.onFailure {
-                _studyFormButtonEvent.value = Event(true)
-                Log.e("loadStudyList", it.message ?: "error occurred.")
+                if (myStudyRepository.getMyStudyList().isEmpty()) {
+                    _studyFormButtonEvent.value = Event(true)
+                    Log.e("loadStudyList", it.message ?: "error occurred.")
+                }
             }
         }
     }
