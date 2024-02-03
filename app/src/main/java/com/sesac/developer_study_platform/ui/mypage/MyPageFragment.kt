@@ -33,6 +33,7 @@ class MyPageFragment : Fragment() {
     private val uid = Firebase.auth.uid
     private val studyList = mutableListOf<UserStudy>()
     private val calendar = Calendar.getInstance()
+    private val studyService = StudyService.create()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
             //채팅방으로 이동하기
@@ -49,7 +50,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         binding.mcv.addDecorators(TodayDecorator())
         binding.tvLogout.setOnClickListener {
             //로그아웃 다이얼로그로 이동하기
@@ -71,14 +72,13 @@ class MyPageFragment : Fragment() {
     }
 
     private fun loadUser() {
-        val studyService = StudyService.create()
         lifecycleScope.launch {
             runCatching {
                 uid?.let {
                     studyService.getUserById(uid)
                 }
             }.onSuccess {
-                if (it != null) {
+                it?.let {
                     binding.tvProfileName.text = it.userId
                     binding.ivProfileImage.setImage(it.image)
                 }
@@ -89,37 +89,38 @@ class MyPageFragment : Fragment() {
     }
 
     private fun loadStudyList() {
-        val service = StudyService.create()
         lifecycleScope.launch {
             kotlin.runCatching {
-                service.getUserStudyList(uid)
+                studyService.getUserStudyList(uid)
             }.onSuccess {
                 studyList.addAll(it.values)
                 setDaysDotSpan()
             }.onFailure {
-                Log.e("MyPageFragment", it.message ?: "error occurred.")
+                Log.e("MyPageFragment-loadStudyList", it.message ?: "error occurred.")
             }
         }
     }
 
     private fun setDaysDotSpan() {
+        val allDayList = mutableSetOf<CalendarDay>()
         studyList.forEach {
-            val days = getDotSpanDays(
+            val days = getDotSpanDayList(
                 it.startDate.formatCalendarDate(),
                 it.endDate.formatCalendarDate(),
                 formatDays(it.days)
             )
-            binding.mcv.addDecorators(DotSpanDecorator(Color.BLACK, days))
+            allDayList.addAll(days)
         }
+        binding.mcv.addDecorators(DotSpanDecorator(allDayList))
     }
 
-    private fun getDotSpanDays(startDate: Date, endDate: Date, days: List<String>): List<CalendarDay> {
-        val dotSpanDay = ArrayList<CalendarDay>()
+    private fun getDotSpanDayList(startDate: Date, endDate: Date, days: List<String>): List<CalendarDay> {
+        val dotSpanDayList = ArrayList<CalendarDay>()
         calendar.time = startDate
         while (calendar.time <= endDate) {
-            val calendarDays = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()) ?: ""
-            if (days.contains(calendarDays)) {
-                dotSpanDay.add(
+            val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREAN) ?: ""
+            if (days.contains(dayOfWeek)) {
+                dotSpanDayList.add(
                     CalendarDay.from(
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH) + 1,
@@ -129,23 +130,23 @@ class MyPageFragment : Fragment() {
             }
             calendar.add(Calendar.DATE, 1)
         }
-        return dotSpanDay
+        return dotSpanDayList
     }
 
     private fun updateSelectedDayStudyList() {
         binding.mcv.setOnDateChangedListener { _, date, _ ->
-            val concurStudyDay = filterStudyDay(date)
-            if (concurStudyDay.isEmpty()) {
+            val studyList = getStudyList(date)
+            if (studyList.isEmpty()) {
                 binding.groupMyStudy.visibility = View.GONE
             } else {
                 binding.groupMyStudy.visibility = View.VISIBLE
-                studyAdapter.submitList(concurStudyDay)
+                studyAdapter.submitList(studyList)
             }
         }
     }
 
-    private fun filterStudyDay(calendarDay: CalendarDay): List<UserStudy> {
-        val formatCalendarDay = getFormatCalendarDay(calendarDay)
+    private fun getStudyList(calendarDay: CalendarDay): List<UserStudy> {
+        val formatCalendarDay = getDayList(calendarDay)
         return studyList.filter {
             val startDate = it.startDate.formatCalendarDate()
             val endDate = it.endDate.formatCalendarDate()
@@ -157,7 +158,7 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun getFormatCalendarDay(date: CalendarDay): String {
+    private fun getDayList(date: CalendarDay): String {
         calendar.set(date.year, date.month - 1, date.day)
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> getString(R.string.all_monday)
