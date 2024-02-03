@@ -1,12 +1,12 @@
 package com.sesac.developer_study_platform.ui.mypage
 
+import android.graphics.Color
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 
 class DotSpanDecorator(
-    private val color: Int,
     days: Collection<CalendarDay>
 ) : DayViewDecorator {
 
@@ -17,6 +17,7 @@ class DotSpanDecorator(
     }
 
     override fun decorate(view: DayViewFacade) {
-        view.addSpan(DotSpan(5f, color))
+        val dotRadius = 5f
+        view.addSpan(DotSpan(dotRadius, Color.BLACK))
     }
 }

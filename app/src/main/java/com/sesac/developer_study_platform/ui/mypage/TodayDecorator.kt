@@ -9,6 +9,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 
 class TodayDecorator : DayViewDecorator {
+
     private val today = CalendarDay.today()
     private val paint = Paint().apply {
         color = Color.BLACK
