@@ -19,4 +19,8 @@ class StudyRepository {
     suspend fun getUserStudyList(uid: String?): Map<String, UserStudy> {
         return studyService.getUserStudyList(uid)
     }
+
+    suspend fun getSearchStudyList(searchKeyword: String): Map<String, Study> {
+        return studyService.getSearchStudyList("\"${searchKeyword}\"", "\"${searchKeyword}\\uf8ff\"")
+    }
 }
