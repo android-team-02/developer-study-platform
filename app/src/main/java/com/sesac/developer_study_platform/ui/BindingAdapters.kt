@@ -9,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.util.formatYearMonthDay
 import com.sesac.developer_study_platform.util.setImage
@@ -41,6 +42,15 @@ fun loadImage(view: ImageView, sid: String, image: String) {
     }.addOnFailureListener {
         Log.e("loadImage", it.message ?: "error occurred.")
     }
+}
+
+@BindingAdapter("memberCount")
+fun formatMemberCount(view: TextView, study: Study) {
+    view.text = view.context.getString(
+        R.string.all_study_people_format,
+        study.members.count(),
+        study.totalMemberCount
+    )
 }
 
 @BindingAdapter("visible")
