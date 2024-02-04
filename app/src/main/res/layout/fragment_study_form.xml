@@ -1,446 +1,453 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/study_form_title"
-        app:titleTextAppearance="@style/ToolbarText" />
+    <data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+    </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_image"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:layout_marginEnd="@dimen/space_median"
-                android:background="@color/lilac"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/study_form_title"
+            app:titleTextAppearance="@style/ToolbarText" />
 
-            <ImageView
-                android:id="@+id/iv_plus"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="45dp"
-                android:contentDescription="@string/study_form_image_description"
-                android:src="@drawable/ic_plus_home"
-                app:layout_constraintEnd_toEndOf="@id/iv_image"
-                app:layout_constraintStart_toStartOf="@id/iv_image"
-                app:layout_constraintTop_toTopOf="@id/iv_image" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <TextView
-                android:id="@+id/tv_add_image"
-                style="@style/ManateeText.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_add_image"
-                app:layout_constraintEnd_toEndOf="@id/iv_image"
-                app:layout_constraintStart_toStartOf="@id/iv_image"
-                app:layout_constraintTop_toBottomOf="@id/iv_plus" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_add_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="iv_plus,tv_add_image" />
-
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flow_category"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_large"
-                app:constraint_referenced_ids="btn_android,btn_ios,btn_front_end,btn_back_end,btn_ai,btn_etc"
-                app:flow_horizontalGap="@dimen/space_small"
-                app:flow_maxElementsWrap="2"
-                app:flow_verticalGap="@dimen/space_x_small"
-                app:flow_wrapMode="aligned"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_image" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_android"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:text="@string/all_android" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_ios"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:text="@string/all_ios" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_front_end"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:text="@string/all_front_end" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_back_end"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:text="@string/all_back_end" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_ai"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:text="@string/all_ai" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_etc"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:text="@string/all_etc" />
-
-            <TextView
-                android:id="@+id/tv_study_name"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_median"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/flow_category" />
-
-            <EditText
-                android:id="@+id/et_study_name_input"
-                style="@style/BlackText.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:layout_marginEnd="@dimen/space_median"
-                android:autofillHints="no"
-                android:background="@drawable/bg_lilac_radius_12dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:hint="@string/study_form_name_hint"
-                android:inputType="textNoSuggestions|textVisiblePassword"
-                android:maxLength="20"
-                android:padding="@dimen/space_s_large"
-                android:textColorHint="@color/manatee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_study_name" />
-
-            <TextView
-                android:id="@+id/tv_study_content"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_median"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_study_name_input" />
-
-            <EditText
-                android:id="@+id/et_study_content_input"
-                style="@style/BlackText.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:layout_marginEnd="@dimen/space_median"
-                android:autofillHints="no"
-                android:background="@drawable/bg_lilac_radius_12dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:hint="@string/study_form_content_hint"
-                android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
-                android:maxLength="150"
-                android:maxLines="5"
-                android:padding="@dimen/space_s_large"
-                android:textColorHint="@color/manatee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_study_content" />
-
-            <TextView
-                android:id="@+id/tv_study_language"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_median"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_language"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_study_content_input" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_language"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:layout_marginEnd="@dimen/space_median"
-                android:hint="@string/study_form_language_hint"
-                android:textColorHint="@color/manatee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_study_language">
-
-                <AutoCompleteTextView
-                    android:id="@+id/tv_language_dropdown"
-                    style="@style/ManateeText.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_image"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
                     android:background="@color/lilac"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:inputType="none"
-                    android:textColor="@color/black"
-                    app:dropDownBackgroundTint="@color/lilac"
-                    app:simpleItems="@array/study_form_language" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
-            <TextView
-                android:id="@+id/tv_study_period"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_median"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_period"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_language" />
+                <ImageView
+                    android:id="@+id/iv_plus"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="45dp"
+                    android:contentDescription="@string/study_form_image_description"
+                    android:src="@drawable/ic_plus_home"
+                    app:layout_constraintEnd_toEndOf="@id/iv_image"
+                    app:layout_constraintStart_toStartOf="@id/iv_image"
+                    app:layout_constraintTop_toTopOf="@id/iv_image" />
 
-            <View
-                android:id="@+id/view_period_background"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:layout_marginEnd="@dimen/space_median"
-                android:background="@drawable/bg_lilac_radius_12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_study_period" />
-
-            <TextView
-                android:id="@+id/tv_start_date"
-                style="@style/BlackText.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:fontFamily="@font/pretendard_medium"
-                android:gravity="center"
-                android:text="@string/study_form_start_date"
-                app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
-                app:layout_constraintEnd_toStartOf="@+id/tv_period_value"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/view_period_background" />
-
-            <TextView
-                android:id="@+id/tv_period_value"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/study_form_connect"
-                app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
-                app:layout_constraintEnd_toStartOf="@+id/tv_end_date"
-                app:layout_constraintStart_toEndOf="@+id/tv_start_date"
-                app:layout_constraintTop_toTopOf="@+id/view_period_background" />
-
-            <TextView
-                android:id="@+id/tv_end_date"
-                style="@style/BlackText.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/space_median"
-                android:fontFamily="@font/pretendard_medium"
-                android:gravity="center"
-                android:text="@string/study_form_end_date"
-                app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_period_value"
-                app:layout_constraintTop_toTopOf="@+id/view_period_background" />
-
-            <TextView
-                android:id="@+id/tv_day_time"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_median"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_day_time"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_period_background" />
-
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flow_day_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                app:constraint_referenced_ids="btn_monday,btn_tuesday,btn_wednesday,btn_thursday,btn_friday,btn_saturday,btn_sunday"
-                app:flow_horizontalGap="5dp"
-                app:flow_maxElementsWrap="7"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_monday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_monday" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_tuesday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_tuesday" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_wednesday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_wednesday" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_thursday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_thursday" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_friday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_friday" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_saturday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_saturday" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_sunday"
-                style="@style/CategoryButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/all_sunday" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_day_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_x_small"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/flow_day_time"
-                tools:listitem="@layout/item_day_time" />
-
-            <TextView
-                android:id="@+id/tv_study_people"
-                style="@style/BlackText.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/study_form_people"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_day_time" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_people"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_small"
-                android:layout_marginEnd="@dimen/space_median"
-                android:hint="@string/study_form_people_hint"
-                android:textColorHint="@color/manatee"
-                app:boxBackgroundColor="@color/gallery"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_study_people">
-
-                <AutoCompleteTextView
-                    android:id="@+id/tv_people_dropdown"
+                <TextView
+                    android:id="@+id/tv_add_image"
                     style="@style/ManateeText.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/lilac"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_add_image"
+                    app:layout_constraintEnd_toEndOf="@id/iv_image"
+                    app:layout_constraintStart_toStartOf="@id/iv_image"
+                    app:layout_constraintTop_toBottomOf="@id/iv_plus" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_add_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="iv_plus,tv_add_image" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_large"
+                    app:constraint_referenced_ids="btn_android,btn_ios,btn_front_end,btn_back_end,btn_ai,btn_etc"
+                    app:flow_horizontalGap="@dimen/space_small"
+                    app:flow_maxElementsWrap="2"
+                    app:flow_verticalGap="@dimen/space_x_small"
+                    app:flow_wrapMode="aligned"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_image" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_android"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="@string/all_android" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_ios"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="@string/all_ios" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_front_end"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="@string/all_front_end" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_back_end"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="@string/all_back_end" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_ai"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="@string/all_ai" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_etc"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="@string/all_etc" />
+
+                <TextView
+                    android:id="@+id/tv_study_name"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flow_category" />
+
+                <EditText
+                    android:id="@+id/et_study_name_input"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:autofillHints="no"
+                    android:background="@drawable/bg_lilac_radius_12dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:inputType="none"
-                    android:textColor="@color/black"
-                    app:dropDownBackgroundTint="@color/lilac"
-                    app:simpleItems="@array/study_form_people" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/study_form_name_hint"
+                    android:inputType="textNoSuggestions|textVisiblePassword"
+                    android:maxLength="20"
+                    android:padding="@dimen/space_s_large"
+                    android:textColorHint="@color/manatee"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_study_name" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_create_study"
-                style="@style/WhiteText.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_median"
-                android:layout_marginTop="@dimen/space_x_large"
-                android:layout_marginEnd="@dimen/space_median"
-                android:layout_marginBottom="@dimen/space_median"
-                android:background="@drawable/bg_lilac_radius_12dp"
-                android:backgroundTint="@color/black"
-                android:fontFamily="@font/pretendard_bold"
-                android:gravity="center"
-                android:padding="@dimen/space_median"
-                android:text="@string/study_form_title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_people" />
+                <TextView
+                    android:id="@+id/tv_study_content"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_study_name_input" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/et_study_content_input"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:autofillHints="no"
+                    android:background="@drawable/bg_lilac_radius_12dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:hint="@string/study_form_content_hint"
+                    android:inputType="textNoSuggestions|textVisiblePassword|textMultiLine"
+                    android:maxLength="150"
+                    android:maxLines="5"
+                    android:padding="@dimen/space_s_large"
+                    android:textColorHint="@color/manatee"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_study_content" />
+
+                <TextView
+                    android:id="@+id/tv_study_language"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_language"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_study_content_input" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_language"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:hint="@string/study_form_language_hint"
+                    android:textColorHint="@color/manatee"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_study_language">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/tv_language_dropdown"
+                        style="@style/ManateeText.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/lilac"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:inputType="none"
+                        android:textColor="@color/black"
+                        app:dropDownBackgroundTint="@color/lilac"
+                        app:simpleItems="@array/study_form_language" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_study_period"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_period"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_language" />
+
+                <View
+                    android:id="@+id/view_period_background"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:background="@drawable/bg_lilac_radius_12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_study_period" />
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@string/study_form_start_date"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_period_value"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/view_period_background" />
+
+                <TextView
+                    android:id="@+id/tv_period_value"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/study_form_connect"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_end_date"
+                    app:layout_constraintStart_toEndOf="@+id/tv_start_date"
+                    app:layout_constraintTop_toTopOf="@+id/view_period_background" />
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@string/study_form_end_date"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_period_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_period_value"
+                    app:layout_constraintTop_toTopOf="@+id/view_period_background" />
+
+                <TextView
+                    android:id="@+id/tv_day_time"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_day_time"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_period_background" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow_day_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    app:constraint_referenced_ids="btn_monday,btn_tuesday,btn_wednesday,btn_thursday,btn_friday,btn_saturday,btn_sunday"
+                    app:flow_horizontalGap="5dp"
+                    app:flow_maxElementsWrap="7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_day_time" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_monday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_monday" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_tuesday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_tuesday" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_wednesday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_wednesday" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_thursday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_thursday" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_friday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_friday" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_saturday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_saturday" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_sunday"
+                    style="@style/CategoryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all_sunday" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_day_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flow_day_time"
+                    tools:listitem="@layout/item_day_time" />
+
+                <TextView
+                    android:id="@+id/tv_study_people"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/study_form_people"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_day_time" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_people"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_small"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:hint="@string/study_form_people_hint"
+                    android:textColorHint="@color/manatee"
+                    app:boxBackgroundColor="@color/gallery"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_study_people">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/tv_people_dropdown"
+                        style="@style/ManateeText.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/lilac"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:inputType="none"
+                        android:textColor="@color/black"
+                        app:dropDownBackgroundTint="@color/lilac"
+                        app:simpleItems="@array/study_form_people" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_create_study"
+                    style="@style/WhiteText.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_median"
+                    android:layout_marginTop="@dimen/space_x_large"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:layout_marginBottom="@dimen/space_median"
+                    android:background="@drawable/bg_lilac_radius_12dp"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:padding="@dimen/space_median"
+                    android:text="@string/study_form_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_people" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
