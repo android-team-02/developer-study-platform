@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
@@ -23,12 +24,15 @@ import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.sesac.developer_study_platform.Event
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.DayTime
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
+import com.sesac.developer_study_platform.ui.home.HomeViewModel
 import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
 import com.sesac.developer_study_platform.util.setImage
@@ -49,7 +53,7 @@ class StudyFormFragment : Fragment() {
     private var startDate = ""
     private var endDate = ""
     private lateinit var image: Uri
-    private val studyService = StudyService.create()
+    private val viewModel by viewModels<StudyFormViewModel>()
     private val dayTimeAdapter = DayTimeAdapter(object : DayTimeClickListener {
         override fun onClick(isStartTime: Boolean, dayTime: DayTime) {
             showTimePicker(isStartTime, dayTime)
@@ -102,6 +106,9 @@ class StudyFormFragment : Fragment() {
         }
         setTotalPeopleCount()
         setValidateAll()
+        moveToMessageForm()
+        setBackButton()
+        setNavigation()
     }
 
     private fun setImageButton() {
@@ -360,23 +367,11 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun saveStudy(sid: String, study: Study) {
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                studyService.putStudy(sid, study)
-            }.onFailure {
-                Log.e("StudyFormFragment-saveStudy", it.message ?: "error occurred.")
-            }
-        }
+        viewModel.saveStudy(sid, study)
     }
 
     private fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                studyService.putUserStudy(uid, sid, userStudy)
-            }.onFailure {
-                Log.e("StudyFormFragment-saveUserStudy", it.message ?: "error occurred.")
-            }
-        }
+        viewModel.saveUserStudy(uid, sid, userStudy)
     }
 
     private fun formatStudy(sid: String, uid: String, fileName: String): Study {
@@ -414,6 +409,31 @@ class StudyFormFragment : Fragment() {
             list.add("${it.day} ${it.startTime}~${it.endTime}")
         }
         return list
+    }
+
+    private fun moveToMessageForm() {
+        viewModel.moveToMessage()
+    }
+
+    private fun setBackButton() {
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.moveToBack()
+        }
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                //채팅화면으로 이동
+            }
+        )
     }
 
     override fun onDestroyView() {
