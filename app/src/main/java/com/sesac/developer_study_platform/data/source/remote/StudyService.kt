@@ -61,7 +61,7 @@ interface StudyService {
 
     @GET("users/{uid}.json")
     suspend fun getUserById(
-        @Path("uid") uid: String,
+        @Path("uid") uid: String?,
     ): StudyUser
 
     @GET("userChatRooms/{uid}.json")

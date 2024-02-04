@@ -12,7 +12,7 @@ class StudyRepository {
         return studyService.getStudy(sid)
     }
 
-    suspend fun getUserById(uid: String): StudyUser {
+    suspend fun getUserById(uid: String?): StudyUser {
         return studyService.getUserById(uid)
     }
 
