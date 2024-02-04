@@ -1,25 +1,23 @@
 package com.sesac.developer_study_platform.ui.mypage
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.util.formatCalendarDate
-import com.sesac.developer_study_platform.util.setImage
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -29,13 +27,12 @@ class MyPageFragment : Fragment() {
 
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
-    private val uid = Firebase.auth.uid
-    private val studyList = mutableListOf<UserStudy>()
     private val calendar = Calendar.getInstance()
-    private val studyService = StudyService.create()
+    private val viewModel by viewModels<MyPageViewModel>()
+    private val studyList = mutableListOf<UserStudy>()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            //채팅방으로 이동하기
+            viewModel.moveToMessage()
         }
     })
 
@@ -43,7 +40,7 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyPageBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_page, container, false)
         return binding.root
     }
 
@@ -51,16 +48,13 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mcv.addDecorators(TodayDecorator())
-        binding.tvLogout.setOnClickListener {
-            //로그아웃 다이얼로그로 이동하기
-        }
-        binding.ivBookmark.setOnClickListener {
-            findNavController().navigate(R.id.action_my_to_bookmark)
-        }
         setStudyAdapter()
         loadUser()
         loadStudyList()
         updateSelectedDayStudyList()
+        setBookmarkButton()
+        setDialogButton()
+        setNavigation()
     }
 
     private fun setStudyAdapter() {
@@ -72,32 +66,27 @@ class MyPageFragment : Fragment() {
 
     private fun loadUser() {
         lifecycleScope.launch {
-            runCatching {
-                uid?.let {
-                    studyService.getUserById(uid)
-                }
-            }.onSuccess {
-                it?.let {
-                    binding.tvProfileName.text = it.userId
-                    binding.ivProfileImage.setImage(it.image)
-                }
-            }.onFailure {
-                Log.e("MyPageFragment-loadUser", it.message ?: "error occurred.")
-            }
+            viewModel.loadUser()
         }
+        viewModel.studyUserEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.studyUser = it
+            }
+        )
     }
 
     private fun loadStudyList() {
         lifecycleScope.launch {
-            kotlin.runCatching {
-                studyService.getUserStudyList(uid)
-            }.onSuccess {
-                studyList.addAll(it.values)
-                setDaysDotSpan()
-            }.onFailure {
-                Log.e("MyPageFragment-loadStudyList", it.message ?: "error occurred.")
-            }
+            viewModel.loadStudyList()
         }
+        viewModel.myStudyListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                studyList.addAll(it)
+                setDaysDotSpan()
+            }
+        )
     }
 
     private fun setDaysDotSpan() {
@@ -134,12 +123,12 @@ class MyPageFragment : Fragment() {
 
     private fun updateSelectedDayStudyList() {
         binding.mcv.setOnDateChangedListener { _, date, _ ->
-            val studyList = getStudyList(date)
-            if (studyList.isEmpty()) {
+            val filteredStudyList = getStudyList(date)
+            if (filteredStudyList.isEmpty()) {
                 binding.groupMyStudy.visibility = View.GONE
             } else {
                 binding.groupMyStudy.visibility = View.VISIBLE
-                studyAdapter.submitList(studyList)
+                studyAdapter.submitList(filteredStudyList)
             }
         }
     }
@@ -173,6 +162,39 @@ class MyPageFragment : Fragment() {
 
     private fun formatDays(days: List<String>): List<String> {
         return days.map { it.substringBefore(" ") }.toList()
+    }
+
+    private fun setBookmarkButton() {
+        binding.ivBookmark.setOnClickListener {
+            viewModel.moveToBookmark()
+        }
+    }
+
+    private fun setDialogButton() {
+        binding.tvLogout.setOnClickListener {
+            viewModel.moveToDialog()
+        }
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToBookmarkEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().navigate(R.id.action_my_to_bookmark)
+            }
+        )
+        viewModel.moveToDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                //로그아웃 다이얼로그로 이동
+            }
+        )
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                //채팅방으로 이동
+            }
+        )
     }
 
     override fun onDestroyView() {
