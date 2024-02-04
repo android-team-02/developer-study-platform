@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
@@ -42,6 +43,14 @@ fun loadImage(view: ImageView, study: UserStudy) {
     }.addOnFailureListener {
         Log.e("loadImage", it.message ?: "error occurred.")
     }
+}
+
+@BindingAdapter("glide")
+fun loadGlide(view: ImageView, image: String?) {
+    Glide.with(view.context)
+        .load(image)
+        .centerCrop()
+        .into(view)
 }
 
 @BindingAdapter("visible")
