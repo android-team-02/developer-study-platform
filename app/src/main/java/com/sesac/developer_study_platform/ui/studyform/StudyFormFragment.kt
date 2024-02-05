@@ -346,19 +346,8 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun uploadImage(sid: String, image: Uri, onUploadSuccess: (String) -> Unit) {
-        val storageRef = Firebase.storage.reference
         val fileName = "image_${binding.etStudyNameInput.text}.jpg"
-        val imageRef = storageRef.child("$sid/$fileName")
-
-        imageRef.putFile(image).addOnSuccessListener { taskSnapshot ->
-            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
-                onUploadSuccess(fileName)
-            }?.addOnFailureListener {
-                Log.e("StudyFormFragment-uploadImage", it.message ?: "error occurred.")
-            }
-        }.addOnFailureListener {
-            Log.e("StudyFormFragment-uploadImage", it.message ?: "error occurred.")
-        }
+        viewModel.uploadImage(sid, fileName, image, onUploadSuccess)
     }
 
     private fun saveStudy(sid: String, study: Study) {

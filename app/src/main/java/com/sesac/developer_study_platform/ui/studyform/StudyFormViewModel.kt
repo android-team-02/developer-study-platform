@@ -1,10 +1,13 @@
 package com.sesac.developer_study_platform.ui.studyform
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.Study
@@ -24,7 +27,7 @@ class StudyFormViewModel : ViewModel() {
             kotlin.runCatching {
                 studyRepository.putStudy(sid, study)
             }.onFailure {
-                Log.e("saveStudy", it.message ?: "error occurred.")
+                Log.e("StudyFormViewModel-saveStudy", it.message ?: "error occurred.")
             }
         }
     }
@@ -34,8 +37,23 @@ class StudyFormViewModel : ViewModel() {
             kotlin.runCatching {
                 studyRepository.putUserStudy(uid, sid, userStudy)
             }.onFailure {
-                Log.e("saveUserStudy", it.message ?: "error occurred.")
+                Log.e("StudyFormViewModel-saveUserStudy", it.message ?: "error occurred.")
             }
+        }
+    }
+
+    fun uploadImage(sid: String, name: String, image: Uri, onUploadSuccess: (String) -> Unit) {
+        val storageRef = Firebase.storage.reference
+            .child("$sid/$name")
+
+        storageRef.putFile(image).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
+                onUploadSuccess(name)
+            }?.addOnFailureListener {
+                Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
+            }
+        }.addOnFailureListener {
+            Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
         }
     }
 
