@@ -357,15 +357,11 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun saveStudy(sid: String, study: Study) {
-        lifecycleScope.launch {
-            viewModel.saveStudy(sid, study)
-        }
+        viewModel.saveStudy(sid, study)
     }
 
     private fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
-        lifecycleScope.launch {
-            viewModel.saveUserStudy(uid, sid, userStudy)
-        }
+        viewModel.saveUserStudy(uid, sid, userStudy)
     }
 
     private fun formatStudy(sid: String, uid: String, fileName: String): Study {
