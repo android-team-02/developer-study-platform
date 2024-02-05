@@ -123,12 +123,12 @@ class MyPageFragment : Fragment() {
 
     private fun updateSelectedDayStudyList() {
         binding.mcv.setOnDateChangedListener { _, date, _ ->
-            val filteredStudyList = getStudyList(date)
-            if (filteredStudyList.isEmpty()) {
+            val studyList = getStudyList(date)
+            if (studyList.isEmpty()) {
                 binding.groupMyStudy.visibility = View.GONE
             } else {
                 binding.groupMyStudy.visibility = View.VISIBLE
-                studyAdapter.submitList(filteredStudyList)
+                studyAdapter.submitList(studyList)
             }
         }
     }
