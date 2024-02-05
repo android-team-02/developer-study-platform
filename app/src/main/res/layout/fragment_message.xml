@@ -12,12 +12,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_toolbar"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/app_name"
         app:titleCentered="true"
         app:titleTextAppearance="@style/HomeToolbar"
-        app:titleTextColor="@color/black" />
+        app:titleTextColor="@color/black">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/space_median"
+            android:contentDescription="@string/message_menu_description"
+            android:src="@drawable/ic_menu" />
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_message_list"
@@ -35,7 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_x_small"
-        android:contentDescription="@string/chat_select_image"
+        android:contentDescription="@string/message_select_image"
+        android:padding="@dimen/space_x_small"
         android:src="@drawable/ic_plus_message"
         app:layout_constraintBottom_toBottomOf="@id/et_message_input"
         app:layout_constraintEnd_toStartOf="@id/et_message_input"
@@ -65,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_x_small"
         android:background="@drawable/bg_send_message"
-        android:contentDescription="@string/chat_send_message_description"
+        android:contentDescription="@string/message_send_description"
         android:padding="5dp"
         android:src="@drawable/ic_arrow_upward"
         app:layout_constraintBottom_toBottomOf="@id/et_message_input"
