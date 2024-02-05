@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -31,6 +32,7 @@ import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
 import com.sesac.developer_study_platform.util.setImage
 import com.sesac.developer_study_platform.util.showSnackbar
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -353,11 +355,15 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun saveStudy(sid: String, study: Study) {
-        viewModel.saveStudy(sid, study)
+        lifecycleScope.launch {
+            viewModel.saveStudy(sid, study)
+        }
     }
 
     private fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
-        viewModel.saveUserStudy(uid, sid, userStudy)
+        lifecycleScope.launch {
+            viewModel.saveUserStudy(uid, sid, userStudy)
+        }
     }
 
     private fun formatStudy(sid: String, uid: String, fileName: String): Study {

@@ -40,7 +40,7 @@ class StudyFormViewModel : ViewModel() {
         }
     }
 
-    fun saveStudy(sid: String, study: Study) {
+    suspend fun saveStudy(sid: String, study: Study) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.putStudy(sid, study)
@@ -50,7 +50,7 @@ class StudyFormViewModel : ViewModel() {
         }
     }
 
-    fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
+    suspend fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.putUserStudy(uid, sid, userStudy)
