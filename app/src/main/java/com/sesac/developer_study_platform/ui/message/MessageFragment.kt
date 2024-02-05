@@ -151,9 +151,9 @@ class MessageFragment : Fragment() {
         return lifecycleScope.async {
             kotlin.runCatching {
                 service.getReadUserList(chatRoomId, messageId)
-            }.onSuccess {
-                if (uid != null) {
-                    it[uid] = true
+            }.onSuccess { readUserList ->
+                uid?.let {
+                    readUserList[it] = true
                 }
             }.onFailure {
                 Log.e("MessageFragment-getReadUserList", it.message ?: "error occurred.")
