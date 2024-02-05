@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.storage
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.databinding.ItemImageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemImageSenderBinding
@@ -48,10 +49,12 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
             }
             if (previousMessage.totalMemberCount < message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_new_study_member)
             } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_left_study_member)
             }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
@@ -98,10 +101,12 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : V
             }
             if (previousMessage.totalMemberCount < message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_new_study_member)
             } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_left_study_member)
             }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
@@ -144,10 +149,12 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
             }
             if (previousMessage.totalMemberCount < message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_new_study_member)
             } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_left_study_member)
             }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
@@ -201,10 +208,12 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewH
             }
             if (previousMessage.totalMemberCount < message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "새로운 스터디 멤버가 입장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_new_study_member)
             } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
                 binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = "스터디 멤버가 퇴장하였습니다."
+                binding.tvSystemMessage.text =
+                    itemView.context.getString(R.string.message_left_study_member)
             }
         } else {
             binding.flowSystemMessage.visibility = View.VISIBLE
