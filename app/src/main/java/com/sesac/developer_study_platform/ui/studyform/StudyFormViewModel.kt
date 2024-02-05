@@ -16,13 +16,31 @@ import kotlinx.coroutines.launch
 
 class StudyFormViewModel : ViewModel() {
 
+    private val _uploadImageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val uploadImageEvent: LiveData<Event<String>> = _uploadImageEvent
+
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
     private val _moveToMessageEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<Unit>> = _moveToMessageEvent
 
-    fun saveStudy(sid: String, study: Study) {
+    fun uploadImage(sid: String, name: String, image: Uri) {
+        val storageRef = Firebase.storage.reference
+            .child("$sid/$name")
+
+        storageRef.putFile(image).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
+                _uploadImageEvent.value = Event(name)
+            }?.addOnFailureListener {
+                Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
+            }
+        }.addOnFailureListener {
+            Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
+        }
+    }
+
+    suspend fun saveStudy(sid: String, study: Study) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.putStudy(sid, study)
@@ -32,28 +50,13 @@ class StudyFormViewModel : ViewModel() {
         }
     }
 
-    fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
+    suspend fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.putUserStudy(uid, sid, userStudy)
             }.onFailure {
                 Log.e("StudyFormViewModel-saveUserStudy", it.message ?: "error occurred.")
             }
-        }
-    }
-
-    fun uploadImage(sid: String, name: String, image: Uri, onUploadSuccess: (String) -> Unit) {
-        val storageRef = Firebase.storage.reference
-            .child("$sid/$name")
-
-        storageRef.putFile(image).addOnSuccessListener { taskSnapshot ->
-            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
-                onUploadSuccess(name)
-            }?.addOnFailureListener {
-                Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
-            }
-        }.addOnFailureListener {
-            Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
         }
     }
 
