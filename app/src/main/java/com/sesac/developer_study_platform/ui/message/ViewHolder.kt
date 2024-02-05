@@ -40,39 +40,41 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
     ViewHolder(binding) {
 
     override fun bind(message: Message, previousMessage: Message?) {
-        if (previousMessage != null) {
-            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = message.timestamp.formatDate()
+        with(binding) {
+            if (previousMessage != null) {
+                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text = message.timestamp.formatDate()
+                } else {
+                    flowSystemMessage.visibility = View.GONE
+                }
+                if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_new_study_member)
+                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_left_study_member)
+                }
             } else {
-                binding.flowSystemMessage.visibility = View.GONE
+                flowSystemMessage.visibility = View.VISIBLE
+                tvSystemMessage.text = message.timestamp.formatDate()
             }
-            if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_new_study_member)
-            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_left_study_member)
+            Glide.with(itemView)
+                .load(message.studyUser?.image)
+                .centerCrop()
+                .into(ivUserImage)
+            ivAdmin.isVisible = message.isAdmin
+            tvUserId.text = message.studyUser?.userId
+            tvMessage.text = message.message
+            tvTimestamp.text = message.timestamp.formatTime()
+            if (getUnreadUserCount(message) > 0) {
+                tvUnreadUserCount.visibility = View.VISIBLE
+                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
+            } else {
+                tvUnreadUserCount.visibility = View.GONE
             }
-        } else {
-            binding.flowSystemMessage.visibility = View.VISIBLE
-            binding.tvSystemMessage.text = message.timestamp.formatDate()
-        }
-        Glide.with(itemView)
-            .load(message.studyUser?.image)
-            .centerCrop()
-            .into(binding.ivUserImage)
-        binding.ivAdmin.isVisible = message.isAdmin
-        binding.tvUserId.text = message.studyUser?.userId
-        binding.tvMessage.text = message.message
-        binding.tvTimestamp.text = message.timestamp.formatTime()
-        if (getUnreadUserCount(message) > 0) {
-            binding.tvUnreadUserCount.visibility = View.VISIBLE
-            binding.tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-        } else {
-            binding.tvUnreadUserCount.visibility = View.GONE
         }
     }
 
@@ -92,33 +94,35 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
 class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : ViewHolder(binding) {
 
     override fun bind(message: Message, previousMessage: Message?) {
-        if (previousMessage != null) {
-            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = message.timestamp.formatDate()
+        with(binding) {
+            if (previousMessage != null) {
+                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text = message.timestamp.formatDate()
+                } else {
+                    flowSystemMessage.visibility = View.GONE
+                }
+                if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_new_study_member)
+                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_left_study_member)
+                }
             } else {
-                binding.flowSystemMessage.visibility = View.GONE
+                flowSystemMessage.visibility = View.VISIBLE
+                tvSystemMessage.text = message.timestamp.formatDate()
             }
-            if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_new_study_member)
-            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_left_study_member)
+            tvMessage.text = message.message
+            tvTimestamp.text = message.timestamp.formatTime()
+            if (getUnreadUserCount(message) > 0) {
+                tvUnreadUserCount.visibility = View.VISIBLE
+                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
+            } else {
+                tvUnreadUserCount.visibility = View.GONE
             }
-        } else {
-            binding.flowSystemMessage.visibility = View.VISIBLE
-            binding.tvSystemMessage.text = message.timestamp.formatDate()
-        }
-        binding.tvMessage.text = message.message
-        binding.tvTimestamp.text = message.timestamp.formatTime()
-        if (getUnreadUserCount(message) > 0) {
-            binding.tvUnreadUserCount.visibility = View.VISIBLE
-            binding.tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-        } else {
-            binding.tvUnreadUserCount.visibility = View.GONE
         }
     }
 
@@ -140,44 +144,46 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
     private val imageAdapter = ImageAdapter()
 
     override fun bind(message: Message, previousMessage: Message?) {
-        if (previousMessage != null) {
-            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = message.timestamp.formatDate()
+        with(binding) {
+            if (previousMessage != null) {
+                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text = message.timestamp.formatDate()
+                } else {
+                    flowSystemMessage.visibility = View.GONE
+                }
+                if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_new_study_member)
+                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_left_study_member)
+                }
             } else {
-                binding.flowSystemMessage.visibility = View.GONE
+                flowSystemMessage.visibility = View.VISIBLE
+                tvSystemMessage.text = message.timestamp.formatDate()
             }
-            if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_new_study_member)
-            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_left_study_member)
+            Glide.with(itemView)
+                .load(message.studyUser?.image)
+                .centerCrop()
+                .into(ivUserImage)
+            ivAdmin.isVisible = message.isAdmin
+            tvUserId.text = message.studyUser?.userId
+            getImageList(message).addOnSuccessListener {
+                rvImageList.adapter = imageAdapter
+                imageAdapter.submitList(it.items)
+            }.addOnFailureListener {
+                Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
             }
-        } else {
-            binding.flowSystemMessage.visibility = View.VISIBLE
-            binding.tvSystemMessage.text = message.timestamp.formatDate()
-        }
-        Glide.with(itemView)
-            .load(message.studyUser?.image)
-            .centerCrop()
-            .into(binding.ivUserImage)
-        binding.ivAdmin.isVisible = message.isAdmin
-        binding.tvUserId.text = message.studyUser?.userId
-        getImageList(message).addOnSuccessListener {
-            binding.rvImageList.adapter = imageAdapter
-            imageAdapter.submitList(it.items)
-        }.addOnFailureListener {
-            Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
-        }
-        binding.tvTimestamp.text = message.timestamp.formatTime()
-        if (getUnreadUserCount(message) > 0) {
-            binding.tvUnreadUserCount.visibility = View.VISIBLE
-            binding.tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-        } else {
-            binding.tvUnreadUserCount.visibility = View.GONE
+            tvTimestamp.text = message.timestamp.formatTime()
+            if (getUnreadUserCount(message) > 0) {
+                tvUnreadUserCount.visibility = View.VISIBLE
+                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
+            } else {
+                tvUnreadUserCount.visibility = View.GONE
+            }
         }
     }
 
@@ -199,38 +205,40 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewH
     private val imageAdapter = ImageAdapter()
 
     override fun bind(message: Message, previousMessage: Message?) {
-        if (previousMessage != null) {
-            if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text = message.timestamp.formatDate()
+        with(binding) {
+            if (previousMessage != null) {
+                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text = message.timestamp.formatDate()
+                } else {
+                    flowSystemMessage.visibility = View.GONE
+                }
+                if (previousMessage.totalMemberCount < message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_new_study_member)
+                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
+                    flowSystemMessage.visibility = View.VISIBLE
+                    tvSystemMessage.text =
+                        itemView.context.getString(R.string.message_left_study_member)
+                }
             } else {
-                binding.flowSystemMessage.visibility = View.GONE
+                flowSystemMessage.visibility = View.VISIBLE
+                tvSystemMessage.text = message.timestamp.formatDate()
             }
-            if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_new_study_member)
-            } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                binding.flowSystemMessage.visibility = View.VISIBLE
-                binding.tvSystemMessage.text =
-                    itemView.context.getString(R.string.message_left_study_member)
+            getImageList(message).addOnSuccessListener {
+                rvImageList.adapter = imageAdapter
+                imageAdapter.submitList(it.items)
+            }.addOnFailureListener {
+                Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
             }
-        } else {
-            binding.flowSystemMessage.visibility = View.VISIBLE
-            binding.tvSystemMessage.text = message.timestamp.formatDate()
-        }
-        getImageList(message).addOnSuccessListener {
-            binding.rvImageList.adapter = imageAdapter
-            imageAdapter.submitList(it.items)
-        }.addOnFailureListener {
-            Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
-        }
-        binding.tvTimestamp.text = message.timestamp.formatTime()
-        if (getUnreadUserCount(message) > 0) {
-            binding.tvUnreadUserCount.visibility = View.VISIBLE
-            binding.tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-        } else {
-            binding.tvUnreadUserCount.visibility = View.GONE
+            tvTimestamp.text = message.timestamp.formatTime()
+            if (getUnreadUserCount(message) > 0) {
+                tvUnreadUserCount.visibility = View.VISIBLE
+                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
+            } else {
+                tvUnreadUserCount.visibility = View.GONE
+            }
         }
     }
 
