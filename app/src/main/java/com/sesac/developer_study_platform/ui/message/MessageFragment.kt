@@ -66,7 +66,7 @@ class MessageFragment : Fragment() {
             }.onSuccess {
                 binding.toolbar.title = it.name
             }.onFailure {
-                Log.e("MessageFragment-getStudyName", it.message ?: "error occurred.")
+                Log.e("MessageFragment-loadStudyName", it.message ?: "error occurred.")
             }
         }
     }
@@ -239,7 +239,7 @@ class MessageFragment : Fragment() {
                     }
                 }
             }.onFailure {
-                Log.e("MessageFragment-getStudyMemberList", it.message ?: "error occurred.")
+                Log.e("MessageFragment-loadStudyMemberList", it.message ?: "error occurred.")
             }
         }
     }
@@ -251,7 +251,7 @@ class MessageFragment : Fragment() {
             }.onSuccess {
                 updateUnreadUserCount(member, it)
             }.onFailure {
-                Log.e("MessageFragment-getUnreadUserList", it.message ?: "error occurred.")
+                Log.e("MessageFragment-loadUnreadUserList", it.message ?: "error occurred.")
             }
         }
     }
