@@ -62,7 +62,7 @@ class MessageFragment : Fragment() {
     private fun loadStudyName() {
         lifecycleScope.launch {
             kotlin.runCatching {
-                service.getDetail(chatRoomId)
+                service.getStudy(chatRoomId)
             }.onSuccess {
                 binding.toolbar.title = it.name
             }.onFailure {

@@ -1,185 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name"
-        app:titleTextAppearance="@style/HomeToolbar"
-        app:titleTextColor="@color/black" />
+    <data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        <variable
+            name="isMyStudyListEmpty"
+            type="Boolean" />
+    </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/space_median"
-            android:paddingVertical="@dimen/space_small">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_my_study"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/all_my_study"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/ToolbarText" />
 
-            <TextView
-                android:id="@+id/tv_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_medium"
-                android:text="@string/home_detail"
-                android:textColor="@color/manatee"
-                android:textSize="11sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_my_study"
-                app:layout_constraintEnd_toEndOf="parent" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_study_form"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="view_study_form,iv_plus,tv_study_form" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/space_median"
+                android:paddingVertical="@dimen/space_small">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/view_study_form"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/space_median"
-                android:background="@color/lilac"
-                app:layout_constraintDimensionRatio="3:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_my_study"
-                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+                <TextView
+                    android:id="@+id/tv_my_study"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/all_my_study"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:contentDescription="@string/home_icon_plus_description"
-                android:src="@drawable/ic_plus_home"
-                app:layout_constraintEnd_toEndOf="@id/view_study_form"
-                app:layout_constraintStart_toStartOf="@id/view_study_form"
-                app:layout_constraintTop_toTopOf="@id/view_study_form" />
+                <TextView
+                    android:id="@+id/tv_detail"
+                    style="@style/ManateeText.XSmall"
+                    visible="@{!isMyStudyListEmpty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/home_detail"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_my_study"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_study_form"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_small"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/all_study_form"
-                android:textColor="@color/manatee"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@id/view_study_form"
-                app:layout_constraintStart_toStartOf="@id/view_study_form"
-                app:layout_constraintTop_toBottomOf="@id/iv_plus" />
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_study_form"
+                    visible="@{isMyStudyListEmpty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="view_study_form,iv_plus,tv_study_form" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_study_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_median"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_my_study" />
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/view_study_form"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/space_small"
+                    android:background="@color/lilac"
+                    app:layout_constraintDimensionRatio="3:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_study"
+                    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
-            <TextView
-                android:id="@+id/tv_search_study_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_median"
-                android:fontFamily="@font/pretendard_bold"
-                android:text="@string/home_search_study_category"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_study_list"
-                app:layout_goneMarginTop="156dp" />
+                <ImageView
+                    android:id="@+id/iv_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:contentDescription="@string/home_icon_plus_description"
+                    android:src="@drawable/ic_plus_home"
+                    app:layout_constraintEnd_toEndOf="@id/view_study_form"
+                    app:layout_constraintStart_toStartOf="@id/view_study_form"
+                    app:layout_constraintTop_toTopOf="@id/view_study_form" />
 
-            <androidx.constraintlayout.helper.widget.Flow
-                android:layout_width="0dp"
-                android:layout_height="270dp"
-                android:layout_marginTop="@dimen/space_median"
-                app:constraint_referenced_ids="tv_android,tv_ios,tv_front_end,tv_back_end,tv_ai,tv_etc"
-                app:flow_horizontalGap="@dimen/space_small"
-                app:flow_maxElementsWrap="2"
-                app:flow_verticalGap="@dimen/space_small"
-                app:flow_wrapMode="aligned"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_search_study_category" />
+                <TextView
+                    android:id="@+id/tv_study_form"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_small"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/all_study_form"
+                    android:textColor="@color/manatee"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/view_study_form"
+                    app:layout_constraintStart_toStartOf="@id/view_study_form"
+                    app:layout_constraintTop_toBottomOf="@id/iv_plus" />
 
-            <TextView
-                android:id="@+id/tv_android"
-                style="@style/StudyCategory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_android"
-                android:text="@string/all_android" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_study_list"
+                    visible="@{!isMyStudyListEmpty}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_study" />
 
-            <TextView
-                android:id="@+id/tv_ios"
-                style="@style/StudyCategory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_ios"
-                android:text="@string/all_ios" />
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="rv_study_list,view_study_form" />
 
-            <TextView
-                android:id="@+id/tv_front_end"
-                style="@style/StudyCategory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_front_end"
-                android:text="@string/all_front_end" />
+                <TextView
+                    android:id="@+id/tv_search_study_category"
+                    style="@style/BlackText.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_small"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/all_search_study_category"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/barrier" />
 
-            <TextView
-                android:id="@+id/tv_back_end"
-                style="@style/StudyCategory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_back_end"
-                android:text="@string/all_back_end" />
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:layout_width="0dp"
+                    android:layout_height="270dp"
+                    android:layout_marginTop="@dimen/space_small"
+                    app:constraint_referenced_ids="tv_android,tv_ios,tv_front_end,tv_back_end,tv_ai,tv_etc"
+                    app:flow_horizontalGap="@dimen/space_small"
+                    app:flow_maxElementsWrap="2"
+                    app:flow_verticalGap="@dimen/space_small"
+                    app:flow_wrapMode="aligned"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_search_study_category" />
 
-            <TextView
-                android:id="@+id/tv_ai"
-                style="@style/StudyCategory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_ai"
-                android:text="@string/all_ai" />
+                <TextView
+                    android:id="@+id/tv_android"
+                    style="@style/BlackText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_peach_radius_12dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text="@string/all_android" />
 
-            <TextView
-                android:id="@+id/tv_etc"
-                style="@style/StudyCategory"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/bg_etc"
-                android:text="@string/all_etc" />
+                <TextView
+                    android:id="@+id/tv_ios"
+                    style="@style/BlackText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_salomie_radius_12dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text="@string/all_ios" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_front_end"
+                    style="@style/BlackText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_perfume_radius_12dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text="@string/all_front_end" />
+
+                <TextView
+                    android:id="@+id/tv_back_end"
+                    style="@style/BlackText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_alto_radius_12dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text="@string/all_back_end" />
+
+                <TextView
+                    android:id="@+id/tv_ai"
+                    style="@style/BlackText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_tropical_blue_radius_12dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text="@string/all_ai" />
+
+                <TextView
+                    android:id="@+id/tv_etc"
+                    style="@style/BlackText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_french_pass_radius_12dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:gravity="center"
+                    android:text="@string/all_etc" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

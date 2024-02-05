@@ -18,7 +18,7 @@ import com.sesac.developer_study_platform.databinding.ItemImageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemImageSenderBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageSenderBinding
-import com.sesac.developer_study_platform.util.formatDate
+import com.sesac.developer_study_platform.util.formatSystemMessage
 import com.sesac.developer_study_platform.util.formatTime
 
 abstract class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -42,9 +42,9 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
     override fun bind(message: Message, previousMessage: Message?) {
         with(binding) {
             if (previousMessage != null) {
-                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
                     flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatDate()
+                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
                 } else {
                     flowSystemMessage.visibility = View.GONE
                 }
@@ -59,7 +59,7 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
                 }
             } else {
                 flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatDate()
+                tvSystemMessage.text = message.timestamp.formatSystemMessage()
             }
             Glide.with(itemView)
                 .load(message.studyUser?.image)
@@ -96,9 +96,9 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : V
     override fun bind(message: Message, previousMessage: Message?) {
         with(binding) {
             if (previousMessage != null) {
-                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
                     flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatDate()
+                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
                 } else {
                     flowSystemMessage.visibility = View.GONE
                 }
@@ -113,7 +113,7 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : V
                 }
             } else {
                 flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatDate()
+                tvSystemMessage.text = message.timestamp.formatSystemMessage()
             }
             tvMessage.text = message.message
             tvTimestamp.text = message.timestamp.formatTime()
@@ -146,9 +146,9 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
     override fun bind(message: Message, previousMessage: Message?) {
         with(binding) {
             if (previousMessage != null) {
-                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
                     flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatDate()
+                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
                 } else {
                     flowSystemMessage.visibility = View.GONE
                 }
@@ -163,7 +163,7 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
                 }
             } else {
                 flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatDate()
+                tvSystemMessage.text = message.timestamp.formatSystemMessage()
             }
             Glide.with(itemView)
                 .load(message.studyUser?.image)
@@ -207,9 +207,9 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewH
     override fun bind(message: Message, previousMessage: Message?) {
         with(binding) {
             if (previousMessage != null) {
-                if (previousMessage.timestamp.formatDate() < message.timestamp.formatDate()) {
+                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
                     flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatDate()
+                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
                 } else {
                     flowSystemMessage.visibility = View.GONE
                 }
@@ -224,7 +224,7 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewH
                 }
             } else {
                 flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatDate()
+                tvSystemMessage.text = message.timestamp.formatSystemMessage()
             }
             getImageList(message).addOnSuccessListener {
                 rvImageList.adapter = imageAdapter

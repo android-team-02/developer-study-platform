@@ -1,51 +1,51 @@
 package com.sesac.developer_study_platform.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Category
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.ui.UserStudyClickListener
-import com.sesac.developer_study_platform.data.UserStudy
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
-import com.sesac.developer_study_platform.ui.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.ui.common.StudyAdapter
+import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val studyAdapter = StudyAdapter(object : UserStudyClickListener {
-        override fun onClick(userStudy: UserStudy) {}
+    private val studyAdapter = StudyAdapter(object : StudyClickListener {
+        override fun onClick(sid: String) {
+            // TODO 채팅 화면으로 이동
+        }
     })
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDetailButton()
-        binding.rvStudyList.adapter = studyAdapter
-        binding.rvStudyList.addItemDecoration(
-            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
-        )
+        setStudyAdapter()
         loadStudyList()
+        setDetailButton()
+        setStudyFormButton()
         with(binding) {
             setCategoryButton(tvAndroid)
             setCategoryButton(tvIos)
@@ -54,43 +54,49 @@ class HomeFragment : Fragment() {
             setCategoryButton(tvAi)
             setCategoryButton(tvEtc)
         }
+        setNavigation()
+    }
+
+    private fun setStudyAdapter() {
+        binding.rvStudyList.adapter = studyAdapter
+        binding.rvStudyList.addItemDecoration(
+            SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
+        )
+    }
+
+    private fun loadStudyList() {
+        lifecycleScope.launch {
+            viewModel.loadStudyList()
+        }
+        viewModel.myStudyListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                studyAdapter.submitList(it)
+            }
+        )
+        viewModel.studyFormButtonEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.isMyStudyListEmpty = it
+            }
+        )
     }
 
     private fun setDetailButton() {
         binding.tvDetail.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeToJoinStudyList()
-            findNavController().navigate(action)
+            viewModel.moveToMyStudy()
         }
     }
 
-    private fun loadStudyList() {
-        val service = StudyService.create()
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getUserStudyList(Firebase.auth.uid)
-            }.onSuccess {
-                setUserStudyList(it)
-            }.onFailure {
-                Log.e("HomeFragment", it.message ?: "error occurred.")
-            }
-        }
-    }
-
-    private fun setUserStudyList(userStudyList: Map<String, UserStudy>?) {
-        if (userStudyList != null) {
-            studyAdapter.submitList(userStudyList.values.toList())
-        } else {
-            binding.groupStudyForm.visibility = View.VISIBLE
-            binding.rvStudyList.visibility = View.GONE
+    private fun setStudyFormButton() {
+        binding.viewStudyForm.setOnClickListener {
+            viewModel.moveToStudyForm()
         }
     }
 
     private fun setCategoryButton(view: TextView) {
         view.setOnClickListener {
-            val action = HomeFragmentDirections.actionGlobalToSearchCategory(
-                getPosition(view.text.toString())
-            )
-            findNavController().navigate(action)
+            viewModel.moveToCategory(view.text.toString())
         }
     }
 
@@ -102,6 +108,31 @@ class HomeFragment : Fragment() {
                 category.replace("-", "").uppercase()
             ).ordinal
         }
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToMyStudyEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = HomeFragmentDirections.actionHomeToMyStudy()
+                findNavController().navigate(action)
+            }
+        )
+        viewModel.moveToStudyFormEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().navigate(R.id.action_home_to_study_form)
+            }
+        )
+        viewModel.moveToCategoryEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = HomeFragmentDirections.actionGlobalToSearchCategory(
+                    getPosition(it)
+                )
+                findNavController().navigate(action)
+            }
+        )
     }
 
     override fun onDestroyView() {

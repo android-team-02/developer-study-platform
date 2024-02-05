@@ -6,10 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.data.DayTime
-import com.sesac.developer_study_platform.ui.DayTimeClickListener
 import com.sesac.developer_study_platform.databinding.ItemDayTimeBinding
 
-class DayTimeAdapter(private val dayTimeClickListener: DayTimeClickListener) :
+class DayTimeAdapter(private val clickListener: DayTimeClickListener) :
     ListAdapter<DayTime, DayTimeAdapter.DayTimeViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayTimeViewHolder {
@@ -17,26 +16,21 @@ class DayTimeAdapter(private val dayTimeClickListener: DayTimeClickListener) :
     }
 
     override fun onBindViewHolder(holder: DayTimeViewHolder, position: Int) {
-        return holder.bind(currentList[position], dayTimeClickListener)
+        return holder.bind(currentList[position], clickListener)
     }
 
     class DayTimeViewHolder private constructor(private val binding: ItemDayTimeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(daytime: DayTime, dayTimeClickListener: DayTimeClickListener) {
-            setDayTimeInfo(daytime, dayTimeClickListener)
-        }
-
-        private fun setDayTimeInfo(daytime: DayTime, dayTimeClickListener: DayTimeClickListener) {
+        fun bind(daytime: DayTime, clickListener: DayTimeClickListener) {
             binding.tvDay.text = daytime.day
             binding.tvStartTime.text = daytime.startTime ?: "00:00"
             binding.tvEndTime.text = daytime.endTime ?: "00:00"
             binding.tvStartTime.setOnClickListener {
-                dayTimeClickListener.onClick(daytime, true)
+                clickListener.onClick(true, daytime)
             }
-
             binding.tvEndTime.setOnClickListener {
-                dayTimeClickListener.onClick(daytime, false)
+                clickListener.onClick(false, daytime)
             }
         }
 

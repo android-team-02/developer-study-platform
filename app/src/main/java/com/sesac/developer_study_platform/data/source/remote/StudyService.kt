@@ -5,6 +5,7 @@ import com.sesac.developer_study_platform.BuildConfig
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.UserChatRoom
 import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -25,6 +26,19 @@ interface StudyService {
         @Body user: StudyUser
     )
 
+    @PUT("studies/{sid}.json")
+    suspend fun putStudy(
+        @Path("sid") sid: String,
+        @Body study: Study
+    )
+
+    @PUT("userStudyRooms/{uid}/{sid}.json")
+    suspend fun putUserStudy(
+        @Path("uid") uid: String,
+        @Path("sid") sid: String,
+        @Body userStudy: UserStudy
+    )
+
     @GET("userStudyRooms/{uid}.json")
     suspend fun getUserStudyList(
         @Path("uid") uid: String?
@@ -36,9 +50,16 @@ interface StudyService {
         @Query("orderBy") orderBy: String = "\"category\""
     ): Map<String, Study>
 
+    @GET("studies.json")
+    suspend fun getSearchStudyList(
+        @Query("startAt") startAt: String,
+        @Query("endAt") endAt: String,
+        @Query("orderBy") orderBy: String = "\"name\""
+    ): Map<String, Study>
+
     @GET("studies/{sid}.json")
-    suspend fun getDetail(
-        @Path("sid") sid: String,
+    suspend fun getStudy(
+        @Path("sid") sid: String
     ): Study
 
     @GET("users/{uid}.json")
@@ -98,6 +119,11 @@ interface StudyService {
         @Path("chatRoomId") chatRoomId: String,
         @Body lastMessage: Message
     )
+
+    @GET("userChatRooms/{uid}.json")
+    suspend fun getUserChatRoomList(
+        @Path("uid") uid: String?
+    ): Map<String, UserChatRoom>
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL

@@ -1,10 +1,10 @@
 package com.sesac.developer_study_platform.ui.main
 
 import android.animation.ObjectAnimator
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -27,7 +27,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setBottomNavigationView()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bnv.setupWithNavController(navController)
+
+        hideBottomNavigationView(navController)
     }
 
     private fun startSplash() {
@@ -43,19 +47,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBottomNavigationView() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bnv.setupWithNavController(navController)
-        hideBottomNavigationView(navController)
-    }
-
     private fun hideBottomNavigationView(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bnv.visibility = when (destination.id) {
                 R.id.dest_login -> View.GONE
                 R.id.dest_study_form -> View.GONE
+                R.id.dest_search_result -> View.GONE
                 R.id.dest_detail -> View.GONE
+                R.id.dest_profile -> View.GONE
                 else -> View.VISIBLE
             }
         }

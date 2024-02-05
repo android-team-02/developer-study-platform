@@ -9,12 +9,15 @@
         android:id="@+id/action_global_to_search_category"
         app:destination="@id/dest_search_category" />
 
+    <action
+        android:id="@+id/action_global_to_detail"
+        app:destination="@+id/dest_detail" />
+
     <fragment
         android:id="@+id/dest_login"
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
-
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/dest_home"
@@ -28,19 +31,18 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_home_to_join_study_list"
-            app:destination="@id/dest_join_study_list" />
+            android:id="@+id/action_home_to_my_study"
+            app:destination="@id/dest_my_study" />
+        <action
+            android:id="@+id/action_home_to_study_form"
+            app:destination="@id/dest_study_form" />
     </fragment>
 
     <fragment
-        android:id="@+id/dest_join_study_list"
-        android:name="com.sesac.developer_study_platform.ui.joinstudylist.JoinStudyListFragment"
-        android:label="fragment_join_study_list"
-        tools:layout="@layout/fragment_join_study_list">
-        <action
-            android:id="@+id/action_join_study_list_to_detail"
-            app:destination="@id/dest_detail" />
-    </fragment>
+        android:id="@+id/dest_my_study"
+        android:name="com.sesac.developer_study_platform.ui.mystudy.MyStudyFragment"
+        android:label="fragment_my_study"
+        tools:layout="@layout/fragment_my_study" />
 
     <fragment
         android:id="@+id/dest_detail"
@@ -63,15 +65,58 @@
     </fragment>
 
     <fragment
+        android:id="@+id/dest_search"
+        android:name="com.sesac.developer_study_platform.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_search_to_search_result"
+            app:destination="@id/dest_search_result" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_search_result"
+        android:name="com.sesac.developer_study_platform.ui.searchresult.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" />
+
+    <fragment
         android:id="@+id/dest_study_form"
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
         tools:layout="@layout/fragment_study_form" />
 
-    <!-- TODO 채팅방 목록 구현되면 변경 -->
+    <fragment
+        android:id="@+id/dest_profile"
+        android:name="com.sesac.developer_study_platform.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
     <fragment
         android:id="@+id/dest_chat"
-        android:name="com.sesac.developer_study_platform.ui.message.MessageFragment"
-        android:label="fragment_message_list"
-        tools:layout="@layout/fragment_message" />
+        android:name="com.sesac.developer_study_platform.ui.chatroom.ChatRoomFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room" />
+
+    <fragment
+        android:id="@+id/dest_my"
+        android:name="com.sesac.developer_study_platform.ui.mypage.MyPageFragment"
+        android:label="fragment_my_page"
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_my_to_bookmark"
+            app:destination="@id/dest_bookmark" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_bookmark"
+        android:name="com.sesac.developer_study_platform.ui.bookmark.BookmarkFragment"
+        android:label="fragment_bookmark"
+        tools:layout="@layout/fragment_bookmark" />
+
+    <fragment
+        android:id="@+id/dest_category"
+        android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
 </navigation>

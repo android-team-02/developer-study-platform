@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:titleCentered="true"
-        app:titleTextAppearance="@style/HomeToolbar"
+        app:titleTextAppearance="@style/ToolbarText"
         app:titleTextColor="@color/black">
 
         <ImageView
@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginVertical="@dimen/space_x_small"
-        android:background="@drawable/bg_message_input"
+        android:background="@drawable/bg_stroke_black_radius_16dp"
         android:fontFamily="@font/pretendard_medium"
         android:hint="@null"
         android:importantForAutofill="no"
@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/space_x_small"
-        android:background="@drawable/bg_send_message"
+        android:background="@drawable/bg_oval_black"
         android:contentDescription="@string/message_send_description"
         android:padding="5dp"
         android:src="@drawable/ic_arrow_upward"
