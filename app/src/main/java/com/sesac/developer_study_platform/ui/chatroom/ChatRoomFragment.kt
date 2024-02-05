@@ -1,17 +1,16 @@
 package com.sesac.developer_study_platform.ui.chatroom
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration.VERTICAL
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.sesac.developer_study_platform.data.source.remote.StudyService
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.databinding.FragmentChatRoomBinding
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import kotlinx.coroutines.launch
@@ -20,9 +19,10 @@ class ChatRoomFragment : Fragment() {
 
     private var _binding: FragmentChatRoomBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<ChatRoomViewModel>()
     private val chatRoomAdapter = ChatRoomAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // TODO 채팅 화면으로 이동
+            viewModel.moveToMessage(sid)
         }
     })
 
@@ -38,27 +38,38 @@ class ChatRoomFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvChatRoomList.adapter = chatRoomAdapter
-        binding.rvChatRoomList.addItemDecoration(
-            DividerItemDecoration(
-                binding.rvChatRoomList.context,
-                VERTICAL
-            )
-        )
-        loadUserChatRoomList()
+        setChatRoomAdapter()
+        loadChatRoomList()
+        setNavigation()
     }
 
-    private fun loadUserChatRoomList() {
-        val service = StudyService.create()
+    private fun setChatRoomAdapter() {
+        binding.rvChatRoomList.adapter = chatRoomAdapter
+        binding.rvChatRoomList.addItemDecoration(
+            DividerItemDecoration(binding.rvChatRoomList.context, VERTICAL)
+        )
+    }
+
+    private fun loadChatRoomList() {
         lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getUserChatRoomList(Firebase.auth.uid)
-            }.onSuccess {
-                chatRoomAdapter.submitList(it.values.toList())
-            }.onFailure {
-                Log.d("ChatRoomFragment", it.message ?: "error occurred.")
-            }
+            viewModel.loadStudyList()
         }
+        viewModel.chatRoomListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                chatRoomAdapter.submitList(it)
+            }
+        )
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = ChatRoomFragmentDirections.actionGlobalToMessage(it)
+                findNavController().navigate(action)
+            }
+        )
     }
 
     override fun onDestroyView() {
