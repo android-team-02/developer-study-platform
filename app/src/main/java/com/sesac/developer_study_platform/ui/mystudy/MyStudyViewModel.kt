@@ -27,7 +27,7 @@ class MyStudyViewModel : ViewModel() {
             }.onSuccess {
                 _myStudyListEvent.value = Event(it.values.toList())
             }.onFailure {
-                Log.e("loadStudyList", it.message ?: "error occurred.")
+                Log.e("MyStudyViewModel-loadStudyList", it.message ?: "error occurred.")
             }
         }
     }
