@@ -17,28 +17,23 @@ import com.sesac.developer_study_platform.StudyApplication.Companion.githubRepos
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.local.UserPreferencesRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
 
-    private var _autoLoginEvent : MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
-    val autoLoginEvent : LiveData<Event<Boolean>> = _autoLoginEvent
+    private var _autoLoginEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val autoLoginEvent: LiveData<Event<Boolean>> = _autoLoginEvent
 
-    private val _loginFailureEvent : MutableLiveData<Event<Unit>> = MutableLiveData()
-    val loginFailureEvent : LiveData<Event<Unit>> = _loginFailureEvent
+    private val _loginFailureEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val loginFailureEvent: LiveData<Event<Unit>> = _loginFailureEvent
 
-    private val _moveToHomeEvent : MutableLiveData<Event<Unit>> = MutableLiveData()
-    val moveToHome : LiveData<Event<Unit>> = _moveToHomeEvent
+    private val _moveToHomeEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val moveToHome: LiveData<Event<Unit>> = _moveToHomeEvent
 
     fun checkAutoLogin() {
         viewModelScope.launch {
-            var isFirst = true
-            userPreferencesRepository.autoLogin.collect {
-                if (isFirst) {
-                    _autoLoginEvent.value = Event(it)
-                }
-                isFirst = false
-            }
+            _autoLoginEvent.value = Event(userPreferencesRepository.autoLogin.first())
         }
     }
 
