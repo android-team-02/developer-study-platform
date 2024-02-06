@@ -109,7 +109,11 @@
         android:id="@+id/dest_my"
         android:name="com.sesac.developer_study_platform.ui.mypage.MyPageFragment"
         android:label="fragment_my_page"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_my_to_bookmark"
+            app:destination="@id/dest_bookmark" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_bookmark"
