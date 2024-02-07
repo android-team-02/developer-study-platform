@@ -1,6 +1,7 @@
 package com.sesac.developer_study_platform.ui.profile
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.data.Repository
 import com.sesac.developer_study_platform.databinding.ItemRepositoryBinding
-import com.sesac.developer_study_platform.util.formatDate
 
 class RepositoryAdapter(private val languageList: Map<String, String?>) :
     ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(diffUtil) {
@@ -26,26 +26,23 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(repository: Repository, languageList: Map<String, String?>) {
-            with(binding) {
-                tvRepositoryName.text = repository.name
-                setLanguage(repository, languageList)
-                tvRepositoryStar.text = repository.star.toString()
-                tvRepositoryFork.text = repository.fork.toString()
-                tvRepositoryIssue.text = repository.issue.toString()
-                tvRepositoryCreatedAt.text = repository.createdAt?.formatDate()
-            }
+            binding.repository = repository
+            setLanguage(repository, languageList)
+            binding.executePendingBindings()
+
+            Log.d("repolang", "Repository Language: ${repository.language}")
         }
 
         private fun setLanguage(repository: Repository, languageList: Map<String, String?>) {
             with(binding) {
                 if (repository.language.isNullOrEmpty()) {
-                    ivRepositoryLanguage.visibility = View.GONE
+                    ivRepositoryLanguageColor.visibility = View.GONE
                     tvRepositoryLanguage.visibility = View.GONE
                 } else {
                     val color = languageList.getValue(repository.language.toString())
-                    ivRepositoryLanguage.visibility = View.VISIBLE
+                    ivRepositoryLanguageColor.visibility = View.VISIBLE
                     tvRepositoryLanguage.visibility = View.VISIBLE
-                    ivRepositoryLanguage.setBackgroundColor(Color.parseColor(color))
+                    ivRepositoryLanguageColor.setBackgroundColor(Color.parseColor(color))
                     tvRepositoryLanguage.text = repository.language
                 }
             }
@@ -76,5 +73,3 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
         }
     }
 }
-
-
