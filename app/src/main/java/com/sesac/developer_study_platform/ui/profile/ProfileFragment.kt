@@ -1,38 +1,34 @@
 package com.sesac.developer_study_platform.ui.profile
 
-import BanDialogFragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.source.remote.GithubService
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
-import com.sesac.developer_study_platform.util.setImage
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: ProfileViewModel by viewModels()
     private lateinit var repositoryAdapter: RepositoryAdapter
-    private val uid = Firebase.auth.uid
+    private val uid = FirebaseAuth.getInstance().uid
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -42,10 +38,11 @@ class ProfileFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
         parseJson()
-        setRepositoryAdapter()
-        loadUser()
-        dialog()
+        setupRecyclerView()
+        setupObservers()
+        viewModel.loadUserData(uid)
     }
 
     private fun parseJson() {
@@ -61,52 +58,28 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun setRepositoryAdapter() {
+    private fun setupRecyclerView() {
         binding.rvRepositoryList.adapter = repositoryAdapter
         binding.rvRepositoryList.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
         )
     }
 
-    private fun loadUser() {
-        val studyService = StudyService.create()
-        lifecycleScope.launch {
-            runCatching {
-                uid?.let {
-                    studyService.getUserById(uid)
-                }
-            }.onSuccess {
-                it?.let {
-                    binding.tvProfileName.text = it.userId
-                    binding.ivProfileImage.setImage(it.image)
-                    loadRepositoryList(it.userId)
-                }
-            }.onFailure {
-                Log.e("ProfileFragment-loadUser", it.message ?: "error occurred.")
+    private fun setupObservers() {
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                binding.tvProfileName.text = it.userId
+                Glide.with(this@ProfileFragment)
+                    .load(it.image)
+                    .into(binding.ivProfileImage)
             }
         }
-    }
 
-    private fun loadRepositoryList(userId: String) {
-        val githubService = GithubService.create()
-        lifecycleScope.launch {
-            runCatching {
-                githubService.getRepositoryList(userId)
-            }.onSuccess {
+        viewModel.repositories.observe(viewLifecycleOwner) { repositories ->
+            repositories?.let {
                 repositoryAdapter.submitList(it)
-            }.onFailure {
-                Log.e("ProfileFragment-loadRepositoryList", it.message ?: "error occurred.")
             }
         }
-    }
-
-    private fun dialog() {
-        val showBanDialogClickListener = View.OnClickListener {
-            BanDialogFragment().show(parentFragmentManager, "BanDialogFragment")
-        }
-
-        binding.ivBan.setOnClickListener(showBanDialogClickListener)
-        binding.tvBan.setOnClickListener(showBanDialogClickListener)
     }
 
     override fun onDestroyView() {
