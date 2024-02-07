@@ -12,6 +12,7 @@ import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.Message
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class MessageViewModel : ViewModel() {
@@ -29,6 +30,9 @@ class MessageViewModel : ViewModel() {
 
     private val _addUriListEvent: MutableLiveData<Event<List<Uri>>> = MutableLiveData()
     val addUriListEvent: LiveData<Event<List<Uri>>> = _addUriListEvent
+
+    private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
     fun loadStudyName(sid: String) {
         viewModelScope.launch {
@@ -95,7 +99,7 @@ class MessageViewModel : ViewModel() {
     }
 
     fun loadMessageList(sid: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(SupervisorJob()) {
             studyRepository.getMessageList(sid).collect {
                 it.keys.forEach { messageId ->
                     updateReadUserList(sid, messageId)
@@ -180,5 +184,9 @@ class MessageViewModel : ViewModel() {
                 Log.e("MessageViewModel-updateLastMessage", it.message ?: "error occurred.")
             }
         }
+    }
+
+    fun moveToBack() {
+        _moveToBackEvent.value = Event(Unit)
     }
 }
