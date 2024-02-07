@@ -2,12 +2,10 @@ package com.sesac.developer_study_platform.ui.message
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.storage.ListResult
@@ -18,16 +16,10 @@ import com.sesac.developer_study_platform.databinding.ItemImageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemImageSenderBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageReceiverBinding
 import com.sesac.developer_study_platform.databinding.ItemMessageSenderBinding
-import com.sesac.developer_study_platform.util.formatSystemMessage
-import com.sesac.developer_study_platform.util.formatTime
 
 abstract class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     abstract fun bind(message: Message, previousMessage: Message? = null)
-
-    fun getUnreadUserCount(message: Message): Int {
-        return message.totalMemberCount - message.readUsers.count()
-    }
 
     fun getImageList(message: Message): Task<ListResult> {
         return Firebase.storage.reference
@@ -40,49 +32,16 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
     ViewHolder(binding) {
 
     override fun bind(message: Message, previousMessage: Message?) {
-        with(binding) {
-            if (previousMessage != null) {
-                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
-                } else {
-                    flowSystemMessage.visibility = View.GONE
-                }
-                if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_new_study_member)
-                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_left_study_member)
-                }
-            } else {
-                flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatSystemMessage()
-            }
-            Glide.with(itemView)
-                .load(message.studyUser?.image)
-                .centerCrop()
-                .into(ivUserImage)
-            ivAdmin.isVisible = message.isAdmin
-            tvUserId.text = message.studyUser?.userId
-            tvMessage.text = message.message
-            tvTimestamp.text = message.timestamp.formatTime()
-            if (getUnreadUserCount(message) > 0) {
-                tvUnreadUserCount.visibility = View.VISIBLE
-                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-            } else {
-                tvUnreadUserCount.visibility = View.GONE
-            }
-        }
+        binding.message = message
+        binding.previousMessage = previousMessage
     }
 
     companion object {
         fun from(parent: ViewGroup): MessageReceiverViewHolder {
             return MessageReceiverViewHolder(
-                ItemMessageReceiverBinding.inflate(
+                DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
+                    R.layout.item_message_receiver,
                     parent,
                     false
                 )
@@ -94,43 +53,16 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
 class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : ViewHolder(binding) {
 
     override fun bind(message: Message, previousMessage: Message?) {
-        with(binding) {
-            if (previousMessage != null) {
-                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
-                } else {
-                    flowSystemMessage.visibility = View.GONE
-                }
-                if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_new_study_member)
-                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_left_study_member)
-                }
-            } else {
-                flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatSystemMessage()
-            }
-            tvMessage.text = message.message
-            tvTimestamp.text = message.timestamp.formatTime()
-            if (getUnreadUserCount(message) > 0) {
-                tvUnreadUserCount.visibility = View.VISIBLE
-                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-            } else {
-                tvUnreadUserCount.visibility = View.GONE
-            }
-        }
+        binding.message = message
+        binding.previousMessage = previousMessage
     }
 
     companion object {
         fun from(parent: ViewGroup): MessageSenderViewHolder {
             return MessageSenderViewHolder(
-                ItemMessageSenderBinding.inflate(
+                DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
+                    R.layout.item_message_sender,
                     parent,
                     false
                 )
@@ -144,54 +76,23 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
     private val imageAdapter = ImageAdapter()
 
     override fun bind(message: Message, previousMessage: Message?) {
-        with(binding) {
-            if (previousMessage != null) {
-                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
-                } else {
-                    flowSystemMessage.visibility = View.GONE
-                }
-                if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_new_study_member)
-                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_left_study_member)
-                }
-            } else {
-                flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatSystemMessage()
-            }
-            Glide.with(itemView)
-                .load(message.studyUser?.image)
-                .centerCrop()
-                .into(ivUserImage)
-            ivAdmin.isVisible = message.isAdmin
-            tvUserId.text = message.studyUser?.userId
-            getImageList(message).addOnSuccessListener {
-                rvImageList.adapter = imageAdapter
-                imageAdapter.submitList(it.items)
-            }.addOnFailureListener {
-                Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
-            }
-            tvTimestamp.text = message.timestamp.formatTime()
-            if (getUnreadUserCount(message) > 0) {
-                tvUnreadUserCount.visibility = View.VISIBLE
-                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-            } else {
-                tvUnreadUserCount.visibility = View.GONE
-            }
+        binding.message = message
+        binding.previousMessage = previousMessage
+        binding.rvImageList.adapter = imageAdapter
+
+        getImageList(message).addOnSuccessListener {
+            imageAdapter.submitList(it.items)
+        }.addOnFailureListener {
+            Log.e("MessageAdapter-getImageList", it.message ?: "error occurred.")
         }
     }
 
     companion object {
         fun from(parent: ViewGroup): ImageReceiverViewHolder {
             return ImageReceiverViewHolder(
-                ItemImageReceiverBinding.inflate(
+                DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
+                    R.layout.item_image_receiver,
                     parent,
                     false
                 )
@@ -205,48 +106,23 @@ class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewH
     private val imageAdapter = ImageAdapter()
 
     override fun bind(message: Message, previousMessage: Message?) {
-        with(binding) {
-            if (previousMessage != null) {
-                if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text = message.timestamp.formatSystemMessage()
-                } else {
-                    flowSystemMessage.visibility = View.GONE
-                }
-                if (previousMessage.totalMemberCount < message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_new_study_member)
-                } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
-                    flowSystemMessage.visibility = View.VISIBLE
-                    tvSystemMessage.text =
-                        itemView.context.getString(R.string.message_left_study_member)
-                }
-            } else {
-                flowSystemMessage.visibility = View.VISIBLE
-                tvSystemMessage.text = message.timestamp.formatSystemMessage()
-            }
-            getImageList(message).addOnSuccessListener {
-                rvImageList.adapter = imageAdapter
-                imageAdapter.submitList(it.items)
-            }.addOnFailureListener {
-                Log.e("MessageAdapter-listAll", it.message ?: "error occurred.")
-            }
-            tvTimestamp.text = message.timestamp.formatTime()
-            if (getUnreadUserCount(message) > 0) {
-                tvUnreadUserCount.visibility = View.VISIBLE
-                tvUnreadUserCount.text = getUnreadUserCount(message).toString()
-            } else {
-                tvUnreadUserCount.visibility = View.GONE
-            }
+        binding.message = message
+        binding.previousMessage = previousMessage
+        binding.rvImageList.adapter = imageAdapter
+
+        getImageList(message).addOnSuccessListener {
+            imageAdapter.submitList(it.items)
+        }.addOnFailureListener {
+            Log.e("MessageAdapter-getImageList", it.message ?: "error occurred.")
         }
     }
 
     companion object {
         fun from(parent: ViewGroup): ImageSenderViewHolder {
             return ImageSenderViewHolder(
-                ItemImageSenderBinding.inflate(
+                DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
+                    R.layout.item_image_sender,
                     parent,
                     false
                 )
