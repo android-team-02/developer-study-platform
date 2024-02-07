@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.source.remote.GithubService
 import com.sesac.developer_study_platform.data.source.remote.StudyService
@@ -24,7 +23,8 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var repositoryAdapter: RepositoryAdapter
-    private val uid = Firebase.auth.uid
+    private lateinit var uid: String
+    private val args by navArgs<ProfileFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +38,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        uid = args.uid
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
