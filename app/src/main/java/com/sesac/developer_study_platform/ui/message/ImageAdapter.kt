@@ -3,11 +3,12 @@ package com.sesac.developer_study_platform.ui.message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.storage.StorageReference
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.ItemImageBinding
 
 class ImageAdapter : ListAdapter<StorageReference, ImageAdapter.ImageViewHolder>(diffUtil) {
@@ -25,10 +26,7 @@ class ImageAdapter : ListAdapter<StorageReference, ImageAdapter.ImageViewHolder>
 
         fun bind(storageRef: StorageReference) {
             storageRef.downloadUrl.addOnSuccessListener {
-                Glide.with(itemView)
-                    .load(it)
-                    .centerCrop()
-                    .into(binding.ivImage)
+                binding.image = it.toString()
             }.addOnFailureListener {
                 Log.e("ImageAdapter", it.message ?: "error occurred.")
             }
@@ -37,8 +35,9 @@ class ImageAdapter : ListAdapter<StorageReference, ImageAdapter.ImageViewHolder>
         companion object {
             fun from(parent: ViewGroup): ImageViewHolder {
                 return ImageViewHolder(
-                    ItemImageBinding.inflate(
+                    DataBindingUtil.inflate(
                         LayoutInflater.from(parent.context),
+                        R.layout.item_image,
                         parent,
                         false
                     )
