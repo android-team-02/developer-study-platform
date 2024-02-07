@@ -67,6 +67,9 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 messageAdapter.submitList(it.values.toList())
+                if (messageAdapter.itemCount > 0) {
+                    binding.rvMessageList.smoothScrollToPosition(messageAdapter.itemCount - 1)
+                }
             }
         )
     }
