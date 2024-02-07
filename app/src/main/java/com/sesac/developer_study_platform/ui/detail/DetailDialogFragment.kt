@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.R
 
 class DetailDialogFragment : DialogFragment() {
@@ -16,7 +17,8 @@ class DetailDialogFragment : DialogFragment() {
         val dialog = builder.create()
 
         view.findViewById<View>(R.id.btn_yes).setOnClickListener {
-            //채팅화면으로 이동
+            val action = DetailDialogFragmentDirections.actionDetailDialogToMessage()
+            findNavController().navigate(action)
             dialog.dismiss()
         }
 
