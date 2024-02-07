@@ -16,14 +16,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
-import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.StudyMembers
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
-import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import com.sesac.developer_study_platform.ui.searchresult.SearchResultFragmentDirections
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

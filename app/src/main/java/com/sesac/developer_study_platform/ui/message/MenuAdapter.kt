@@ -6,11 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.sesac.developer_study_platform.data.StudyMembers
 import com.sesac.developer_study_platform.databinding.ItemChatMenuBinding
-import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import com.sesac.developer_study_platform.ui.studyform.DayTimeClickListener
 import com.sesac.developer_study_platform.util.setImage
 
 class MenuAdapter(private val clickListener: StudyMemberClickListener) : ListAdapter<StudyMembers, MenuAdapter.MenuViewHolder>(diffUtil) {
