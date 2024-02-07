@@ -57,8 +57,8 @@
             android:name="studyId"
             app:argType="string" />
         <action
-            android:id="@+id/action_detail_to_profile"
-            app:destination="@id/dest_profile" />
+            android:id="@+id/action_dest_detail_to_detailDialogFragment"
+            app:destination="@id/detailDialogFragment" />
     </fragment>
 
     <fragment
@@ -126,4 +126,8 @@
         android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
+    <dialog
+        android:id="@+id/detailDialogFragment"
+        android:name="com.sesac.developer_study_platform.ui.detail.DetailDialogFragment"
+        android:label="DetailDialogFragment" />
 </navigation>
