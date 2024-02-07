@@ -90,7 +90,11 @@
         android:id="@+id/dest_profile"
         android:name="com.sesac.developer_study_platform.ui.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="uid"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_chat"
@@ -119,4 +123,14 @@
         android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
+
+    <fragment
+        android:id="@+id/dest_message"
+        android:name="com.sesac.developer_study_platform.ui.message.MessageFragment"
+        android:label="MessageFragment">
+        <action
+            android:id="@+id/action_dest_message_to_dest_profile"
+            app:destination="@id/dest_profile" />
+    </fragment>
+
 </navigation>
