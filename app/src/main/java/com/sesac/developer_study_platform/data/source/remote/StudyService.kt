@@ -72,17 +72,11 @@ interface StudyService {
         @Path("chatRoomId") chatRoomId: String
     ): Map<String, Message>
 
-    @GET("chatRooms/{chatRoomId}/messages/{messageId}/readUsers.json")
-    suspend fun getReadUserList(
-        @Path("chatRoomId") chatRoomId: String,
-        @Path("messageId") messageId: String,
-    ): MutableMap<String, Boolean>
-
     @PATCH("chatRooms/{chatRoomId}/messages/{messageId}/readUsers.json")
     suspend fun updateReadUserList(
         @Path("chatRoomId") chatRoomId: String,
         @Path("messageId") messageId: String,
-        @Body readUsers: Map<String, Boolean>
+        @Body readUsers: Map<String?, Boolean>
     )
 
     @PUT("chatRooms/{chatRoomId}/unreadUsers/{uid}.json")
