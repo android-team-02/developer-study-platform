@@ -126,8 +126,18 @@
         android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
+
     <dialog
         android:id="@+id/detailDialogFragment"
         android:name="com.sesac.developer_study_platform.ui.detail.DetailDialogFragment"
-        android:label="DetailDialogFragment" />
+        android:label="DetailDialogFragment" >
+        <action
+            android:id="@+id/action_detailDialog_to_message"
+            app:destination="@id/messageFragment" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.sesac.developer_study_platform.ui.message.MessageFragment"
+        android:label="MessageFragment" />
 </navigation>
