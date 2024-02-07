@@ -1,86 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_system_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_median"
-        app:constraint_referenced_ids="div_start,tv_system_message,div_end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/div_start"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:dividerColor="@color/riverBed"
-        app:dividerInsetEnd="@dimen/space_median"
-        app:dividerInsetStart="@dimen/space_median" />
+        <import type="com.sesac.developer_study_platform.util.StringExtensionsKt" />
 
-    <TextView
-        android:id="@+id/tv_system_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/riverBed"
-        android:textSize="14sp"
-        tools:text="새싹님이 입장하셨습니다" />
+        <variable
+            name="previousMessage"
+            type="com.sesac.developer_study_platform.data.Message" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/div_end"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:dividerColor="@color/riverBed"
-        app:dividerInsetEnd="@dimen/space_median"
-        app:dividerInsetStart="@dimen/space_median" />
+        <variable
+            name="message"
+            type="com.sesac.developer_study_platform.data.Message" />
+    </data>
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_user_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/space_small"
-        android:layout_marginVertical="@dimen/space_median"
-        app:constraint_referenced_ids="tv_unread_user_count,tv_timestamp,rv_image_list"
-        app:flow_horizontalBias="1"
-        app:flow_horizontalGap="6dp"
-        app:flow_horizontalStyle="packed"
-        app:flow_verticalAlign="bottom"
-        app:flow_wrapMode="chain"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/flow_system_message" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_unread_user_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/mySin"
-        android:textSize="11sp"
-        tools:text="6" />
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_system_message"
+            message="@{message}"
+            previousMessage="@{previousMessage}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_median"
+            app:constraint_referenced_ids="div_start,tv_system_message,div_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        tools:text="오후 04:58" />
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/div_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/riverBed"
+            app:dividerInsetEnd="@dimen/space_median"
+            app:dividerInsetStart="@dimen/space_median" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_image_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:listitem="@layout/item_image" />
+        <TextView
+            android:id="@+id/tv_system_message"
+            messageText="@{message}"
+            previousMessageText="@{previousMessage}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/riverBed"
+            android:textSize="14sp"
+            tools:text="새로운 스터디 멤버가 입장하였습니다." />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/div_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/riverBed"
+            app:dividerInsetEnd="@dimen/space_median"
+            app:dividerInsetStart="@dimen/space_median" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_user_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/space_small"
+            android:layout_marginVertical="@dimen/space_median"
+            app:constraint_referenced_ids="tv_unread_user_count,tv_timestamp,rv_image_list"
+            app:flow_horizontalBias="1"
+            app:flow_horizontalGap="6dp"
+            app:flow_horizontalStyle="packed"
+            app:flow_verticalAlign="bottom"
+            app:flow_wrapMode="chain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow_system_message" />
+
+        <TextView
+            android:id="@+id/tv_unread_user_count"
+            visible="@{(message.totalMemberCount - message.readUsers.size()) > 0}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@{String.valueOf(message.totalMemberCount - message.readUsers.size())}"
+            android:textColor="@color/mySin"
+            android:textSize="11sp"
+            tools:text="6" />
+
+        <TextView
+            android:id="@+id/tv_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@{StringExtensionsKt.formatTime(message.timestamp)}"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            tools:text="오후 04:58" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_image_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:listitem="@layout/item_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
