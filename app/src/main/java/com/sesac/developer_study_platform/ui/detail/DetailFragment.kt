@@ -39,11 +39,7 @@ class DetailFragment : Fragment() {
         loadBookmarkButtonState()
         setBookmarkButton()
         setNavigation()
-
-        binding.btnJoinStudy.setOnClickListener {
-            val action = DetailFragmentDirections.actionDetailToProfile()
-            findNavController().navigate(action)
-        }
+        dialog()
     }
 
     private fun setBackButton() {
@@ -107,6 +103,14 @@ class DetailFragment : Fragment() {
                 findNavController().popBackStack()
             }
         )
+    }
+
+    private fun dialog() {
+        val showBanDialogClickListener = View.OnClickListener {
+            DetailDialogFragment().show(parentFragmentManager, "DetailDialogFragment")
+        }
+
+        binding.btnJoinStudy.setOnClickListener(showBanDialogClickListener)
     }
 
     override fun onDestroyView() {
