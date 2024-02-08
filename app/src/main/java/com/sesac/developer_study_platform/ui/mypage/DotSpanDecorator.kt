@@ -6,9 +6,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 
-class DotSpanDecorator(
-    days: Collection<CalendarDay>
-) : DayViewDecorator {
+class DotSpanDecorator(days: Collection<CalendarDay>) : DayViewDecorator {
 
     private val daysSet = HashSet(days)
 
@@ -17,7 +15,6 @@ class DotSpanDecorator(
     }
 
     override fun decorate(view: DayViewFacade) {
-        val dotRadius = 5f
-        view.addSpan(DotSpan(dotRadius, Color.BLACK))
+        view.addSpan(DotSpan(5f, Color.BLACK))
     }
 }

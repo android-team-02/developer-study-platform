@@ -17,8 +17,12 @@ class StudyRepository {
         return studyService.getUserById(uid)
     }
 
-    suspend fun getUserStudyList(uid: String?): Map<String, UserStudy> {
+    suspend fun getUserStudyList(uid: String): Map<String, UserStudy> {
         return studyService.getUserStudyList(uid)
+    }
+
+    suspend fun getSearchStudyList(searchKeyword: String): Map<String, Study> {
+        return studyService.getSearchStudyList("\"${searchKeyword}\"", "\"${searchKeyword}\\uf8ff\"")
     }
 
     suspend fun getChatRoom(sid: String): ChatRoom {
