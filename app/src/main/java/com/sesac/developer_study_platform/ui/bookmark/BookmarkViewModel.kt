@@ -12,28 +12,33 @@ import kotlinx.coroutines.launch
 
 class BookmarkViewModel : ViewModel() {
 
-    private val _bookmarkStudyListEvent: MutableLiveData<Event<List<BookmarkStudy>>> =
-        MutableLiveData()
+    private val _bookmarkStudyListEvent: MutableLiveData<Event<List<BookmarkStudy>>> = MutableLiveData()
     val bookmarkStudyListEvent: LiveData<Event<List<BookmarkStudy>>> = _bookmarkStudyListEvent
 
-    private val _emptyStudyListEvent: MutableLiveData<Event<Boolean>> =
-        MutableLiveData(Event(false))
-    val emptyStudyListEvent: LiveData<Event<Boolean>> = _emptyStudyListEvent
+    private val _isStudyListEmptyEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val isStudyListEmptyEvent: LiveData<Event<Boolean>> = _isStudyListEmptyEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
-    suspend fun loadStudyList() {
+    private val _moveToDetailEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToDetailEvent: LiveData<Event<String>> = _moveToDetailEvent
+
+    fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
                 bookmarkRepository.getAllBookmarkStudy()
             }.onSuccess {
                 _bookmarkStudyListEvent.value = Event(it)
-                _emptyStudyListEvent.value = Event(it.isEmpty())
+                _isStudyListEmptyEvent.value = Event(it.isEmpty())
             }.onFailure {
                 Log.e("BookmarkViewModel-loadStudyList", it.message ?: "error occurred.")
             }
         }
+    }
+
+    fun moveToDetail(sid: String) {
+        _moveToDetailEvent.value = Event(sid)
     }
 
     fun moveToBack() {

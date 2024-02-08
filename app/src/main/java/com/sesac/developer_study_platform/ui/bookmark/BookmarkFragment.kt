@@ -7,26 +7,23 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import kotlinx.coroutines.launch
 
 class BookmarkFragment : Fragment() {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<BookmarkViewModel>()
     private val bookmarkAdapter = BookmarkAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            val action = BookmarkFragmentDirections.actionGlobalToDetail(sid)
-            findNavController().navigate(action)
+            viewModel.moveToDetail(sid)
         }
     })
-    private val viewModel by viewModels<BookmarkViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +56,13 @@ class BookmarkFragment : Fragment() {
                 findNavController().popBackStack()
             }
         )
+        viewModel.moveToDetailEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = BookmarkFragmentDirections.actionGlobalToDetail(it)
+                findNavController().navigate(action)
+            }
+        )
     }
 
     private fun setBookmarkAdapter() {
@@ -69,16 +73,14 @@ class BookmarkFragment : Fragment() {
     }
 
     private fun loadStudyList() {
-        lifecycleScope.launch {
-            viewModel.loadStudyList()
-        }
+        viewModel.loadStudyList()
         viewModel.bookmarkStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 bookmarkAdapter.submitList(it)
             }
         )
-        viewModel.emptyStudyListEvent.observe(
+        viewModel.isStudyListEmptyEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 binding.isBookmarkStudyListEmpty = it
