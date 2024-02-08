@@ -11,7 +11,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.util.formatDate
+import com.sesac.developer_study_platform.util.formatTime
 import com.sesac.developer_study_platform.util.formatYearMonthDay
+import com.sesac.developer_study_platform.util.getToday
 import com.sesac.developer_study_platform.util.setImage
 
 @BindingAdapter("dayTimeList")
@@ -60,5 +63,14 @@ fun setVisibility(view: View, value: Boolean) {
         view.visibility = View.VISIBLE
     } else {
         view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("lastMessageTime")
+fun setLastMessageTime(view: TextView, timestamp: String) {
+    if (timestamp <= getToday()) {
+        view.text = timestamp.formatTime()
+    } else {
+        view.text = timestamp.formatDate()
     }
 }

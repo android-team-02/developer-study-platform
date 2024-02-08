@@ -2,6 +2,7 @@ package com.sesac.developer_study_platform.data.source.remote
 
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.UserStudy
 
 class StudyRepository {
@@ -22,5 +23,9 @@ class StudyRepository {
 
     suspend fun getSearchStudyList(searchKeyword: String): Map<String, Study> {
         return studyService.getSearchStudyList("\"${searchKeyword}\"", "\"${searchKeyword}\\uf8ff\"")
+    }
+
+    suspend fun getChatRoom(sid: String): ChatRoom {
+        return studyService.getChatRoom(sid)
     }
 }

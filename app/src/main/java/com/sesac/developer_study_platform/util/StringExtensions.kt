@@ -87,3 +87,11 @@ fun String.formatSystemMessage(): String {
         newDateFormat.format(date)
     }
 }
+
+fun getToday(): String {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        LocalDateTime.now().toString()
+    } else {
+        Date().toString()
+    }
+}
