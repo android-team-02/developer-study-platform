@@ -30,7 +30,6 @@ import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
 import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
-import com.sesac.developer_study_platform.util.setImage
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -56,7 +55,9 @@ class StudyFormFragment : Fragment() {
     })
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            setSelectedImage(uri)
+            if (uri != null) {
+                viewModel.setImageUri(uri)
+            }
         }
 
     override fun onCreateView(
@@ -71,10 +72,9 @@ class StudyFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
         setImageButton()
+        setImageVisibility()
+        setSelectedImage()
         with(binding) {
             setCategoryButton(btnAndroid)
             setCategoryButton(btnIos)
@@ -112,12 +112,18 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun setSelectedImage(uri: Uri?) {
-        if (uri != null) {
-            binding.ivImage.setImage(uri.toString())
-            binding.groupAddImage.visibility = View.GONE
-            image = uri
+    private fun setImageVisibility() {
+        viewModel.isSelectedImage.observe(viewLifecycleOwner) {
+            binding.isSelectedImage = it
         }
+    }
+
+    private fun setSelectedImage() {
+        viewModel.imageUri.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.ivImage.setImageURI(it)
+            })
     }
 
     private fun setCategoryButton(button: AppCompatButton) {
@@ -138,21 +144,27 @@ class StudyFormFragment : Fragment() {
     private fun validateName() {
         binding.etStudyNameInput.addTextChangedListener(
             CustomTextWatcher {
-                if (it.length == 20) {
-                    binding.root.showSnackbar(R.string.study_form_validate_name)
-                }
+                viewModel.validateName(it)
             }
         )
+        viewModel.nameValidationEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.root.showSnackbar(R.string.study_form_validate_name)
+            })
     }
 
     private fun validateContent() {
         binding.etStudyContentInput.addTextChangedListener(
             CustomTextWatcher {
-                if (it.length == 150) {
-                    binding.root.showSnackbar(R.string.study_form_validate_content)
-                }
+                viewModel.validateContent(it)
             }
         )
+        viewModel.contentValidationEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.root.showSnackbar(R.string.study_form_validate_content)
+            })
     }
 
     private fun setLanguage() {
