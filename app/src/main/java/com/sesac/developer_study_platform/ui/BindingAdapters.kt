@@ -45,12 +45,14 @@ fun loadImage(view: ImageView, study: UserStudy) {
     }
 }
 
-@BindingAdapter("glide")
-fun loadGlide(view: ImageView, image: String?) {
-    Glide.with(view.context)
-        .load(image)
-        .centerCrop()
-        .into(view)
+@BindingAdapter("imageUrl")
+fun loadImage(view: ImageView, url: String?) {
+    if (!url.isNullOrEmpty()) {
+        Glide.with(view)
+            .load(url)
+            .centerCrop()
+            .into(view)
+    }
 }
 
 @BindingAdapter("visible")
