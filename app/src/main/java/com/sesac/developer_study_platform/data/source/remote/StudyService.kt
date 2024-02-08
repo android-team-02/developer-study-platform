@@ -41,7 +41,7 @@ interface StudyService {
 
     @GET("userStudyRooms/{uid}.json")
     suspend fun getUserStudyList(
-        @Path("uid") uid: String?
+        @Path("uid") uid: String
     ): Map<String, UserStudy>
 
     @GET("studies.json")
@@ -76,20 +76,20 @@ interface StudyService {
     suspend fun updateReadUserList(
         @Path("chatRoomId") chatRoomId: String,
         @Path("messageId") messageId: String,
-        @Body readUsers: Map<String?, Boolean>
+        @Body readUsers: Map<String, Boolean>
     )
 
     @PUT("chatRooms/{chatRoomId}/unreadUsers/{uid}.json")
     suspend fun updateUnreadUserCount(
         @Path("chatRoomId") chatRoomId: String,
-        @Path("uid") uid: String?,
+        @Path("uid") uid: String,
         @Body count: Int = 0
     )
 
     @GET("studies/{studyId}/members/{uid}.json")
     suspend fun isAdmin(
         @Path("studyId") studyId: String,
-        @Path("uid") uid: String?
+        @Path("uid") uid: String
     ): Boolean
 
     @GET("studies/{studyId}/members.json")

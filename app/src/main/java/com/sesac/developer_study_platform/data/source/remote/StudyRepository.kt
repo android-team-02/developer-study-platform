@@ -6,8 +6,6 @@ import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -23,7 +21,7 @@ class StudyRepository {
         return studyService.getUserById(uid)
     }
 
-    suspend fun getUserStudyList(uid: String?): Map<String, UserStudy> {
+    suspend fun getUserStudyList(uid: String): Map<String, UserStudy> {
         return studyService.getUserStudyList(uid)
     }
 
@@ -39,11 +37,11 @@ class StudyRepository {
         studyService.addMessage(sid, message)
     }
 
-    suspend fun updateReadUserList(sid: String, messageId: String, uid: String?) {
+    suspend fun updateReadUserList(sid: String, messageId: String, uid: String) {
         studyService.updateReadUserList(sid, messageId, mapOf(uid to true))
     }
 
-    suspend fun updateUnreadUserCount(sid: String, uid: String?, count: Int = 0) {
+    suspend fun updateUnreadUserCount(sid: String, uid: String, count: Int = 0) {
         studyService.updateUnreadUserCount(sid, uid, count)
     }
 
@@ -59,50 +57,8 @@ class StudyRepository {
         studyService.updateLastMessage(sid, message)
     }
 
-    suspend fun getMessage(uid: String?, sid: String): Message {
-        return Message(
-            uid,
-            sid,
-            getUser(uid),
-            isAdmin(sid, uid),
-            getStudyMemberCount(sid),
-        )
-    }
-
-    private suspend fun getUser(uid: String?): StudyUser? {
-        return coroutineScope {
-            async {
-                kotlin.runCatching {
-                    uid?.let { getUserById(it) }
-                }.onFailure {
-                    Log.e("StudyRepository-getUser", it.message ?: "error occurred.")
-                }.getOrNull()
-            }.await()
-        }
-    }
-
-    private suspend fun isAdmin(sid: String, uid: String?): Boolean {
-        return coroutineScope {
-            async {
-                kotlin.runCatching {
-                    studyService.isAdmin(sid, uid)
-                }.onFailure {
-                    Log.e("StudyRepository-isAdmin", it.message ?: "error occurred.")
-                }.getOrDefault(false)
-            }.await()
-        }
-    }
-
-    private suspend fun getStudyMemberCount(sid: String): Int {
-        return coroutineScope {
-            async {
-                kotlin.runCatching {
-                    studyService.getStudyMemberList(sid).count()
-                }.onFailure {
-                    Log.e("StudyRepository-getStudyMemberCount", it.message ?: "error occurred.")
-                }.getOrDefault(0)
-            }.await()
-        }
+    suspend fun isAdmin(sid: String, uid: String): Boolean {
+        return studyService.isAdmin(sid, uid)
     }
 
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {

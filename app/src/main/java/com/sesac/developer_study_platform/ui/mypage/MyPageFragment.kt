@@ -90,9 +90,13 @@ class MyPageFragment : Fragment() {
     private fun loadStudyList() {
         lifecycleScope.launch {
             kotlin.runCatching {
-                studyService.getUserStudyList(uid)
+                uid?.let {
+                    studyService.getUserStudyList(it)
+                }
             }.onSuccess {
-                studyList.addAll(it.values)
+                it?.let {
+                    studyList.addAll(it.values)
+                }
                 setDaysDotSpan()
             }.onFailure {
                 Log.e("MyPageFragment-loadStudyList", it.message ?: "error occurred.")
@@ -149,7 +153,8 @@ class MyPageFragment : Fragment() {
         return studyList.filter {
             val startDate = it.startDate.formatCalendarDate()
             val endDate = it.endDate.formatCalendarDate()
-            val selectedDate = "${calendarDay.year}/${calendarDay.month}/${calendarDay.day}".formatCalendarDate()
+            val selectedDate =
+                "${calendarDay.year}/${calendarDay.month}/${calendarDay.day}".formatCalendarDate()
 
             val isInDateRange = selectedDate in startDate..endDate
             val isConcurDay = formatDays(it.days).contains(formatCalendarDay)

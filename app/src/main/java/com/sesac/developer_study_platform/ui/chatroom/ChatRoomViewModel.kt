@@ -25,9 +25,13 @@ class ChatRoomViewModel : ViewModel() {
     suspend fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.getUserStudyList(Firebase.auth.uid)
+                Firebase.auth.uid?.let {
+                    studyRepository.getUserStudyList(it)
+                }
             }.onSuccess {
-                loadChatRoomList(it.values.toList())
+                it?.let {
+                    loadChatRoomList(it.values.toList())
+                }
             }.onFailure {
                 Log.e("ChatRoomViewModel-loadStudyList", it.message ?: "error occurred.")
             }

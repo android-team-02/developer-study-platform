@@ -12,7 +12,9 @@ import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.Message
+import com.sesac.developer_study_platform.data.StudyUser
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MessageViewModel : ViewModel() {
@@ -64,9 +66,53 @@ class MessageViewModel : ViewModel() {
         }
     }
 
+    private suspend fun getMessage(uid: String?, sid: String): Message {
+        return Message(
+            uid,
+            sid,
+            getUser(uid),
+            isAdmin(sid, uid) ?: false,
+            getStudyMemberCount(sid),
+        )
+    }
+
+    private suspend fun getUser(uid: String?): StudyUser? {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                uid?.let {
+                    studyRepository.getUserById(it)
+                }
+            }.onFailure {
+                Log.e("StudyRepository-getUser", it.message ?: "error occurred.")
+            }.getOrNull()
+        }.await()
+    }
+
+    private suspend fun isAdmin(sid: String, uid: String?): Boolean? {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                uid?.let {
+                    studyRepository.isAdmin(sid, it)
+                }
+            }.onFailure {
+                Log.e("StudyRepository-isAdmin", it.message ?: "error occurred.")
+            }.getOrDefault(false)
+        }.await()
+    }
+
+    private suspend fun getStudyMemberCount(sid: String): Int {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                studyRepository.getStudyMemberList(sid).count()
+            }.onFailure {
+                Log.e("StudyRepository-getStudyMemberCount", it.message ?: "error occurred.")
+            }.getOrDefault(0)
+        }.await()
+    }
+
     fun sendImage(sid: String, uriList: List<Uri>, timestamp: String) {
         viewModelScope.launch {
-            val message = studyRepository.getMessage(uid, sid).copy(
+            val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
                 timestamp = timestamp,
                 type = ViewType.IMAGE
@@ -85,7 +131,7 @@ class MessageViewModel : ViewModel() {
 
     fun sendMessage(sid: String, text: String) {
         viewModelScope.launch {
-            val message = studyRepository.getMessage(uid, sid).copy(message = text)
+            val message = getMessage(uid, sid).copy(message = text)
             kotlin.runCatching {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
@@ -113,7 +159,9 @@ class MessageViewModel : ViewModel() {
     private fun updateReadUserList(sid: String, messageId: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.updateReadUserList(sid, messageId, uid)
+                uid?.let {
+                    studyRepository.updateReadUserList(sid, messageId, it)
+                }
             }.onFailure {
                 Log.e("MessageViewModel-updateReadUserList", it.message ?: "error occurred.")
             }
@@ -123,7 +171,9 @@ class MessageViewModel : ViewModel() {
     private fun updateUnreadUserCount(sid: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.updateUnreadUserCount(sid, uid)
+                uid?.let {
+                    studyRepository.updateUnreadUserCount(sid, it)
+                }
             }.onFailure {
                 Log.e("MessageViewModel-updateUnreadUserCount", it.message ?: "error occurred.")
             }
