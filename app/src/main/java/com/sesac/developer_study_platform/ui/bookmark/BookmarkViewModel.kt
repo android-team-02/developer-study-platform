@@ -31,7 +31,7 @@ class BookmarkViewModel : ViewModel() {
                 _bookmarkStudyListEvent.value = Event(it)
                 _emptyStudyListEvent.value = Event(it.isEmpty())
             }.onFailure {
-                Log.e("loadStudyList", it.message ?: "error occurred.")
+                Log.e("BookmarkViewModel-loadStudyList", it.message ?: "error occurred.")
             }
         }
     }
