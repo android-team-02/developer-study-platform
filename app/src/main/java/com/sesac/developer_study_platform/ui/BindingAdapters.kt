@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
@@ -47,22 +46,19 @@ fun loadImage(view: ImageView, sid: String, image: String) {
     }
 }
 
-@BindingAdapter("imageUrl")
-fun loadImage(view: ImageView, url: String?) {
-    if (!url.isNullOrEmpty()) {
-        Glide.with(view)
-            .load(url)
-            .centerCrop()
-            .into(view)
-    }
-}
-
 @BindingAdapter("visible")
 fun setVisibility(view: View, value: Boolean) {
     if (value) {
         view.visibility = View.VISIBLE
     } else {
         view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("imageUrl")
+fun loadImageUrl(view: ImageView, url: String?) {
+    url?.let {
+        view.setImage(it)
     }
 }
 

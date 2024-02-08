@@ -59,7 +59,7 @@ class MessageFragment : Fragment() {
 
         loadStudyName()
         binding.rvMessageList.adapter = messageAdapter
-        binding.rvDrawer.adapter = menuAdapter
+        binding.rvMemberList.adapter = menuAdapter
         loadMessageList()
         binding.ivPlus.setOnClickListener {
             pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))

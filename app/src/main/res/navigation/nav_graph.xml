@@ -60,9 +60,6 @@
         <argument
             android:name="studyId"
             app:argType="string" />
-        <action
-            android:id="@+id/action_detail_to_profile"
-            app:destination="@id/dest_profile" />
     </fragment>
 
     <fragment
