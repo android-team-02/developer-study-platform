@@ -25,7 +25,7 @@ class SearchResultViewModel : ViewModel() {
             }.onSuccess {
                 _searchStudyListEvent.value = Event(it.values.toList())
             }.onFailure {
-                Log.e("SearchResultViewModel", it.message ?: "error occurred.")
+                Log.e("SearchResultViewModel-loadStudyList", it.message ?: "error occurred.")
             }
         }
     }
