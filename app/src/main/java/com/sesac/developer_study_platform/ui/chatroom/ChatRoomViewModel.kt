@@ -15,14 +15,13 @@ import kotlinx.coroutines.launch
 
 class ChatRoomViewModel : ViewModel() {
 
-    private val _chatRoomListEvent: MutableLiveData<Event<List<Pair<UserStudy, ChatRoom>>>> =
-        MutableLiveData()
+    private val _chatRoomListEvent: MutableLiveData<Event<List<Pair<UserStudy, ChatRoom>>>> = MutableLiveData()
     val chatRoomListEvent: LiveData<Event<List<Pair<UserStudy, ChatRoom>>>> = _chatRoomListEvent
 
     private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
-    suspend fun loadStudyList() {
+    fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.getUserStudyList(Firebase.auth.uid)
