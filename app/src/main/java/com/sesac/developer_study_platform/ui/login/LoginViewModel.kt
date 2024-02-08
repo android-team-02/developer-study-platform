@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
 
-    private var _autoLoginEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    private val _autoLoginEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val autoLoginEvent: LiveData<Event<Boolean>> = _autoLoginEvent
 
     private val _loginFailureEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
@@ -74,15 +74,15 @@ class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepos
     }
 
     private fun saveUser(user: StudyUser) {
-        val uid = Firebase.auth.uid
-
         viewModelScope.launch {
             kotlin.runCatching {
-                uid?.let {
-                    studyRepository.putUser(uid, user)
+                Firebase.auth.uid?.let {
+                    studyRepository.putUser(it, user)
                 }
             }.onSuccess {
-                _moveToHomeEvent.value = Event(Unit)
+                it?.let {
+                    _moveToHomeEvent.value = Event(Unit)
+                }
             }.onFailure {
                 Log.e("LoginViewModel-saveUser", it.message ?: "error occurred.")
             }

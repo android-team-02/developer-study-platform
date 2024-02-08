@@ -9,9 +9,11 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreferencesRepository(private val context: Context) {
+private const val USER_PREFERENCES_NAME = "user_preferences"
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(USER_PREFERENCES_NAME)
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(USER_PREFERENCES_NAME)
+
+class UserPreferencesRepository(private val context: Context) {
 
     suspend fun setAutoLogin() {
         context.dataStore.edit { settings ->
@@ -25,7 +27,6 @@ class UserPreferencesRepository(private val context: Context) {
         }
 
     companion object {
-        private const val USER_PREFERENCES_NAME = "user_preferences"
         private val AUTO_LOGIN = booleanPreferencesKey("auto_login")
     }
 }
