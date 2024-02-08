@@ -1,80 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="90dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_study_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/space_median"
-        android:layout_marginStart="@dimen/space_median"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
-        tools:src="@tools:sample/avatars" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_study_name"
-        style="@style/BlackText.Medium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_small"
-        android:layout_marginEnd="@dimen/space_median"
-        android:ellipsize="end"
-        android:fontFamily="@font/pretendard_bold"
-        android:maxLines="1"
-        app:layout_constraintEnd_toStartOf="@id/tv_last_message_time"
-        app:layout_constraintStart_toEndOf="@id/iv_study_image"
-        app:layout_constraintTop_toTopOf="@id/iv_study_image"
-        tools:text="예비 안드로이드 개발자를 위한 스터디" />
+        <variable
+            name="clickListener"
+            type="com.sesac.developer_study_platform.ui.common.StudyClickListener" />
 
-    <TextView
-        android:id="@+id/tv_last_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_small"
-        android:layout_marginTop="@dimen/space_x_small"
-        android:ellipsize="end"
-        android:fontFamily="@font/pretendard_medium"
-        android:maxLines="1"
-        android:textColor="@color/baliHai"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
-        app:layout_constraintStart_toEndOf="@id/iv_study_image"
-        app:layout_constraintTop_toBottomOf="@id/tv_study_name"
-        tools:text="그럼 된거죠?" />
+        <variable
+            name="userStudy"
+            type="com.sesac.developer_study_platform.data.UserStudy" />
 
-    <TextView
-        android:id="@+id/tv_last_message_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/space_median"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_study_name"
-        tools:text="오후 04:58" />
+        <variable
+            name="chatRoom"
+            type="com.sesac.developer_study_platform.data.ChatRoom" />
 
-    <TextView
-        android:id="@+id/tv_unread_count"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="@dimen/space_x_small"
-        android:background="@drawable/bg_oval_red"
-        android:fontFamily="@font/pretendard_medium"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_last_message"
-        app:layout_constraintEnd_toEndOf="@id/tv_last_message_time"
-        app:layout_constraintStart_toStartOf="@id/tv_last_message_time"
-        app:layout_constraintTop_toBottomOf="@id/tv_last_message_time"
-        tools:text="1" />
+        <variable
+            name="unreadCount"
+            type="Integer" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:onClick="@{() -> clickListener.onClick(userStudy.sid)}">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_study_image"
+            image="@{userStudy.image}"
+            sid="@{userStudy.sid}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="@dimen/space_median"
+            android:layout_marginStart="@dimen/space_median"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_last_message"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/space_small"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="tv_study_name,tv_last_message"
+            app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
+            app:layout_constraintEnd_toStartOf="@id/flow_last_message_time"
+            app:layout_constraintStart_toEndOf="@id/iv_study_image"
+            app:layout_constraintTop_toTopOf="@id/iv_study_image" />
+
+        <TextView
+            android:id="@+id/tv_study_name"
+            style="@style/BlackText.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendard_bold"
+            android:maxLines="1"
+            android:text="@{userStudy.name}"
+            tools:text="예비 안드로이드 개발자를 위한 스터디" />
+
+        <TextView
+            android:id="@+id/tv_last_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/pretendard_medium"
+            android:maxLines="1"
+            android:text="@{chatRoom.lastMessage.message.empty ? @string/chat_room_last_message_image : chatRoom.lastMessage.message}"
+            android:textColor="@color/baliHai"
+            android:textSize="14sp"
+            tools:text="그럼 된거죠?" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_last_message_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space_median"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="tv_last_message_time,tv_unread_count"
+            app:flow_verticalGap="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_study_image" />
+
+        <TextView
+            android:id="@+id/tv_last_message_time"
+            lastMessageTime="@{chatRoom.lastMessage.timestamp}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:text="오후 04:58" />
+
+        <TextView
+            android:id="@+id/tv_unread_count"
+            visible="@{unreadCount > 0}"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="@dimen/space_x_small"
+            android:background="@drawable/bg_oval_red"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@{String.valueOf(unreadCount)}"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

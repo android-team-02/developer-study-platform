@@ -5,7 +5,7 @@ import com.sesac.developer_study_platform.BuildConfig
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
-import com.sesac.developer_study_platform.data.UserChatRoom
+import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -64,7 +64,7 @@ interface StudyService {
 
     @GET("users/{uid}.json")
     suspend fun getUserById(
-        @Path("uid") uid: String,
+        @Path("uid") uid: String?,
     ): StudyUser
 
     @GET("chatRooms/{chatRoomId}/messages.json")
@@ -120,10 +120,10 @@ interface StudyService {
         @Body lastMessage: Message
     )
 
-    @GET("userChatRooms/{uid}.json")
-    suspend fun getUserChatRoomList(
-        @Path("uid") uid: String?
-    ): Map<String, UserChatRoom>
+    @GET("chatRooms/{chatRoomId}.json")
+    suspend fun getChatRoom(
+        @Path("chatRoomId") chatRoomId: String
+    ): ChatRoom
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL

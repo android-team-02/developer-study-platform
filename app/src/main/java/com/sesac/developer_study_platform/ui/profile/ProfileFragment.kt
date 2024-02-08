@@ -1,5 +1,6 @@
 package com.sesac.developer_study_platform.ui.profile
 
+import BanDialogFragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,6 +46,7 @@ class ProfileFragment : Fragment() {
         parseJson()
         setRepositoryAdapter()
         loadUser()
+        dialog()
     }
 
     private fun parseJson() {
@@ -97,6 +99,15 @@ class ProfileFragment : Fragment() {
                 Log.e("ProfileFragment-loadRepositoryList", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun dialog() {
+        val showBanDialogClickListener = View.OnClickListener {
+            BanDialogFragment().show(parentFragmentManager, "BanDialogFragment")
+        }
+
+        binding.ivBan.setOnClickListener(showBanDialogClickListener)
+        binding.tvBan.setOnClickListener(showBanDialogClickListener)
     }
 
     override fun onDestroyView() {

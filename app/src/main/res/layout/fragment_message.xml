@@ -108,7 +108,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_drawer"
+            android:id="@+id/rv_member_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_median"
@@ -121,7 +121,7 @@
             tools:listitem="@layout/item_chat_menu" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_median"
