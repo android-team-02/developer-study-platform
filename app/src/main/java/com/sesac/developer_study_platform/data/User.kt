@@ -16,3 +16,9 @@ data class StudyUser(
     val userId: String,
     val image: String
 )
+
+data class StudyMember(
+    val studyUser: StudyUser,
+    val isAdmin: Boolean,
+    val userUid: String
+)

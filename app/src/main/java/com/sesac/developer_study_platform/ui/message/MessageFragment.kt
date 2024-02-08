@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.Message
+import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
@@ -35,6 +38,12 @@ class MessageFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) { uriList ->
             saveMultipleMedia(uriList)
         }
+    private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
+        override fun onClick(uid: String) {
+            val action = MessageFragmentDirections.actionMessageToProfile(uid)
+            findNavController().navigate(action)
+        }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,12 +59,17 @@ class MessageFragment : Fragment() {
 
         loadStudyName()
         binding.rvMessageList.adapter = messageAdapter
+        binding.rvDrawer.adapter = menuAdapter
         loadMessageList()
         binding.ivPlus.setOnClickListener {
             pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         binding.ivSend.setOnClickListener {
             sendMessage()
+        }
+        loadMenuMemberList()
+        binding.ivMenu.setOnClickListener {
+            binding.drawer.openDrawer(GravityCompat.END)
         }
     }
 
@@ -278,6 +292,36 @@ class MessageFragment : Fragment() {
                 Log.e("MessageFragment-updateLastMessage", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun loadMenuMemberList() {
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getStudyMemberList(chatRoomId)
+            }.onSuccess { member ->
+                loadUsers(member)
+            }.onFailure {
+                Log.e("MessageFragment-loadMenuMemberList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private suspend fun loadUsers(member: Map<String, Boolean>) {
+        val memberList = mutableListOf<StudyMember>()
+        lifecycleScope.async {
+            member.forEach { (uid, isAdmin) ->
+                kotlin.runCatching {
+                    service.getUserById(uid)
+                }.onSuccess { studyUser ->
+                    memberList.add(StudyMember(studyUser, isAdmin, uid))
+                }.onFailure {
+                    Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
+                }.getOrNull()
+            }
+        }.await()
+
+        val sortMembers = memberList.sortedByDescending { it.isAdmin }
+        menuAdapter.submitList(sortMembers)
     }
 
     override fun onDestroyView() {
