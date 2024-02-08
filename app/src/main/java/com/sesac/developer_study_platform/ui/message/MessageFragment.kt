@@ -3,17 +3,24 @@ package com.sesac.developer_study_platform.ui.message
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
+import com.sesac.developer_study_platform.data.StudyMember
+import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.Date
 
@@ -24,10 +31,17 @@ class MessageFragment : Fragment() {
     private val args by navArgs<MessageFragmentArgs>()
     private val messageAdapter = MessageAdapter()
     private val viewModel by viewModels<MessageViewModel>()
+    private val service = StudyService.create()
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
             saveMultipleMedia(it)
         }
+    private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
+        override fun onClick(uid: String) {
+            val action = MessageFragmentDirections.actionMessageToProfile(uid)
+            findNavController().navigate(action)
+        }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +56,12 @@ class MessageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvMessageList.adapter = messageAdapter
+        binding.rvMemberList.adapter = menuAdapter
         setBackButton()
+        setMenuButton()
         loadStudyName()
         loadMessageList()
+        loadMenuMemberList()
         setPlusButton()
         setSendButton()
         setNavigation()
@@ -53,6 +70,12 @@ class MessageFragment : Fragment() {
     private fun setBackButton() {
         binding.toolbar.setNavigationOnClickListener {
             viewModel.moveToBack()
+        }
+    }
+
+    private fun setMenuButton() {
+        binding.ivMenu.setOnClickListener {
+            binding.drawer.openDrawer(GravityCompat.END)
         }
     }
 
@@ -135,6 +158,35 @@ class MessageFragment : Fragment() {
                 findNavController().popBackStack()
             }
         )
+    }
+
+    private fun loadMenuMemberList() {
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                service.getStudyMemberList(args.studyId)
+            }.onSuccess { member ->
+                loadUsers(member)
+            }.onFailure {
+                Log.e("MessageFragment-loadMenuMemberList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private suspend fun loadUsers(member: Map<String, Boolean>) {
+        val memberList = mutableListOf<StudyMember>()
+        lifecycleScope.async {
+            member.forEach { (uid, isAdmin) ->
+                kotlin.runCatching {
+                    service.getUserById(uid)
+                }.onSuccess { studyUser ->
+                    memberList.add(StudyMember(studyUser, isAdmin, uid))
+                }.onFailure {
+                    Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
+                }.getOrNull()
+            }
+        }.await()
+        val sortMembers = memberList.sortedByDescending { it.isAdmin }
+        menuAdapter.submitList(sortMembers)
     }
 
     override fun onDestroyView() {

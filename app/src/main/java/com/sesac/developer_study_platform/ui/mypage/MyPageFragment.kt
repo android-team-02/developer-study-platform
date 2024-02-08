@@ -1,49 +1,37 @@
 package com.sesac.developer_study_platform.ui.mypage
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.UserStudy
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import com.sesac.developer_study_platform.util.formatCalendarDate
-import com.sesac.developer_study_platform.util.setImage
-import kotlinx.coroutines.launch
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class MyPageFragment : Fragment() {
 
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
-    private val uid = Firebase.auth.uid
-    private val studyList = mutableListOf<UserStudy>()
-    private val calendar = Calendar.getInstance()
-    private val studyService = StudyService.create()
+    private val viewModel by viewModels<MyPageViewModel>()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            //채팅방으로 이동하기
+            viewModel.moveToMessage(sid)
         }
     })
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyPageBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_page, container, false)
         return binding.root
     }
 
@@ -51,16 +39,15 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mcv.addDecorators(TodayDecorator())
-        binding.tvLogout.setOnClickListener {
-            //로그아웃 다이얼로그로 이동하기
-        }
-        binding.ivBookmark.setOnClickListener {
-            findNavController().navigate(R.id.action_my_to_bookmark)
-        }
         setStudyAdapter()
         loadUser()
-        loadStudyList()
-        updateSelectedDayStudyList()
+        viewModel.loadStudyList()
+        setDotSpanDayList()
+        setSelectedDayEmpty()
+        setSelectedDayStudyList()
+        setBookmarkButton()
+        setDialogButton()
+        setNavigation()
     }
 
     private fun setStudyAdapter() {
@@ -71,113 +58,74 @@ class MyPageFragment : Fragment() {
     }
 
     private fun loadUser() {
-        lifecycleScope.launch {
-            runCatching {
-                uid?.let {
-                    studyService.getUserById(uid)
-                }
-            }.onSuccess {
-                it?.let {
-                    binding.tvProfileName.text = it.userId
-                    binding.ivProfileImage.setImage(it.image)
-                }
-            }.onFailure {
-                Log.e("MyPageFragment-loadUser", it.message ?: "error occurred.")
+        viewModel.loadUser()
+        viewModel.studyUserEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.studyUser = it
             }
-        }
+        )
     }
 
-    private fun loadStudyList() {
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                uid?.let {
-                    studyService.getUserStudyList(it)
-                }
-            }.onSuccess {
-                it?.let {
-                    studyList.addAll(it.values)
-                }
-                setDaysDotSpan()
-            }.onFailure {
-                Log.e("MyPageFragment-loadStudyList", it.message ?: "error occurred.")
+    private fun setDotSpanDayList() {
+        viewModel.dotSpanDayListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.mcv.addDecorators(DotSpanDecorator(it))
             }
+        )
+    }
+
+    private fun setSelectedDayEmpty() {
+        viewModel.isSelectedDayEmpty.observe(viewLifecycleOwner) {
+            binding.isSelectedDayEmpty = it
         }
     }
 
-    private fun setDaysDotSpan() {
-        val allDayList = mutableSetOf<CalendarDay>()
-        studyList.forEach {
-            val days = getDotSpanDayList(
-                it.startDate.formatCalendarDate(),
-                it.endDate.formatCalendarDate(),
-                formatDays(it.days)
-            )
-            allDayList.addAll(days)
-        }
-        binding.mcv.addDecorators(DotSpanDecorator(allDayList))
-    }
-
-    private fun getDotSpanDayList(startDate: Date, endDate: Date, days: List<String>): List<CalendarDay> {
-        val dotSpanDayList = ArrayList<CalendarDay>()
-        calendar.time = startDate
-        while (calendar.time <= endDate) {
-            val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREAN) ?: ""
-            if (days.contains(dayOfWeek)) {
-                dotSpanDayList.add(
-                    CalendarDay.from(
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH) + 1,
-                        calendar.get(Calendar.DAY_OF_MONTH)
-                    )
-                )
-            }
-            calendar.add(Calendar.DATE, 1)
-        }
-        return dotSpanDayList
-    }
-
-    private fun updateSelectedDayStudyList() {
+    private fun setSelectedDayStudyList() {
         binding.mcv.setOnDateChangedListener { _, date, _ ->
-            val studyList = getStudyList(date)
-            if (studyList.isEmpty()) {
-                binding.groupMyStudy.visibility = View.GONE
-            } else {
-                binding.groupMyStudy.visibility = View.VISIBLE
-                studyAdapter.submitList(studyList)
+            viewModel.setSelectedDayStudyList(date)
+        }
+        viewModel.selectedDayStudyListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                studyAdapter.submitList(it.toList())
+                binding.isSelectedDayEmpty = it.isEmpty()
             }
+        )
+    }
+
+    private fun setBookmarkButton() {
+        binding.ivBookmark.setOnClickListener {
+            viewModel.moveToBookmark()
         }
     }
 
-    private fun getStudyList(calendarDay: CalendarDay): List<UserStudy> {
-        val formatCalendarDay = getDayList(calendarDay)
-        return studyList.filter {
-            val startDate = it.startDate.formatCalendarDate()
-            val endDate = it.endDate.formatCalendarDate()
-            val selectedDate =
-                "${calendarDay.year}/${calendarDay.month}/${calendarDay.day}".formatCalendarDate()
-
-            val isInDateRange = selectedDate in startDate..endDate
-            val isConcurDay = formatDays(it.days).contains(formatCalendarDay)
-            isInDateRange && isConcurDay
+    private fun setDialogButton() {
+        binding.tvLogout.setOnClickListener {
+            viewModel.moveToDialog()
         }
     }
 
-    private fun getDayList(date: CalendarDay): String {
-        calendar.set(date.year, date.month - 1, date.day)
-        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> getString(R.string.all_monday)
-            Calendar.TUESDAY -> getString(R.string.all_tuesday)
-            Calendar.WEDNESDAY -> getString(R.string.all_wednesday)
-            Calendar.THURSDAY -> getString(R.string.all_thursday)
-            Calendar.FRIDAY -> getString(R.string.all_friday)
-            Calendar.SATURDAY -> getString(R.string.all_saturday)
-            Calendar.SUNDAY -> getString(R.string.all_sunday)
-            else -> ""
-        }
-    }
-
-    private fun formatDays(days: List<String>): List<String> {
-        return days.map { it.substringBefore(" ") }.toList()
+    private fun setNavigation() {
+        viewModel.moveToBookmarkEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().navigate(R.id.action_my_to_bookmark)
+            }
+        )
+        viewModel.moveToDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                // TODO 로그아웃 다이얼로그로 이동
+            }
+        )
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                // TODO 채팅방으로 이동
+            }
+        )
     }
 
     override fun onDestroyView() {

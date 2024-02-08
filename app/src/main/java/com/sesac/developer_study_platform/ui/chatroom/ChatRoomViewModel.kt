@@ -22,7 +22,7 @@ class ChatRoomViewModel : ViewModel() {
     private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
-    suspend fun loadStudyList() {
+    fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
                 Firebase.auth.uid?.let {

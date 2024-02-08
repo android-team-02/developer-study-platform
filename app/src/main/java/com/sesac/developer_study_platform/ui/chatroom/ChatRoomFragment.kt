@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration.VERTICAL
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.databinding.FragmentChatRoomBinding
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import kotlinx.coroutines.launch
 
 class ChatRoomFragment : Fragment() {
 
@@ -51,9 +49,7 @@ class ChatRoomFragment : Fragment() {
     }
 
     private fun loadChatRoomList() {
-        lifecycleScope.launch {
-            viewModel.loadStudyList()
-        }
+        viewModel.loadStudyList()
         viewModel.chatRoomListEvent.observe(
             viewLifecycleOwner,
             EventObserver {

@@ -24,6 +24,8 @@ class MyStudyFragment : Fragment() {
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
             // TODO 채팅 화면으로 이동
+            val action = MyStudyFragmentDirections.actionMyStudyToDetail(sid)
+            findNavController().navigate(action)
         }
     })
 

@@ -10,14 +10,14 @@
             type="com.sesac.developer_study_platform.ui.common.StudyClickListener" />
 
         <variable
-            name="study"
-            type="com.sesac.developer_study_platform.data.Study" />
+            name="bookmarkStudy"
+            type="com.sesac.developer_study_platform.data.BookmarkStudy" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="118dp"
-        android:onClick="@{() -> clickListener.onClick(study.sid)}">
+        android:onClick="@{() -> clickListener.onClick(bookmarkStudy.sid)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="0dp"
@@ -31,8 +31,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_study_image"
-            image="@{study.image}"
-            sid="@{study.sid}"
+            image="@{bookmarkStudy.image}"
+            sid="@{bookmarkStudy.sid}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginVertical="@dimen/space_median"
@@ -49,7 +49,7 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/space_small"
             android:orientation="vertical"
-            app:constraint_referenced_ids="tv_study_name,tv_study_language,flow_people_day"
+            app:constraint_referenced_ids="tv_study_name,tv_study_language,flow_day"
             app:layout_constraintBottom_toBottomOf="@id/iv_study_image"
             app:layout_constraintEnd_toStartOf="@id/iv_arrow_forward"
             app:layout_constraintStart_toEndOf="@id/iv_study_image"
@@ -63,7 +63,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/pretendard_bold"
             android:maxLines="2"
-            android:text="@{study.name}"
+            android:text="@{bookmarkStudy.name}"
             tools:text="예비 안드로이드 개발자를 위한 스터디" />
 
         <TextView
@@ -72,34 +72,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_bold"
-            android:text="@{study.language}"
+            android:text="@{bookmarkStudy.language}"
             tools:text="Kotlin" />
 
         <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow_people_day"
+            android:id="@+id/flow_day"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="iv_person,tv_study_people,iv_calendar,tv_study_day"
+            app:constraint_referenced_ids="iv_calendar,tv_study_day"
             app:flow_horizontalBias="0"
             app:flow_horizontalGap="4dp"
             app:flow_horizontalStyle="packed"
             app:flow_wrapMode="chain" />
-
-        <ImageView
-            android:id="@+id/iv_person"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/all_icon_person_description"
-            android:src="@drawable/ic_person" />
-
-        <TextView
-            android:id="@+id/tv_study_people"
-            style="@style/RiverBedText.XSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="@{String.valueOf(study.members.size())+'/'+String.valueOf(study.totalMemberCount)}"
-            tools:text="4/8" />
 
         <ImageView
             android:id="@+id/iv_calendar"
@@ -111,10 +95,10 @@
         <TextView
             android:id="@+id/tv_study_day"
             style="@style/RiverBedText.XSmall"
-            dayList="@{study.days}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_bold"
+            android:text="@{bookmarkStudy.days}"
             tools:text="일" />
 
         <ImageView
@@ -122,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/space_small"
-            android:contentDescription="@string/search_result_move_study_detail_description"
+            android:contentDescription="@string/home_move_chat_room_description"
             android:src="@drawable/ic_arrow_forward"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
