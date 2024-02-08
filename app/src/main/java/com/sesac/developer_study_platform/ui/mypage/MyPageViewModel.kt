@@ -29,14 +29,17 @@ class MyPageViewModel : ViewModel() {
     private val _selectedDayStudy = MutableLiveData<Event<List<UserStudy>>>()
     val selectedDayStudy: LiveData<Event<List<UserStudy>>> = _selectedDayStudy
 
+    private val _isSelectedDayEmpty: MutableLiveData<Boolean> = MutableLiveData(true)
+    val isSelectedDayEmpty: LiveData<Boolean> = _isSelectedDayEmpty
+
     private val _moveToBookmarkEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBookmarkEvent: LiveData<Event<Unit>> = _moveToBookmarkEvent
 
     private val _moveToDialogEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToDialogEvent: LiveData<Event<Unit>> = _moveToDialogEvent
 
-    private val _moveToMessageEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val moveToMessageEvent: LiveData<Event<Unit>> = _moveToMessageEvent
+    private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
     private val studyList = mutableListOf<UserStudy>()
     private val calendar = Calendar.getInstance()
@@ -138,7 +141,7 @@ class MyPageViewModel : ViewModel() {
         _moveToDialogEvent.value = Event(Unit)
     }
 
-    fun moveToMessage() {
-        _moveToMessageEvent.value = Event(Unit)
+    fun moveToMessage(sid: String) {
+        _moveToMessageEvent.value = Event(sid)
     }
 }

@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isSelectedDayEmpty"
+            type="Boolean" />
+
+        <variable
             name="studyUser"
             type="com.sesac.developer_study_platform.data.StudyUser" />
     </data>
@@ -102,7 +106,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="tv_my_study,rv_my_study_list" />
+                    app:constraint_referenced_ids="tv_my_study,rv_my_study_list"
+                    app:visible="@{!isSelectedDayEmpty}" />
 
                 <TextView
                     android:id="@+id/tv_my_study"

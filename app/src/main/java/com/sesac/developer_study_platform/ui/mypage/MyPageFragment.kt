@@ -24,7 +24,7 @@ class MyPageFragment : Fragment() {
     private val viewModel by viewModels<MyPageViewModel>()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            viewModel.moveToMessage()
+            viewModel.moveToMessage(sid)
         }
     })
 
@@ -44,6 +44,7 @@ class MyPageFragment : Fragment() {
         loadUser()
         loadStudyList()
         setDaysDotSpan()
+        setItemVisibility()
         updateSelectedDayStudyList()
         setBookmarkButton()
         setDialogButton()
@@ -83,6 +84,12 @@ class MyPageFragment : Fragment() {
             })
     }
 
+    private fun setItemVisibility() {
+        viewModel.isSelectedDayEmpty.observe(viewLifecycleOwner) {
+            binding.isSelectedDayEmpty = it
+        }
+    }
+
     private fun updateSelectedDayStudyList() {
         binding.mcv.setOnDateChangedListener { _, date, _ ->
             viewModel.getStudyList(date)
@@ -90,8 +97,8 @@ class MyPageFragment : Fragment() {
         viewModel.selectedDayStudy.observe(
             viewLifecycleOwner,
             EventObserver {
-                binding.groupMyStudy.visibility = View.VISIBLE
                 studyAdapter.submitList(it.toList())
+                binding.isSelectedDayEmpty = it.isEmpty()
             })
     }
 
