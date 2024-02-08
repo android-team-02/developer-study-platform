@@ -33,9 +33,13 @@ class HomeViewModel : ViewModel() {
     suspend fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.getUserStudyList(Firebase.auth.uid)
+                Firebase.auth.uid?.let {
+                    studyRepository.getUserStudyList(it)
+                }
             }.onSuccess {
-                _myStudyListEvent.value = Event(it.values.toList())
+                it?.let {
+                    _myStudyListEvent.value = Event(it.values.toList())
+                }
             }.onFailure {
                 _studyFormButtonEvent.value = Event(true)
                 Log.e("loadStudyList", it.message ?: "error occurred.")

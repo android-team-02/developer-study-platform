@@ -16,7 +16,7 @@ class StudyRepository {
         return studyService.getUserById(uid)
     }
 
-    suspend fun getUserStudyList(uid: String?): Map<String, UserStudy> {
+    suspend fun getUserStudyList(uid: String): Map<String, UserStudy> {
         return studyService.getUserStudyList(uid)
     }
 
