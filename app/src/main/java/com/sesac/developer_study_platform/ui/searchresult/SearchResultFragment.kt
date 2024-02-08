@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.sesac.developer_study_platform.EventObserver
@@ -17,19 +16,17 @@ import com.sesac.developer_study_platform.databinding.FragmentSearchResultBindin
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.ui.studyform.CustomTextWatcher
-import kotlinx.coroutines.launch
 
 class SearchResultFragment : Fragment() {
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<SearchResultViewModel>()
     private val searchAdapter = SearchAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            val action = SearchResultFragmentDirections.actionGlobalToDetail(sid)
-            findNavController().navigate(action)
+            viewModel.moveToDetail(sid)
         }
     })
-    private val viewModel by viewModels<SearchResultViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +68,13 @@ class SearchResultFragment : Fragment() {
                 findNavController().popBackStack()
             }
         )
+        viewModel.moveToDetailEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = SearchResultFragmentDirections.actionGlobalToDetail(it)
+                findNavController().navigate(action)
+            }
+        )
     }
 
     private fun setSearchAdapter() {
@@ -86,9 +90,7 @@ class SearchResultFragment : Fragment() {
                 if (it.isEmpty()) {
                     searchAdapter.submitList(emptyList())
                 } else {
-                    lifecycleScope.launch {
-                        viewModel.loadStudyList(it)
-                    }
+                    viewModel.loadStudyList(it)
                 }
             }
         )

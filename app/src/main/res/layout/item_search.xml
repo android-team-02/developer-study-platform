@@ -95,10 +95,10 @@
         <TextView
             android:id="@+id/tv_study_people"
             style="@style/RiverBedText.XSmall"
-            memberCount="@{study}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_bold"
+            android:text="@{String.valueOf(study.members.size())+'/'+String.valueOf(study.totalMemberCount)}"
             tools:text="4/8" />
 
         <ImageView

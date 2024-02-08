@@ -15,10 +15,13 @@ class SearchResultViewModel : ViewModel() {
     private val _searchStudyListEvent: MutableLiveData<Event<List<Study>>> = MutableLiveData()
     val searchStudyListEvent: LiveData<Event<List<Study>>> = _searchStudyListEvent
 
+    private val _moveToDetailEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToDetailEvent: LiveData<Event<String>> = _moveToDetailEvent
+
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
-    suspend fun loadStudyList(searchKeyword: String) {
+    fun loadStudyList(searchKeyword: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.getSearchStudyList(searchKeyword)
@@ -28,6 +31,10 @@ class SearchResultViewModel : ViewModel() {
                 Log.e("SearchResultViewModel-loadStudyList", it.message ?: "error occurred.")
             }
         }
+    }
+
+    fun moveToDetail(sid: String) {
+        _moveToDetailEvent.value = Event(sid)
     }
 
     fun moveToBack() {
