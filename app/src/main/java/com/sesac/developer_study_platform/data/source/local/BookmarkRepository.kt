@@ -25,4 +25,8 @@ class BookmarkRepository {
     suspend fun deleteBookmarkStudyBySid(sid: String) {
         bookmarkDao.deleteBookmarkStudyBySid(sid)
     }
+
+    suspend fun getAllBookmarkStudy(): List<BookmarkStudy> {
+        return bookmarkDao.getAllBookmarkStudy()
+    }
 }
