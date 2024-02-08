@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
+import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
@@ -19,6 +20,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<ProfileViewModel>()
     private lateinit var repositoryAdapter: RepositoryAdapter
+    private val args by navArgs<ProfileFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +66,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUser() {
-        viewModel.loadUser()
+        viewModel.loadUser(args.uid)
         viewModel.userEvent.observe(
             viewLifecycleOwner,
             EventObserver {

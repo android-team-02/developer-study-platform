@@ -6,8 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.githubRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
@@ -30,17 +28,13 @@ class ProfileViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
-    fun loadUser() {
+    fun loadUser(uid: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                Firebase.auth.uid?.let {
-                    studyRepository.getUserById(it)
-                }
+                studyRepository.getUserById(uid)
             }.onSuccess {
-                it?.let {
-                    _userEvent.value = Event(it)
-                    loadRepositoryList(it.userId)
-                }
+                _userEvent.value = Event(it)
+                loadRepositoryList(it.userId)
             }.onFailure {
                 Log.e("ProfileViewModel-loadUser", it.message ?: "error occurred.")
             }

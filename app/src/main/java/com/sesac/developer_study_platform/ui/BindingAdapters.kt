@@ -10,8 +10,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.util.formatDate
+import com.sesac.developer_study_platform.util.formatTime
 import com.sesac.developer_study_platform.util.formatYearMonthDay
+import com.sesac.developer_study_platform.util.getToday
 import com.sesac.developer_study_platform.util.setImage
 
 @BindingAdapter("dayTimeList")
@@ -33,10 +35,10 @@ fun setEnabled(view: AppCompatButton, study: Study?) {
     }
 }
 
-@BindingAdapter("image")
-fun loadImage(view: ImageView, study: UserStudy) {
+@BindingAdapter("sid", "image")
+fun loadImage(view: ImageView, sid: String, image: String) {
     val storageRef = Firebase.storage.reference
-    val imageRef = storageRef.child("${study.sid}/${study.image}")
+    val imageRef = storageRef.child("${sid}/${image}")
     imageRef.downloadUrl.addOnSuccessListener {
         view.setImage(it.toString())
     }.addOnFailureListener {
@@ -57,5 +59,14 @@ fun setVisibility(view: View, value: Boolean) {
 fun loadImageUrl(view: ImageView, url: String?) {
     url?.let {
         view.setImage(it)
+    }
+}
+
+@BindingAdapter("lastMessageTime")
+fun setLastMessageTime(view: TextView, timestamp: String) {
+    if (timestamp <= getToday()) {
+        view.text = timestamp.formatTime()
+    } else {
+        view.text = timestamp.formatDate()
     }
 }
