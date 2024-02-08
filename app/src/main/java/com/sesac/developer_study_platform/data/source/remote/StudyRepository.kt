@@ -12,11 +12,11 @@ class StudyRepository {
         return studyService.getStudy(sid)
     }
 
-    suspend fun getUserById(uid: String?): StudyUser {
+    suspend fun getUserById(uid: String): StudyUser {
         return studyService.getUserById(uid)
     }
 
-    suspend fun getUserStudyList(uid: String?): Map<String, UserStudy> {
+    suspend fun getUserStudyList(uid: String): Map<String, UserStudy> {
         return studyService.getUserStudyList(uid)
     }
 }

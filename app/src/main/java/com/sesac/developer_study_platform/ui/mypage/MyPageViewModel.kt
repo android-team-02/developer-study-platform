@@ -23,11 +23,11 @@ class MyPageViewModel : ViewModel() {
     private val _studyUserEvent: MutableLiveData<Event<StudyUser>> = MutableLiveData()
     val studyUserEvent: LiveData<Event<StudyUser>> = _studyUserEvent
 
-    private val _dotSpanAllDays = MutableLiveData<Event<Set<CalendarDay>>>()
-    val dotSpanAllDays: LiveData<Event<Set<CalendarDay>>> = _dotSpanAllDays
+    private val _dotSpanDayListEvent: MutableLiveData<Event<Set<CalendarDay>>> = MutableLiveData()
+    val dotSpanDayListEvent: LiveData<Event<Set<CalendarDay>>> = _dotSpanDayListEvent
 
-    private val _selectedDayStudy = MutableLiveData<Event<List<UserStudy>>>()
-    val selectedDayStudy: LiveData<Event<List<UserStudy>>> = _selectedDayStudy
+    private val _selectedDayStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
+    val selectedDayStudyListEvent: LiveData<Event<List<UserStudy>>> = _selectedDayStudyListEvent
 
     private val _isSelectedDayEmpty: MutableLiveData<Boolean> = MutableLiveData(true)
     val isSelectedDayEmpty: LiveData<Boolean> = _isSelectedDayEmpty
@@ -43,47 +43,56 @@ class MyPageViewModel : ViewModel() {
 
     private val studyList = mutableListOf<UserStudy>()
     private val calendar = Calendar.getInstance()
+    private val uid = Firebase.auth.uid
 
-    suspend fun loadUser() {
+    fun loadUser() {
         viewModelScope.launch {
-            runCatching {
-                studyRepository.getUserById(Firebase.auth.uid)
+            kotlin.runCatching {
+                uid?.let {
+                    studyRepository.getUserById(it)
+                }
             }.onSuccess {
-                _studyUserEvent.value = Event(it)
+                it?.let {
+                    _studyUserEvent.value = Event(it)
+                }
             }.onFailure {
                 Log.e("MyPageViewModel-loadUser", it.message ?: "error occurred.")
             }
         }
     }
 
-    suspend fun loadStudyList() {
+    fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.getUserStudyList(Firebase.auth.uid)
+                uid?.let {
+                    studyRepository.getUserStudyList(it)
+                }
             }.onSuccess {
-                setDaysDotSpan(it.values.toList())
-                studyList.addAll(it.values.toList())
+                it?.let {
+                    setDotSpanDayList(it.values.toList())
+                    studyList.addAll(it.values.toList())
+                }
             }.onFailure {
                 Log.e("MyPageViewModel-loadStudyList", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun setDaysDotSpan(studyList: List<UserStudy>) {
+    private fun setDotSpanDayList(studyList: List<UserStudy>) {
         val allDayList = mutableSetOf<CalendarDay>()
         studyList.forEach {
-            val days = getDotSpanDayList(
+            val dayList = getDotSpanDayList(
                 it.startDate.formatCalendarDate(),
                 it.endDate.formatCalendarDate(),
-                formatDays(it.days)
+                formatDayList(it.days)
             )
-            allDayList.addAll(days)
+            allDayList.addAll(dayList)
         }
-        _dotSpanAllDays.value = Event(allDayList)
+        _dotSpanDayListEvent.value = Event(allDayList)
     }
 
     private fun getDotSpanDayList(startDate: Date, endDate: Date, days: List<String>): List<CalendarDay> {
-        val dotSpanDayList = ArrayList<CalendarDay>()
+        val dotSpanDayList = mutableListOf<CalendarDay>()
         calendar.time = startDate
         while (calendar.time <= endDate) {
             val dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREAN) ?: ""
@@ -101,21 +110,21 @@ class MyPageViewModel : ViewModel() {
         return dotSpanDayList
     }
 
-    fun getStudyList(calendarDay: CalendarDay) {
-        val formatCalendarDay = getDayList(calendarDay)
+    fun setSelectedDayStudyList(calendarDay: CalendarDay) {
+        val formatCalendarDay = formatCalendarDay(calendarDay)
         val studyList = studyList.filter {
             val startDate = it.startDate.formatCalendarDate()
             val endDate = it.endDate.formatCalendarDate()
-            val selectedDate = "${calendarDay.year}/${calendarDay.month}/${calendarDay.day}".formatCalendarDate()
-
+            val selectedDate =
+                "${calendarDay.year}/${calendarDay.month}/${calendarDay.day}".formatCalendarDate()
             val isInDateRange = selectedDate in startDate..endDate
-            val isConcurDay = formatDays(it.days).contains(formatCalendarDay)
+            val isConcurDay = formatDayList(it.days).contains(formatCalendarDay)
             isInDateRange && isConcurDay
         }
-        _selectedDayStudy.value = Event(studyList)
+        _selectedDayStudyListEvent.value = Event(studyList)
     }
 
-    private fun getDayList(date: CalendarDay): String {
+    private fun formatCalendarDay(date: CalendarDay): String {
         calendar.set(date.year, date.month - 1, date.day)
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> "월"
@@ -129,7 +138,7 @@ class MyPageViewModel : ViewModel() {
         }
     }
 
-    private fun formatDays(days: List<String>): List<String> {
+    private fun formatDayList(days: List<String>): List<String> {
         return days.map { it.substringBefore(" ") }.toList()
     }
 

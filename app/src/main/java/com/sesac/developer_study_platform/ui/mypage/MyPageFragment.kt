@@ -1,13 +1,12 @@
 package com.sesac.developer_study_platform.ui.mypage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
@@ -15,7 +14,6 @@ import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import kotlinx.coroutines.launch
 
 class MyPageFragment : Fragment() {
 
@@ -29,7 +27,8 @@ class MyPageFragment : Fragment() {
     })
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_page, container, false)
@@ -42,10 +41,10 @@ class MyPageFragment : Fragment() {
         binding.mcv.addDecorators(TodayDecorator())
         setStudyAdapter()
         loadUser()
-        loadStudyList()
-        setDaysDotSpan()
-        setItemVisibility()
-        updateSelectedDayStudyList()
+        viewModel.loadStudyList()
+        setDotSpanDayList()
+        setSelectedDayEmpty()
+        setSelectedDayStudyList()
         setBookmarkButton()
         setDialogButton()
         setNavigation()
@@ -59,9 +58,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun loadUser() {
-        lifecycleScope.launch {
-            viewModel.loadUser()
-        }
+        viewModel.loadUser()
         viewModel.studyUserEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -70,36 +67,32 @@ class MyPageFragment : Fragment() {
         )
     }
 
-    private fun loadStudyList() {
-        lifecycleScope.launch {
-            viewModel.loadStudyList()
-        }
-    }
-
-    private fun setDaysDotSpan() {
-        viewModel.dotSpanAllDays.observe(
+    private fun setDotSpanDayList() {
+        viewModel.dotSpanDayListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 binding.mcv.addDecorators(DotSpanDecorator(it))
-            })
+            }
+        )
     }
 
-    private fun setItemVisibility() {
+    private fun setSelectedDayEmpty() {
         viewModel.isSelectedDayEmpty.observe(viewLifecycleOwner) {
             binding.isSelectedDayEmpty = it
         }
     }
 
-    private fun updateSelectedDayStudyList() {
+    private fun setSelectedDayStudyList() {
         binding.mcv.setOnDateChangedListener { _, date, _ ->
-            viewModel.getStudyList(date)
+            viewModel.setSelectedDayStudyList(date)
         }
-        viewModel.selectedDayStudy.observe(
+        viewModel.selectedDayStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 studyAdapter.submitList(it.toList())
                 binding.isSelectedDayEmpty = it.isEmpty()
-            })
+            }
+        )
     }
 
     private fun setBookmarkButton() {
@@ -124,13 +117,13 @@ class MyPageFragment : Fragment() {
         viewModel.moveToDialogEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                //로그아웃 다이얼로그로 이동
+                // TODO 로그아웃 다이얼로그로 이동
             }
         )
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                //채팅방으로 이동
+                // TODO 채팅방으로 이동
             }
         )
     }
