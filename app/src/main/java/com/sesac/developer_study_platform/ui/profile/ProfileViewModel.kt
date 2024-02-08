@@ -1,68 +1,77 @@
 package com.sesac.developer_study_platform.ui.profile
 
+import android.content.res.AssetManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.sesac.developer_study_platform.Event
+import com.sesac.developer_study_platform.StudyApplication.Companion.githubRepository
+import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.Repository
 import com.sesac.developer_study_platform.data.StudyUser
-import com.sesac.developer_study_platform.data.User
-import com.sesac.developer_study_platform.data.source.remote.GithubService
-import com.sesac.developer_study_platform.data.source.remote.StudyService
-import com.sesac.developer_study_platform.util.formatDate
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 class ProfileViewModel : ViewModel() {
-    private val _user = MutableLiveData<User?>()
-    val user: LiveData<User?> = _user
 
-    private val _repositories = MutableLiveData<List<Repository>>()
-    val repositories: LiveData<List<Repository>> = _repositories
+    private val _userEvent: MutableLiveData<Event<StudyUser>> = MutableLiveData()
+    val userEvent: LiveData<Event<StudyUser>> = _userEvent
 
-    private val studyService = StudyService.create()
-    private val githubService = GithubService.create()
+    private val _languageListEvent: MutableLiveData<Event<Map<String, String?>>> = MutableLiveData()
+    val languageListEvent: LiveData<Event<Map<String, String?>>> = _languageListEvent
 
-    fun loadUserData(uid: String?) {
+    private val _repositoryListEvent: MutableLiveData<Event<List<Repository>>> = MutableLiveData()
+    val repositoryListEvent: LiveData<Event<List<Repository>>> = _repositoryListEvent
+
+    private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
+
+    fun loadUser() {
         viewModelScope.launch {
-            uid?.let {
-                val result = runCatching { studyService.getUserById(uid) }
-                result.onSuccess { studyUser ->
-                    val user = convertStudyUserToUser(studyUser)
-                    _user.value = user
-                    Log.d("P1", "User data loaded successfully: $user")
-                    user?.userId?.let { userId -> loadRepositories(userId) }
-                }.onFailure { exception ->
-                    Log.e("ProfileViewModel", "Error loading user data", exception)
+            kotlin.runCatching {
+                Firebase.auth.uid?.let {
+                    studyRepository.getUserById(it)
                 }
+            }.onSuccess {
+                it?.let {
+                    _userEvent.value = Event(it)
+                    loadRepositoryList(it.userId)
+                }
+            }.onFailure {
+                Log.e("ProfileViewModel-loadUser", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun loadRepositories(userId: String) {
+    private fun loadRepositoryList(userId: String) {
         viewModelScope.launch {
-            val result = runCatching { githubService.getRepositoryList(userId) }
-            result.onSuccess { repositories ->
-                val formattedRepositories = repositories.map { repository ->
-                    val formattedDate = repository.createdAt?.formatDate()
-                    repository.copy(createdAt = formattedDate)
-                }
-
-                _repositories.value = formattedRepositories
-            }.onFailure { exception ->
-                Log.e("ProfileViewModel", "Error loading repositories", exception)
+            kotlin.runCatching {
+                githubRepository.getRepositoryList(userId)
+            }.onSuccess {
+                _repositoryListEvent.value = Event(it)
+            }.onFailure {
+                Log.e("ProfileViewModel-loadRepositoryList", it.message ?: "error occurred.")
             }
         }
     }
 
-    private fun convertStudyUserToUser(studyUser: StudyUser?): User? {
-        if (studyUser != null) {
-            val userId = studyUser.userId
-            val image = studyUser.image
-
-            return User(userId, image)
-        } else {
-            return null
+    fun parseJson(assetManager: AssetManager) {
+        kotlin.runCatching {
+            val inputStream = assetManager.open("github-language-colors.json")
+            val reader = inputStream.bufferedReader()
+            Json.decodeFromString<Map<String, String?>>(reader.readText())
+        }.onSuccess {
+            _languageListEvent.value = Event(it)
+        }.onFailure {
+            Log.e("ProfileViewModel-parseJson", it.message ?: "error occurred.")
         }
+    }
+
+    fun moveToBack() {
+        _moveToBackEvent.value = Event(Unit)
     }
 }

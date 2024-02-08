@@ -42,7 +42,7 @@
         android:id="@+id/dest_my_study"
         android:name="com.sesac.developer_study_platform.ui.mystudy.MyStudyFragment"
         android:label="fragment_my_study"
-        tools:layout="@layout/fragment_my_study" >
+        tools:layout="@layout/fragment_my_study">
         <action
             android:id="@+id/action_my_study_to_detail"
             app:destination="@id/dest_detail" />
@@ -56,9 +56,6 @@
         <argument
             android:name="studyId"
             app:argType="string" />
-        <action
-            android:id="@+id/action_detail_to_profile"
-            app:destination="@id/dest_profile" />
     </fragment>
 
     <fragment

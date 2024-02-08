@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.sesac.developer_study_platform.data.source.local.AppDatabase
 import com.sesac.developer_study_platform.data.source.local.BookmarkDao
 import com.sesac.developer_study_platform.data.source.local.BookmarkRepository
+import com.sesac.developer_study_platform.data.source.remote.GithubRepository
 import com.sesac.developer_study_platform.data.source.remote.StudyRepository
 
 class StudyApplication : Application() {
@@ -24,6 +25,7 @@ class StudyApplication : Application() {
         bookmarkDao = db.bookmarkDao()
         studyRepository = StudyRepository()
         bookmarkRepository = BookmarkRepository()
+        githubRepository = GithubRepository()
     }
 
     override fun onTerminate() {
@@ -36,5 +38,6 @@ class StudyApplication : Application() {
         lateinit var bookmarkDao: BookmarkDao
         lateinit var studyRepository: StudyRepository
         lateinit var bookmarkRepository: BookmarkRepository
+        lateinit var githubRepository: GithubRepository
     }
 }

@@ -39,11 +39,6 @@ class DetailFragment : Fragment() {
         loadBookmarkButtonState()
         setBookmarkButton()
         setNavigation()
-
-        binding.btnJoinStudy.setOnClickListener {
-            val action = DetailFragmentDirections.actionDetailToProfile()
-            findNavController().navigate(action)
-        }
     }
 
     private fun setBackButton() {

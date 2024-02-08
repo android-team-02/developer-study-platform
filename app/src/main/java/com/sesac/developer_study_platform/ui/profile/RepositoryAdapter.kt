@@ -1,13 +1,13 @@
 package com.sesac.developer_study_platform.ui.profile
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Repository
 import com.sesac.developer_study_platform.databinding.ItemRepositoryBinding
 
@@ -27,32 +27,19 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
 
         fun bind(repository: Repository, languageList: Map<String, String?>) {
             binding.repository = repository
-            setLanguage(repository, languageList)
-            binding.executePendingBindings()
-
-            Log.d("repolang", "Repository Language: ${repository.language}")
-        }
-
-        private fun setLanguage(repository: Repository, languageList: Map<String, String?>) {
-            with(binding) {
-                if (repository.language.isNullOrEmpty()) {
-                    ivRepositoryLanguageColor.visibility = View.GONE
-                    tvRepositoryLanguage.visibility = View.GONE
-                } else {
-                    val color = languageList.getValue(repository.language.toString())
-                    ivRepositoryLanguageColor.visibility = View.VISIBLE
-                    tvRepositoryLanguage.visibility = View.VISIBLE
-                    ivRepositoryLanguageColor.setBackgroundColor(Color.parseColor(color))
-                    tvRepositoryLanguage.text = repository.language
-                }
+            binding.isLanguageNullOrEmpty = repository.language.isNullOrEmpty()
+            if (!repository.language.isNullOrEmpty()) {
+                val color = Color.parseColor(languageList.getValue(repository.language))
+                binding.ivRepositoryLanguageColor.setBackgroundColor(color)
             }
         }
 
         companion object {
             fun from(parent: ViewGroup): RepositoryViewHolder {
                 return RepositoryViewHolder(
-                    ItemRepositoryBinding.inflate(
+                    DataBindingUtil.inflate(
                         LayoutInflater.from(parent.context),
+                        R.layout.item_repository,
                         parent,
                         false
                     )

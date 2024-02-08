@@ -5,11 +5,9 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
-            name="viewModel"
-            type="com.sesac.developer_study_platform.ui.profile.ProfileViewModel" />
+            name="studyUser"
+            type="com.sesac.developer_study_platform.data.StudyUser" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,10 +25,10 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profile_image"
+            imageUrl="@{studyUser.image}"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="@dimen/space_median"
-            app:imageUrl="@{viewModel.user.image}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -44,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_x_small"
             android:fontFamily="@font/pretendard_bold"
-            android:text="@{viewModel.user.userId}"
+            android:text="@{studyUser.userId}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_image"
@@ -108,5 +106,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_repository"
             tools:listitem="@layout/item_repository" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

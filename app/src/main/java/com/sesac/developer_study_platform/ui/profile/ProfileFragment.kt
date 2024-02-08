@@ -1,85 +1,94 @@
 package com.sesac.developer_study_platform.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
-import kotlinx.serialization.json.Json
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: ProfileViewModel by viewModels()
+    private val viewModel by viewModels<ProfileViewModel>()
     private lateinit var repositoryAdapter: RepositoryAdapter
-    private val uid = FirebaseAuth.getInstance().uid
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-
+        setBackButton()
         parseJson()
-        setupRecyclerView()
-        setupObservers()
-        viewModel.loadUserData(uid)
+        loadUser()
+        loadRepositoryList()
+        setNavigation()
+    }
+
+    private fun setBackButton() {
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.moveToBack()
+        }
     }
 
     private fun parseJson() {
-        kotlin.runCatching {
-            val assetManager = resources.assets
-            val inputStream = assetManager.open("github-language-colors.json")
-            val reader = inputStream.bufferedReader()
-            Json.decodeFromString<Map<String, String?>>(reader.readText())
-        }.onSuccess {
-            repositoryAdapter = RepositoryAdapter(it)
-        }.onFailure {
-            Log.e("ProfileFragment", it.message ?: "error occurred.")
-        }
+        viewModel.parseJson(resources.assets)
+        viewModel.languageListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                repositoryAdapter = RepositoryAdapter(it)
+                setRepositoryAdapter()
+            }
+        )
     }
 
-    private fun setupRecyclerView() {
+    private fun setRepositoryAdapter() {
         binding.rvRepositoryList.adapter = repositoryAdapter
         binding.rvRepositoryList.addItemDecoration(
             SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.space_small))
         )
     }
 
-    private fun setupObservers() {
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                binding.tvProfileName.text = it.userId
-                Glide.with(this@ProfileFragment)
-                    .load(it.image)
-                    .into(binding.ivProfileImage)
+    private fun loadUser() {
+        viewModel.loadUser()
+        viewModel.userEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.studyUser = it
             }
-        }
+        )
+    }
 
-        viewModel.repositories.observe(viewLifecycleOwner) { repositories ->
-            repositories?.let {
+    private fun loadRepositoryList() {
+        viewModel.repositoryListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
                 repositoryAdapter.submitList(it)
             }
-        }
+        )
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
     }
 
     override fun onDestroyView() {
