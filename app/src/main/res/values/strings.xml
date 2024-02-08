@@ -133,6 +133,8 @@
     <string name="message_menu_description">채팅 메뉴</string>
     <string name="message_new_study_member">새로운 스터디 멤버가 입장하였습니다.</string>
     <string name="message_left_study_member">스터디 멤버가 퇴장하였습니다.</string>
+    <string name="message_menu_member">대화상대</string>
+    <string name="message_menu_exit_description">채팅방 나가기 아이콘</string>
 
     <string name="my_page_icon_bookmark_description">북마크 모양의 아이콘</string>
     <string name="my_page_logout">로그아웃</string>
