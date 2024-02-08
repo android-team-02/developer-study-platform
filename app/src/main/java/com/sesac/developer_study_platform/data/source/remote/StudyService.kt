@@ -2,6 +2,7 @@ package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.BuildConfig
+import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserChatRoom
@@ -11,6 +12,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -63,6 +66,59 @@ interface StudyService {
     suspend fun getUserById(
         @Path("uid") uid: String,
     ): StudyUser
+
+    @GET("chatRooms/{chatRoomId}/messages.json")
+    suspend fun getMessageList(
+        @Path("chatRoomId") chatRoomId: String
+    ): Map<String, Message>
+
+    @GET("chatRooms/{chatRoomId}/messages/{messageId}/readUsers.json")
+    suspend fun getReadUserList(
+        @Path("chatRoomId") chatRoomId: String,
+        @Path("messageId") messageId: String,
+    ): MutableMap<String, Boolean>
+
+    @PATCH("chatRooms/{chatRoomId}/messages/{messageId}/readUsers.json")
+    suspend fun updateReadUserList(
+        @Path("chatRoomId") chatRoomId: String,
+        @Path("messageId") messageId: String,
+        @Body readUsers: Map<String, Boolean>
+    )
+
+    @PUT("chatRooms/{chatRoomId}/unreadUsers/{uid}.json")
+    suspend fun updateUnreadUserCount(
+        @Path("chatRoomId") chatRoomId: String,
+        @Path("uid") uid: String?,
+        @Body count: Int = 0
+    )
+
+    @GET("studies/{studyId}/members/{uid}.json")
+    suspend fun isAdmin(
+        @Path("studyId") studyId: String,
+        @Path("uid") uid: String?
+    ): Boolean
+
+    @GET("studies/{studyId}/members.json")
+    suspend fun getStudyMemberList(
+        @Path("studyId") studyId: String
+    ): Map<String, Boolean>
+
+    @GET("chatRooms/{chatRoomId}/unreadUsers.json")
+    suspend fun getUnreadUserList(
+        @Path("chatRoomId") chatRoomId: String
+    ): Map<String, Int>
+
+    @POST("chatRooms/{chatRoomId}/messages.json")
+    suspend fun addMessage(
+        @Path("chatRoomId") chatRoomId: String,
+        @Body message: Message,
+    )
+
+    @PUT("chatRooms/{chatRoomId}/lastMessage.json")
+    suspend fun updateLastMessage(
+        @Path("chatRoomId") chatRoomId: String,
+        @Body lastMessage: Message
+    )
 
     @GET("userChatRooms/{uid}.json")
     suspend fun getUserChatRoomList(

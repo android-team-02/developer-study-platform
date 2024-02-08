@@ -10,14 +10,14 @@
             type="com.sesac.developer_study_platform.ui.common.StudyClickListener" />
 
         <variable
-            name="userStudy"
-            type="com.sesac.developer_study_platform.data.UserStudy" />
+            name="bookmarkStudy"
+            type="com.sesac.developer_study_platform.data.BookmarkStudy" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="118dp"
-        android:onClick="@{() -> clickListener.onClick(userStudy.sid)}">
+        android:onClick="@{() -> clickListener.onClick(bookmarkStudy.sid)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="0dp"
@@ -31,8 +31,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_study_image"
-            image="@{userStudy.image}"
-            sid="@{userStudy.sid}"
+            image="@{bookmarkStudy.image}"
+            sid="@{bookmarkStudy.sid}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginVertical="@dimen/space_median"
@@ -63,7 +63,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/pretendard_bold"
             android:maxLines="2"
-            android:text="@{userStudy.name}"
+            android:text="@{bookmarkStudy.name}"
             tools:text="예비 안드로이드 개발자를 위한 스터디" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_bold"
-            android:text="@{userStudy.language}"
+            android:text="@{bookmarkStudy.language}"
             tools:text="Kotlin" />
 
         <androidx.constraintlayout.helper.widget.Flow
@@ -95,10 +95,10 @@
         <TextView
             android:id="@+id/tv_study_day"
             style="@style/RiverBedText.XSmall"
-            dayList="@{userStudy.days}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_bold"
+            android:text="@{bookmarkStudy.days}"
             tools:text="일" />
 
         <ImageView
