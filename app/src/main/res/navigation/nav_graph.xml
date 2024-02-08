@@ -129,7 +129,7 @@
         android:name="com.sesac.developer_study_platform.ui.message.MessageFragment"
         android:label="MessageFragment">
         <action
-            android:id="@+id/action_dest_message_to_dest_profile"
+            android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
     </fragment>
 

@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.sesac.developer_study_platform.data.StudyMembers
+import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.databinding.ItemChatMenuBinding
 import com.sesac.developer_study_platform.util.setImage
 
-class MenuAdapter(private val clickListener: StudyMemberClickListener) : ListAdapter<StudyMembers, MenuAdapter.MenuViewHolder>(diffUtil) {
+class MenuAdapter(private val clickListener: StudyMemberClickListener) :
+    ListAdapter<StudyMember, MenuAdapter.MenuViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         return MenuViewHolder.from(parent)
@@ -20,15 +21,14 @@ class MenuAdapter(private val clickListener: StudyMemberClickListener) : ListAda
         holder.bind(currentList[position], clickListener)
     }
 
-    class MenuViewHolder(private val binding: ItemChatMenuBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class MenuViewHolder(private val binding: ItemChatMenuBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(studyMembers: StudyMembers, clickListener: StudyMemberClickListener) {
-            binding.ivUserImage.setImage(studyMembers.studyUser.image)
-            binding.tvUserId.text = studyMembers.studyUser.userId
-            binding.ivAdmin.visibility = if (studyMembers.isAdmin) View.VISIBLE else View.GONE
+        fun bind(studyMember: StudyMember, clickListener: StudyMemberClickListener) {
+            binding.ivUserImage.setImage(studyMember.studyUser.image)
+            binding.tvUserId.text = studyMember.studyUser.userId
+            binding.ivAdmin.visibility = if (studyMember.isAdmin) View.VISIBLE else View.GONE
             itemView.setOnClickListener {
-                clickListener.onClick(studyMembers.userUid)
+                clickListener.onClick(studyMember.userUid)
             }
         }
 
@@ -47,18 +47,12 @@ class MenuAdapter(private val clickListener: StudyMemberClickListener) : ListAda
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<StudyMembers>() {
-            override fun areItemsTheSame(
-                oldItem: StudyMembers,
-                newItem: StudyMembers
-            ): Boolean {
-                return oldItem == newItem
+        val diffUtil = object : DiffUtil.ItemCallback<StudyMember>() {
+            override fun areItemsTheSame(oldItem: StudyMember, newItem: StudyMember): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
             }
 
-            override fun areContentsTheSame(
-                oldItem: StudyMembers,
-                newItem: StudyMembers
-            ): Boolean {
+            override fun areContentsTheSame(oldItem: StudyMember, newItem: StudyMember): Boolean {
                 return oldItem == newItem
             }
         }

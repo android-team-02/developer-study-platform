@@ -17,7 +17,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.data.Message
-import com.sesac.developer_study_platform.data.StudyMembers
+import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
@@ -40,7 +40,7 @@ class MessageFragment : Fragment() {
         }
     private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
         override fun onClick(uid: String) {
-            val action = MessageFragmentDirections.actionDestMessageToDestProfile(uid)
+            val action = MessageFragmentDirections.actionMessageToProfile(uid)
             findNavController().navigate(action)
         }
     })
@@ -307,13 +307,13 @@ class MessageFragment : Fragment() {
     }
 
     private suspend fun loadUsers(member: Map<String, Boolean>) {
-        val memberList = mutableListOf<StudyMembers>()
+        val memberList = mutableListOf<StudyMember>()
         lifecycleScope.async {
             member.forEach { (uid, isAdmin) ->
                 kotlin.runCatching {
                     service.getUserById(uid)
                 }.onSuccess { studyUser ->
-                    memberList.add(StudyMembers(studyUser, isAdmin, uid))
+                    memberList.add(StudyMember(studyUser, isAdmin, uid))
                 }.onFailure {
                     Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
                 }.getOrNull()
