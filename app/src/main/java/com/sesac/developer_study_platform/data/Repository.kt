@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 data class Repository(
     val name: String,
     val language: String?,
+    @SerialName("html_url") val htmlUrl: String,
     @SerialName("stargazers_count") val star: Int,
     @SerialName("forks_count") val fork: Int,
     @SerialName("open_issues_count") val issue: Int,
