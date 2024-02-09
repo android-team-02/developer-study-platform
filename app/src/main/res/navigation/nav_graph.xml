@@ -60,6 +60,9 @@
         <argument
             android:name="studyId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_dest_detail_to_dest_profile"
+            app:destination="@id/dest_profile" />
     </fragment>
 
     <fragment
@@ -99,9 +102,9 @@
         android:name="com.sesac.developer_study_platform.ui.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
-        <argument
+     <!--   <argument
             android:name="uid"
-            app:argType="string" />
+            app:argType="string" /> -->
     </fragment>
 
     <fragment
@@ -109,16 +112,6 @@
         android:name="com.sesac.developer_study_platform.ui.chatroom.ChatRoomFragment"
         android:label="fragment_chat_room"
         tools:layout="@layout/fragment_chat_room" />
-
-    <fragment
-        android:id="@+id/dest_my"
-        android:name="com.sesac.developer_study_platform.ui.mypage.MyPageFragment"
-        android:label="fragment_my_page"
-        tools:layout="@layout/fragment_my_page">
-        <action
-            android:id="@+id/action_my_to_bookmark"
-            app:destination="@id/dest_bookmark" />
-    </fragment>
 
     <fragment
         android:id="@+id/dest_bookmark"
@@ -144,4 +137,16 @@
             android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
     </fragment>
+    <navigation android:id="@+id/navigation"
+        app:startDestination="@id/dest_my">
+        <fragment
+            android:id="@+id/dest_my"
+            android:name="com.sesac.developer_study_platform.ui.mypage.MyPageFragment"
+            android:label="fragment_my_page"
+            tools:layout="@layout/fragment_my_page">
+            <action
+                android:id="@+id/action_my_to_bookmark"
+                app:destination="@id/dest_bookmark" />
+        </fragment>
+    </navigation>
 </navigation>
