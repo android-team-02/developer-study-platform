@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.myStudyRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
@@ -18,8 +19,7 @@ class HomeViewModel : ViewModel() {
     private val _myStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
     val myStudyListEvent: LiveData<Event<List<UserStudy>>> = _myStudyListEvent
 
-    private val _studyFormButtonEvent: MutableLiveData<Event<Boolean>> =
-        MutableLiveData(Event(false))
+    private val _studyFormButtonEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val studyFormButtonEvent: LiveData<Event<Boolean>> = _studyFormButtonEvent
 
     private val _moveToMyStudyEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
@@ -31,31 +31,34 @@ class HomeViewModel : ViewModel() {
     private val _moveToCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToCategoryEvent: LiveData<Event<String>> = _moveToCategoryEvent
 
-    init {
-        viewModelScope.launch {
-            _myStudyListEvent.value = Event(myStudyRepository.getMyStudyList())
-        }
-    }
+    val myStudyList: LiveData<List<UserStudy>> = myStudyRepository.getMyStudyList()
 
-    suspend fun loadStudyList() {
+    fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.getUserStudyList(Firebase.auth.uid)
             }.onSuccess {
-                refreshMyStudyList(it.values.toList())
+                _myStudyListEvent.value = Event(it.values.toList())
             }.onFailure {
-                if (myStudyRepository.getMyStudyList().isEmpty()) {
+                if (myStudyList.value.isNullOrEmpty()) {
                     _studyFormButtonEvent.value = Event(true)
-                    Log.e("loadStudyList", it.message ?: "error occurred.")
+                    Log.e("HomeViewModel-loadStudyList", it.message ?: "error occurred.")
                 }
             }
         }
     }
 
-    private suspend fun refreshMyStudyList(myStudyList: List<UserStudy>) {
-        viewModelScope.launch {
-            myStudyRepository.refreshMyStudyList(myStudyList)
-            _myStudyListEvent.value = Event(myStudyList)
+    fun insertUserStudy(userStudyList: List<UserStudy>) {
+        userStudyList.forEach {
+            val storageRef = Firebase.storage.reference
+            val imageRef = storageRef.child("${it.sid}/${it.image}")
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                viewModelScope.launch {
+                    myStudyRepository.insertUserStudy(it.copy(image = uri.toString()))
+                }
+            }.addOnFailureListener {
+                Log.e("HomeViewModel-insertUserStudy", it.message ?: "error occurred.")
+            }
         }
     }
 
