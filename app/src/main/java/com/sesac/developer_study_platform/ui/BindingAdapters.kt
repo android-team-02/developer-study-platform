@@ -52,3 +52,10 @@ fun setVisibility(view: View, value: Boolean) {
         view.visibility = View.GONE
     }
 }
+
+@BindingAdapter("imageUrl")
+fun loadImageUrl(view: ImageView, url: String?) {
+    url?.let {
+        view.setImage(it)
+    }
+}
