@@ -1,7 +1,6 @@
 package com.sesac.developer_study_platform.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
@@ -23,12 +20,12 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<ProfileViewModel>()
     private lateinit var repositoryAdapter: RepositoryAdapter
-    //  private val args by navArgs<ProfileFragmentArgs>()
+    private val args by navArgs<ProfileFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
@@ -69,12 +66,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadUser() {
-        val currentUserId = Firebase.auth.uid
-        currentUserId?.let {
-            viewModel.loadUser(it)
-        } ?: run {
-            Log.e("ProfileFragment", "Failed to load user: UID is null")
-        }
+        viewModel.loadUser(args.uid)
         viewModel.userEvent.observe(
             viewLifecycleOwner,
             EventObserver {

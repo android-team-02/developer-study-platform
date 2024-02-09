@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,13 +39,6 @@ class DetailFragment : Fragment() {
         loadBookmarkButtonState()
         setBookmarkButton()
         setNavigation()
-
-        val buttonGoToProfile = view.findViewById<Button>(R.id.btn_join_study)
-        buttonGoToProfile.setOnClickListener {
-            val action = DetailFragmentDirections.actionDestDetailToDestProfile()
-            findNavController().navigate(action)
-
-        }
     }
 
     private fun setBackButton() {
