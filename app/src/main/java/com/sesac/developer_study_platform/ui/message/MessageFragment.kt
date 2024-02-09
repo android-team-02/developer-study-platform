@@ -38,8 +38,8 @@ class MessageFragment : Fragment() {
         }
     private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
         override fun onClick(uid: String) {
-            val action = MessageFragmentDirections.actionMessageToProfile(uid)
-            findNavController().navigate(action)
+     //       val action = MessageFragmentDirections.actionMessageToProfile(uid)
+         //   findNavController().navigate(action)
         }
     })
 
