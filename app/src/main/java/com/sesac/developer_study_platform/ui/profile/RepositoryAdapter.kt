@@ -1,6 +1,8 @@
 package com.sesac.developer_study_platform.ui.profile
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -20,6 +22,13 @@ class RepositoryAdapter(private val languageList: Map<String, String?>) :
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
         holder.bind(currentList[position], languageList)
+
+        val repository = currentList[position]
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repository.htmlUrl))
+            context.startActivity(intent)
+        }
     }
 
     class RepositoryViewHolder(private val binding: ItemRepositoryBinding) :
