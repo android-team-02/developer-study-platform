@@ -1,18 +1,16 @@
 package com.sesac.developer_study_platform.data.source.local
 
+import androidx.lifecycle.LiveData
 import com.sesac.developer_study_platform.StudyApplication.Companion.myStudyDao
 import com.sesac.developer_study_platform.data.UserStudy
 
 class MyStudyRepository {
 
-    suspend fun getMyStudyList(): List<UserStudy> {
+    fun getMyStudyList(): LiveData<List<UserStudy>> {
         return myStudyDao.getAllMyStudies()
     }
 
-    suspend fun refreshMyStudyList(myStudyList: List<UserStudy>) {
-        myStudyDao.deleteAllMyStudies()
-        myStudyList.forEach {
-            myStudyDao.insertUserStudy(it)
-        }
+    suspend fun insertUserStudy(userStudy: UserStudy) {
+        myStudyDao.insertUserStudy(userStudy)
     }
 }
