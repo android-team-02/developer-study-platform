@@ -1,5 +1,6 @@
 package com.sesac.developer_study_platform.data.source.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,9 +13,6 @@ interface MyStudyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserStudy(userStudy: UserStudy)
 
-    @Query("DELETE FROM my_studies")
-    suspend fun deleteAllMyStudies()
-
-    @Query("SELECT * FROM my_studies")
-    suspend fun getAllMyStudies(): List<UserStudy>
+    @Query("SELECT * FROM my_studies ORDER BY `sid` DESC")
+    fun getAllMyStudies(): LiveData<List<UserStudy>>
 }
