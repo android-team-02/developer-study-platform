@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
@@ -131,6 +132,28 @@ class MessageFragment : Fragment() {
         )
     }
 
+    private fun loadMenuMemberList() {
+        viewModel.loadMemberList(args.studyId)
+        viewModel.studyMemberListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                loadUsers(it)
+            }
+        )
+    }
+
+    private fun loadUsers(members: Map<String, Boolean>) {
+        lifecycleScope.launch {
+            viewModel.loadUsers(members)
+        }
+        viewModel.userEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                menuAdapter.submitList(it)
+            }
+        )
+    }
+
     private fun getTimestamp(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().toString()
@@ -158,35 +181,6 @@ class MessageFragment : Fragment() {
                 findNavController().popBackStack()
             }
         )
-    }
-
-    private fun loadMenuMemberList() {
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getStudyMemberList(args.studyId)
-            }.onSuccess { member ->
-                loadUsers(member)
-            }.onFailure {
-                Log.e("MessageFragment-loadMenuMemberList", it.message ?: "error occurred.")
-            }
-        }
-    }
-
-    private suspend fun loadUsers(member: Map<String, Boolean>) {
-        val memberList = mutableListOf<StudyMember>()
-        lifecycleScope.async {
-            member.forEach { (uid, isAdmin) ->
-                kotlin.runCatching {
-                    service.getUserById(uid)
-                }.onSuccess { studyUser ->
-                    memberList.add(StudyMember(studyUser, isAdmin, uid))
-                }.onFailure {
-                    Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
-                }.getOrNull()
-            }
-        }.await()
-        val sortMembers = memberList.sortedByDescending { it.isAdmin }
-        menuAdapter.submitList(sortMembers)
     }
 
     override fun onDestroyView() {
