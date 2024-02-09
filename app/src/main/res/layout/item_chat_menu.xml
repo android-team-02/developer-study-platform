@@ -1,40 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_user_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="@dimen/space_x_small"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        tools:src="@tools:sample/avatars" />
+    <data>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_admin"
-        android:layout_width="wrap_content"
+        <variable
+            name="clickListener"
+            type="com.sesac.developer_study_platform.ui.message.StudyMemberClickListener" />
+
+        <variable
+            name="isAdmin"
+            type="Boolean" />
+
+        <variable
+            name="studyMember"
+            type="com.sesac.developer_study_platform.data.StudyMember" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_crown"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/iv_user_image"
-        app:layout_constraintEnd_toEndOf="@id/iv_user_image" />
+        android:onClick="@{() -> clickListener.onClick(studyMember.userUid)}">
 
-    <TextView
-        android:id="@+id/tv_user_id"
-        style="@style/BlackText.Small"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_x_small"
-        android:layout_marginTop="@dimen/space_x_small"
-        android:fontFamily="@font/pretendard_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_user_image"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="AnMyungwoo94" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_user_image"
+            imageUrl="@{studyMember.studyUser.image}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/space_x_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
+            tools:src="@tools:sample/avatars" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_crown"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/iv_user_image"
+            app:layout_constraintEnd_toEndOf="@id/iv_user_image"
+            app:visible="@{studyMember.admin}" />
+
+        <TextView
+            android:id="@+id/tv_user_id"
+            style="@style/BlackText.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_x_small"
+            android:layout_marginTop="@dimen/space_x_small"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@{studyMember.studyUser.userId}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_user_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="AnMyungwoo94" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
