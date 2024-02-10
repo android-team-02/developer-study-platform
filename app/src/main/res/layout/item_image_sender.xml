@@ -20,20 +20,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="flow_date,flow_study_member" />
+
         <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow_system_message"
-            message="@{message}"
-            previousMessage="@{previousMessage}"
+            android:id="@+id/flow_date"
+            dateFlowMessage="@{message}"
+            dateFlowPrevMessage="@{previousMessage}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/space_median"
-            app:constraint_referenced_ids="div_start,tv_system_message,div_end"
+            app:constraint_referenced_ids="div_start_date,tv_date,div_end_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/div_start"
+            android:id="@+id/div_start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:dividerColor="@color/riverBed"
@@ -41,18 +48,56 @@
             app:dividerInsetStart="@dimen/space_median" />
 
         <TextView
-            android:id="@+id/tv_system_message"
-            messageText="@{message}"
-            previousMessageText="@{previousMessage}"
+            android:id="@+id/tv_date"
+            style="@style/RiverBedText.Small"
+            dateMessage="@{message}"
+            datePrevMessage="@{previousMessage}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_medium"
-            android:textColor="@color/riverBed"
-            android:textSize="14sp"
+            tools:text="2024년 02월 11일" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/div_end_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/riverBed"
+            app:dividerInsetEnd="@dimen/space_median"
+            app:dividerInsetStart="@dimen/space_median" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_study_member"
+            studyMemberFlowMessage="@{message}"
+            studyMemberFlowPrevMessage="@{previousMessage}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_x_small"
+            android:layout_marginBottom="@dimen/space_median"
+            app:constraint_referenced_ids="div_start_study_member,tv_study_member,div_end_study_member"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow_date" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/div_start_study_member"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/riverBed"
+            app:dividerInsetEnd="@dimen/space_median"
+            app:dividerInsetStart="@dimen/space_median" />
+
+        <TextView
+            android:id="@+id/tv_study_member"
+            style="@style/RiverBedText.Small"
+            studyMemberMessage="@{message}"
+            studyMemberPrevMessage="@{previousMessage}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
             tools:text="새로운 스터디 멤버가 입장하였습니다." />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/div_end"
+            android:id="@+id/div_end_study_member"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:dividerColor="@color/riverBed"
@@ -74,7 +119,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flow_system_message" />
+            app:layout_constraintTop_toBottomOf="@id/barrier" />
 
         <TextView
             android:id="@+id/tv_unread_user_count"
