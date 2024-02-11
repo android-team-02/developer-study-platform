@@ -41,7 +41,7 @@ class MyPageFragment : Fragment() {
         binding.mcv.addDecorators(TodayDecorator())
         setStudyAdapter()
         loadUser()
-        viewModel.loadStudyList()
+        loadStudyList()
         setDotSpanDayList()
         setSelectedDayEmpty()
         setSelectedDayStudyList()
@@ -67,6 +67,13 @@ class MyPageFragment : Fragment() {
         )
     }
 
+    private fun loadStudyList() {
+        viewModel.myStudyList.observe(viewLifecycleOwner) {
+            viewModel.setDotSpanDayList(it)
+            viewModel.studyList = it
+        }
+    }
+
     private fun setDotSpanDayList() {
         viewModel.dotSpanDayListEvent.observe(
             viewLifecycleOwner,
@@ -89,7 +96,7 @@ class MyPageFragment : Fragment() {
         viewModel.selectedDayStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                studyAdapter.submitList(it.toList())
+                studyAdapter.submitList(it)
                 binding.isSelectedDayEmpty = it.isEmpty()
             }
         )

@@ -31,8 +31,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_study_image"
-            image="@{userStudy.image}"
-            sid="@{userStudy.sid}"
+            imageUrl="@{userStudy.image}"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginVertical="@dimen/space_median"
