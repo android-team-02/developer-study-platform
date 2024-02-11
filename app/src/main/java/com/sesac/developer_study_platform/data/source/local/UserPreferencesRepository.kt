@@ -15,9 +15,9 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(USER_PREFE
 
 class UserPreferencesRepository(private val context: Context) {
 
-    suspend fun setAutoLogin() {
-        context.dataStore.edit { settings ->
-            settings[AUTO_LOGIN] = true
+    suspend fun setAutoLogin(autoLogin: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[AUTO_LOGIN] = autoLogin
         }
     }
 
