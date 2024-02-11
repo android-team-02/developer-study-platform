@@ -20,6 +20,10 @@
         <variable
             name="unreadCount"
             type="Integer" />
+
+        <variable
+            name="isLastMessageImage"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,7 +76,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/pretendard_medium"
             android:maxLines="1"
-            android:text="@{chatRoom.lastMessage.message.empty ? @string/chat_room_last_message_image : chatRoom.lastMessage.message}"
+            android:text="@{isLastMessageImage ? @string/chat_room_last_message_image : chatRoom.lastMessage.message}"
             android:textColor="@color/baliHai"
             android:textSize="14sp"
             tools:text="그럼 된거죠?" />
