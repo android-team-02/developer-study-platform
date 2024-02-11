@@ -38,6 +38,7 @@ class DetailFragment : Fragment() {
         loadStudy()
         loadBookmarkButtonState()
         setBookmarkButton()
+        setJoinStudyButton()
         setNavigation()
     }
 
@@ -94,6 +95,18 @@ class DetailFragment : Fragment() {
             viewModel.deleteBookmarkStudyBySid(args.studyId)
         }
     }
+
+    private fun setJoinStudyButton() {
+        binding.btnJoinStudy.setOnClickListener {
+            showJoinStudyDialog()
+        }
+    }
+
+    private fun showJoinStudyDialog() {
+        val action = DetailFragmentDirections.actionDestDetailToDestJoinStudyDialog(args.studyId)
+        findNavController().navigate(action)
+    }
+
 
     private fun setNavigation() {
         viewModel.moveToBackEvent.observe(
