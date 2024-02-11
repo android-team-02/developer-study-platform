@@ -119,6 +119,12 @@ interface StudyService {
         @Path("chatRoomId") chatRoomId: String
     ): ChatRoom
 
+    @PUT("chatRooms/{chatRoomId}.json")
+    suspend fun addChatRoom(
+        @Path("chatRoomId") chatRoomId: String,
+        @Body chatRoom: ChatRoom
+    )
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()
