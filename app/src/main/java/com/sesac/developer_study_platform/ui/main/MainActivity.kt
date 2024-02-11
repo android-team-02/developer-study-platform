@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.dest_detail -> View.GONE
                 R.id.dest_profile -> View.GONE
                 R.id.dest_message -> View.GONE
+                R.id.dest_webview -> View.GONE
                 else -> View.VISIBLE
             }
         }
