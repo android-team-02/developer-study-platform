@@ -102,6 +102,9 @@
         <argument
             android:name="uid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_dest_profile_to_dest_webview"
+            app:destination="@id/dest_webview" />
     </fragment>
 
     <fragment
@@ -144,4 +147,15 @@
             android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
     </fragment>
+
+    <fragment
+        android:id="@+id/dest_webview"
+        android:name="com.sesac.developer_study_platform.ui.profile.WebViewFragment"
+        android:label="fragment_webview"
+        tools:layout="@layout/fragment_webview">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
