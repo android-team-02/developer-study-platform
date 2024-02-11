@@ -23,9 +23,7 @@ class MyStudyFragment : Fragment() {
     private val viewModel by viewModels<MyStudyViewModel>()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // TODO 채팅 화면으로 이동
-            val action = MyStudyFragmentDirections.actionMyStudyToDetail(sid)
-            findNavController().navigate(action)
+            viewModel.moveToMessage(sid)
         }
     })
 
@@ -73,10 +71,25 @@ class MyStudyFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToBack()
+        moveToMessage()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToMessage() {
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = MyStudyFragmentDirections.actionGlobalToMessage(it)
+                findNavController().navigate(action)
             }
         )
     }
