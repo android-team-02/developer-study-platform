@@ -11,23 +11,30 @@ import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Repository
 import com.sesac.developer_study_platform.databinding.ItemRepositoryBinding
 
-class RepositoryAdapter(private val languageList: Map<String, String?>) :
-    ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(diffUtil) {
+class RepositoryAdapter(
+    private val languageList: Map<String, String?>,
+    private val clickListener: RepositoryClickListener,
+) : ListAdapter<Repository, RepositoryAdapter.RepositoryViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
         return RepositoryViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.bind(currentList[position], languageList)
+        holder.bind(currentList[position], languageList, clickListener)
     }
 
     class RepositoryViewHolder(private val binding: ItemRepositoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(repository: Repository, languageList: Map<String, String?>) {
+        fun bind(
+            repository: Repository,
+            languageList: Map<String, String?>,
+            clickListener: RepositoryClickListener
+        ) {
             binding.repository = repository
             binding.isLanguageNullOrEmpty = repository.language.isNullOrEmpty()
+            binding.clickListener = clickListener
             if (!repository.language.isNullOrEmpty()) {
                 val color = Color.parseColor(languageList.getValue(repository.language))
                 binding.ivRepositoryLanguageColor.setBackgroundColor(color)
