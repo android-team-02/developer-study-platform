@@ -14,7 +14,7 @@ import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), RepositoryItemClickListener {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
@@ -34,11 +34,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeLanguageList()
         setBackButton()
         parseJson()
         loadUser()
         loadRepositoryList()
         setNavigation()
+    }
+
+    private fun observeLanguageList() {
+        viewModel.languageListEvent.observe(viewLifecycleOwner, EventObserver { languageList ->
+            repositoryAdapter = RepositoryAdapter(languageList, this@ProfileFragment)
+            setRepositoryAdapter()
+        })
     }
 
     private fun setBackButton() {
@@ -49,13 +57,10 @@ class ProfileFragment : Fragment() {
 
     private fun parseJson() {
         viewModel.parseJson(resources.assets)
-        viewModel.languageListEvent.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                repositoryAdapter = RepositoryAdapter(it)
-                setRepositoryAdapter()
-            }
-        )
+        viewModel.languageListEvent.observe(viewLifecycleOwner, EventObserver { languageList ->
+            repositoryAdapter = RepositoryAdapter(languageList, this@ProfileFragment)
+            setRepositoryAdapter()
+        })
     }
 
     private fun setRepositoryAdapter() {
@@ -91,6 +96,11 @@ class ProfileFragment : Fragment() {
                 findNavController().popBackStack()
             }
         )
+    }
+
+    override fun onRepositoryItemClicked(url: String) {
+        val action = ProfileFragmentDirections.actionDestProfileToDestWebview(url)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
