@@ -71,9 +71,6 @@
     <string name="profile_icon_star_description">별 모양의 아이콘</string>
     <string name="profile_icon_issue_description">이슈 모양의 아이콘</string>
 
-    <string name="message_add_image">이미지 추가</string>
-    <string name="message_send_description">메시지 전송</string>
-
     <string name="study_form_title">스터디 만들기</string>
     <string name="study_form_add_image">스터디 대표 이미지 추가하기</string>
     <string name="study_form_name">스터디 이름</string>
@@ -128,6 +125,16 @@
         <item>7</item>
         <item>8</item>
     </string-array>
+
+    <string name="chat_room_last_message_image">사진을 보냈습니다.</string>
+
+    <string name="message_select_image">이미지 추가</string>
+    <string name="message_send_description">메시지 전송</string>
+    <string name="message_menu_description">채팅 메뉴</string>
+    <string name="message_new_study_member">새로운 스터디 멤버가 입장하였습니다.</string>
+    <string name="message_left_study_member">스터디 멤버가 퇴장하였습니다.</string>
+    <string name="message_menu_member">대화상대</string>
+    <string name="message_menu_exit_description">채팅방 나가기 아이콘</string>
 
     <string name="my_page_icon_bookmark_description">북마크 모양의 아이콘</string>
     <string name="my_page_logout">로그아웃</string>

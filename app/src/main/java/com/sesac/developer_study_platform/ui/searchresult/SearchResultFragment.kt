@@ -1,32 +1,30 @@
 package com.sesac.developer_study_platform.ui.searchresult
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.ui.studyform.CustomTextWatcher
-import com.sesac.developer_study_platform.util.sortStudyList
-import kotlinx.coroutines.launch
 
 class SearchResultFragment : Fragment() {
 
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<SearchResultViewModel>()
     private val searchAdapter = SearchAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            val action = SearchResultFragmentDirections.actionGlobalToDetail(sid)
-            findNavController().navigate(action)
+            viewModel.moveToDetail(sid)
         }
     })
 
@@ -44,11 +42,13 @@ class SearchResultFragment : Fragment() {
 
         showSoftKeyboard(binding.etSearch)
         setBackButton()
+        setNavigation()
         setSearchAdapter()
         searchStudy()
+        setSearchStudyList()
     }
 
-    private fun showSoftKeyboard(view: View) {
+    private fun showSoftKeyboard(view: TextInputEditText) {
         if (view.requestFocus()) {
             val imm = context?.getSystemService(InputMethodManager::class.java)
             imm?.showSoftInput(view, SHOW_IMPLICIT)
@@ -57,8 +57,24 @@ class SearchResultFragment : Fragment() {
 
     private fun setBackButton() {
         binding.ivArrowBack.setOnClickListener {
-            findNavController().popBackStack()
+            viewModel.moveToBack()
         }
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
+        viewModel.moveToDetailEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = SearchResultFragmentDirections.actionGlobalToDetail(it)
+                findNavController().navigate(action)
+            }
+        )
     }
 
     private fun setSearchAdapter() {
@@ -74,24 +90,19 @@ class SearchResultFragment : Fragment() {
                 if (it.isEmpty()) {
                     searchAdapter.submitList(emptyList())
                 } else {
-                    loadSearchStudyList(it)
+                    viewModel.loadStudyList(it)
                 }
             }
         )
     }
 
-    private fun loadSearchStudyList(searchKeyword: String) {
-        val service = StudyService.create()
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getSearchStudyList("\"${searchKeyword}\"", "\"${searchKeyword}\\uf8ff\"")
-            }.onSuccess {
-                val searchStudyList = it.values.toList().sortStudyList()
-                searchAdapter.submitList(searchStudyList)
-            }.onFailure {
-                Log.e("SearchResultFragment", it.message ?: "error occurred.")
+    private fun setSearchStudyList() {
+        viewModel.searchStudyListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                searchAdapter.submitList(it)
             }
-        }
+        )
     }
 
     override fun onDestroyView() {

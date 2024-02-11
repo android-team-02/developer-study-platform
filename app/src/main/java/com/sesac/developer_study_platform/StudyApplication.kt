@@ -1,13 +1,13 @@
 package com.sesac.developer_study_platform
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.room.Room
 import com.sesac.developer_study_platform.data.source.local.AppDatabase
 import com.sesac.developer_study_platform.data.source.local.BookmarkDao
 import com.sesac.developer_study_platform.data.source.local.BookmarkRepository
 import com.sesac.developer_study_platform.data.source.local.MyStudyDao
 import com.sesac.developer_study_platform.data.source.local.MyStudyRepository
+import com.sesac.developer_study_platform.data.source.remote.GithubRepository
 import com.sesac.developer_study_platform.data.source.remote.StudyRepository
 
 class StudyApplication : Application() {
@@ -16,14 +16,11 @@ class StudyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        sharedPref = applicationContext.getSharedPreferences(
-            getString(R.string.application_pref_file_key),
-            MODE_PRIVATE
-        )
         db = Room.databaseBuilder(this, AppDatabase::class.java, "study-database")
             .fallbackToDestructiveMigration()
             .build()
         bookmarkDao = db.bookmarkDao()
+        githubRepository = GithubRepository()
         studyRepository = StudyRepository()
         bookmarkRepository = BookmarkRepository()
         myStudyDao = db.myStudyDao()
@@ -36,8 +33,8 @@ class StudyApplication : Application() {
     }
 
     companion object {
-        lateinit var sharedPref: SharedPreferences
         lateinit var bookmarkDao: BookmarkDao
+        lateinit var githubRepository: GithubRepository
         lateinit var studyRepository: StudyRepository
         lateinit var bookmarkRepository: BookmarkRepository
         lateinit var myStudyDao: MyStudyDao

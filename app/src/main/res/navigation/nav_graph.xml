@@ -13,6 +13,10 @@
         android:id="@+id/action_global_to_detail"
         app:destination="@+id/dest_detail" />
 
+    <action
+        android:id="@+id/action_global_to_message"
+        app:destination="@id/dest_message" />
+
     <fragment
         android:id="@+id/dest_login"
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
@@ -42,7 +46,11 @@
         android:id="@+id/dest_my_study"
         android:name="com.sesac.developer_study_platform.ui.mystudy.MyStudyFragment"
         android:label="fragment_my_study"
-        tools:layout="@layout/fragment_my_study" />
+        tools:layout="@layout/fragment_my_study">
+        <action
+            android:id="@+id/action_my_study_to_detail"
+            app:destination="@id/dest_detail" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_detail"
@@ -90,7 +98,11 @@
         android:id="@+id/dest_profile"
         android:name="com.sesac.developer_study_platform.ui.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="uid"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_chat"
@@ -102,7 +114,26 @@
         android:id="@+id/dest_my"
         android:name="com.sesac.developer_study_platform.ui.mypage.MyPageFragment"
         android:label="fragment_my_page"
-        tools:layout="@layout/fragment_my_page" />
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_my_to_bookmark"
+            app:destination="@id/dest_bookmark" />
+        <action
+            android:id="@+id/action_my_to_logout_dialog"
+            app:destination="@id/dest_logout_dialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/dest_logout_dialog"
+        android:name="com.sesac.developer_study_platform.ui.mypage.LogoutDialogFragment"
+        android:label="fragment_logout_dialog"
+        tools:layout="@layout/dialog_logout">
+        <action
+            android:id="@+id/action_logout_dialog_to_login"
+            app:destination="@id/dest_login"
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_bookmark"
@@ -115,4 +146,18 @@
         android:name="com.sesac.developer_study_platform.ui.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
+
+    <fragment
+        android:id="@+id/dest_message"
+        android:name="com.sesac.developer_study_platform.ui.message.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_message_to_profile"
+            app:destination="@id/dest_profile" />
+    </fragment>
+
 </navigation>

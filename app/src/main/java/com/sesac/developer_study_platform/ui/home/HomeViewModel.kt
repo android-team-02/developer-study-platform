@@ -31,14 +31,21 @@ class HomeViewModel : ViewModel() {
     private val _moveToCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToCategoryEvent: LiveData<Event<String>> = _moveToCategoryEvent
 
+    private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
+
     val myStudyList: LiveData<List<UserStudy>> = myStudyRepository.getMyStudyList()
 
     fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.getUserStudyList(Firebase.auth.uid)
+                Firebase.auth.uid?.let {
+                    studyRepository.getUserStudyList(it)
+                }
             }.onSuccess {
-                _myStudyListEvent.value = Event(it.values.toList())
+                it?.let {
+                    _myStudyListEvent.value = Event(it.values.toList())
+                }
             }.onFailure {
                 if (myStudyList.value.isNullOrEmpty()) {
                     _studyFormButtonEvent.value = Event(true)
@@ -72,5 +79,9 @@ class HomeViewModel : ViewModel() {
 
     fun moveToCategory(category: String) {
         _moveToCategoryEvent.value = Event(category)
+    }
+
+    fun moveToMessage(sid: String) {
+        _moveToMessageEvent.value = Event(sid)
     }
 }

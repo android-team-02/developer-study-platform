@@ -24,6 +24,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.DayTime
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
@@ -336,6 +337,9 @@ class StudyFormFragment : Fragment() {
                         uploadImage(sid, image) { fileName ->
                             saveStudy(sid, formatStudy(sid, uid, fileName))
                             saveUserStudy(uid, sid, formatUserStudy(sid, fileName))
+                            saveChatRoom(sid)
+                            val action = StudyFormFragmentDirections.actionGlobalToMessage(sid)
+                            findNavController().navigate(action)
                         }
                     }
                 }
@@ -375,6 +379,16 @@ class StudyFormFragment : Fragment() {
                 studyService.putUserStudy(uid, sid, userStudy)
             }.onFailure {
                 Log.e("StudyFormFragment-saveUserStudy", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun saveChatRoom(sid: String) {
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                studyService.addChatRoom(sid, ChatRoom())
+            }.onFailure {
+                Log.e("StudyFormFragment-saveChatRoom", it.message ?: "error occurred.")
             }
         }
     }
