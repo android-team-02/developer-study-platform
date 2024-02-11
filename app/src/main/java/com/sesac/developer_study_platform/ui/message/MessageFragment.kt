@@ -1,7 +1,6 @@
 package com.sesac.developer_study_platform.ui.message
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,10 +18,9 @@ import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
+import com.sesac.developer_study_platform.util.getTimestamp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.util.Date
 
 class MessageFragment : Fragment() {
 
@@ -129,14 +127,6 @@ class MessageFragment : Fragment() {
                 loadMessageList()
             }
         )
-    }
-
-    private fun getTimestamp(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().toString()
-        } else {
-            Date().toString()
-        }
     }
 
     private fun setPlusButton() {

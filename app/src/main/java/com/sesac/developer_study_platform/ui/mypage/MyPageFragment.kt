@@ -126,7 +126,7 @@ class MyPageFragment : Fragment() {
         viewModel.moveToDialogEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                // TODO 로그아웃 다이얼로그로 이동
+                findNavController().navigate(R.id.action_my_to_logout_dialog)
             }
         )
     }

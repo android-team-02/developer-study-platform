@@ -88,7 +88,7 @@ fun String.formatSystemMessage(): String {
     }
 }
 
-fun getToday(): String {
+fun getTimestamp(): String {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         LocalDateTime.now().toString()
     } else {

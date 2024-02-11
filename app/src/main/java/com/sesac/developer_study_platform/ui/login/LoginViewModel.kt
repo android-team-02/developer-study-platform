@@ -46,7 +46,7 @@ class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepos
                 .addOnSuccessListener {
                     val accessToken = "Bearer ${(it.credential as OAuthCredential).accessToken}"
                     loadUser(accessToken)
-                    setAutoLogin()
+                    setAutoLoginTrue()
                 }
                 .addOnFailureListener {
                     _loginFailureEvent.value = Event(Unit)
@@ -55,9 +55,9 @@ class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepos
         }
     }
 
-    private fun setAutoLogin() {
+    private fun setAutoLoginTrue() {
         viewModelScope.launch {
-            userPreferencesRepository.setAutoLogin()
+            userPreferencesRepository.setAutoLogin(true)
         }
     }
 

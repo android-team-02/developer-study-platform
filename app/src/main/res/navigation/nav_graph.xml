@@ -118,7 +118,22 @@
         <action
             android:id="@+id/action_my_to_bookmark"
             app:destination="@id/dest_bookmark" />
+        <action
+            android:id="@+id/action_my_to_logout_dialog"
+            app:destination="@id/dest_logout_dialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_logout_dialog"
+        android:name="com.sesac.developer_study_platform.ui.mypage.LogoutDialogFragment"
+        android:label="fragment_logout_dialog"
+        tools:layout="@layout/dialog_logout">
+        <action
+            android:id="@+id/action_logout_dialog_to_login"
+            app:destination="@id/dest_login"
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_bookmark"
@@ -144,4 +159,5 @@
             android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
     </fragment>
+
 </navigation>
