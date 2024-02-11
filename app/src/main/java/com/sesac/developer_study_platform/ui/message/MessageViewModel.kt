@@ -48,7 +48,7 @@ class MessageViewModel : ViewModel() {
         }
     }
 
-    fun saveMultipleMedia(sid: String, uriList: List<Uri>, timestamp: String) {
+    fun saveMultipleMedia(sid: String, uriList: List<Uri>, timestamp: Long) {
         if (uriList.isNotEmpty()) {
             uriList.forEach {
                 kotlin.runCatching {
@@ -110,7 +110,7 @@ class MessageViewModel : ViewModel() {
         }.await()
     }
 
-    fun sendImage(sid: String, uriList: List<Uri>, timestamp: String) {
+    fun sendImage(sid: String, uriList: List<Uri>, timestamp: Long) {
         viewModelScope.launch {
             val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
