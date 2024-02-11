@@ -31,9 +31,7 @@ class LogoutDialogFragment : DialogFragment() {
 
         setDialogSize()
         dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
-
         setNavigation()
-
         binding.btnNo.setOnClickListener {
             dismiss()
         }

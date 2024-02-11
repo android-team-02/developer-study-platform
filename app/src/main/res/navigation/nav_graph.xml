@@ -127,12 +127,12 @@
         android:id="@+id/dest_logout_dialog"
         android:name="com.sesac.developer_study_platform.ui.mypage.LogoutDialogFragment"
         android:label="fragment_logout_dialog"
-        tools:layout="@layout/dialog_logout" >
+        tools:layout="@layout/dialog_logout">
         <action
             android:id="@+id/action_logout_dialog_to_login"
             app:destination="@id/dest_login"
             app:popUpTo="@id/dest_home"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </dialog>
 
     <fragment
