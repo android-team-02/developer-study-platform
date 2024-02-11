@@ -41,7 +41,7 @@ class MyPageFragment : Fragment() {
         binding.mcv.addDecorators(TodayDecorator())
         setStudyAdapter()
         loadUser()
-        viewModel.loadStudyList()
+        loadStudyList()
         setDotSpanDayList()
         setSelectedDayEmpty()
         setSelectedDayStudyList()
@@ -67,6 +67,13 @@ class MyPageFragment : Fragment() {
         )
     }
 
+    private fun loadStudyList() {
+        viewModel.myStudyList.observe(viewLifecycleOwner) {
+            viewModel.setDotSpanDayList(it)
+            viewModel.studyList = it
+        }
+    }
+
     private fun setDotSpanDayList() {
         viewModel.dotSpanDayListEvent.observe(
             viewLifecycleOwner,
@@ -89,7 +96,7 @@ class MyPageFragment : Fragment() {
         viewModel.selectedDayStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                studyAdapter.submitList(it.toList())
+                studyAdapter.submitList(it)
                 binding.isSelectedDayEmpty = it.isEmpty()
             }
         )
@@ -108,22 +115,35 @@ class MyPageFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToBookmark()
+        moveToDialog()
+        moveToMessage()
+    }
+
+    private fun moveToBookmark() {
         viewModel.moveToBookmarkEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().navigate(R.id.action_my_to_bookmark)
             }
         )
+    }
+
+    private fun moveToDialog() {
         viewModel.moveToDialogEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                // TODO 로그아웃 다이얼로그로 이동
+                findNavController().navigate(R.id.action_my_to_logout_dialog)
             }
         )
+    }
+
+    private fun moveToMessage() {
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                // TODO 채팅방으로 이동
+                val action = MyPageFragmentDirections.actionGlobalToMessage(it)
+                findNavController().navigate(action)
             }
         )
     }

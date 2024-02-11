@@ -20,9 +20,10 @@ data class Study(
     val banUsers: Map<String, Boolean>,
 )
 
+@Entity(tableName = "my_studies")
 @Serializable
 data class UserStudy(
-    val sid: String,
+    @PrimaryKey val sid: String,
     val name: String,
     val image: String,
     val language: String,

@@ -14,7 +14,7 @@ import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 
-class ProfileFragment : Fragment(), RepositoryItemClickListener {
+class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -34,19 +34,11 @@ class ProfileFragment : Fragment(), RepositoryItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeLanguageList()
         setBackButton()
         parseJson()
         loadUser()
         loadRepositoryList()
         setNavigation()
-    }
-
-    private fun observeLanguageList() {
-        viewModel.languageListEvent.observe(viewLifecycleOwner, EventObserver { languageList ->
-            repositoryAdapter = RepositoryAdapter(languageList, this@ProfileFragment)
-            setRepositoryAdapter()
-        })
     }
 
     private fun setBackButton() {
@@ -57,10 +49,17 @@ class ProfileFragment : Fragment(), RepositoryItemClickListener {
 
     private fun parseJson() {
         viewModel.parseJson(resources.assets)
-        viewModel.languageListEvent.observe(viewLifecycleOwner, EventObserver { languageList ->
-            repositoryAdapter = RepositoryAdapter(languageList, this@ProfileFragment)
-            setRepositoryAdapter()
-        })
+        viewModel.languageListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                repositoryAdapter = RepositoryAdapter(it, object : RepositoryClickListener {
+                    override fun onClick(url: String) {
+                        viewModel.moveToWebView(url)
+                    }
+                })
+                setRepositoryAdapter()
+            }
+        )
     }
 
     private fun setRepositoryAdapter() {
@@ -90,6 +89,11 @@ class ProfileFragment : Fragment(), RepositoryItemClickListener {
     }
 
     private fun setNavigation() {
+        moveToBack()
+        moveToWebView()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -98,9 +102,14 @@ class ProfileFragment : Fragment(), RepositoryItemClickListener {
         )
     }
 
-    override fun onRepositoryItemClicked(url: String) {
-        val action = ProfileFragmentDirections.actionDestProfileToDestWebview(url)
-        findNavController().navigate(action)
+    private fun moveToWebView() {
+        viewModel.moveToWebViewEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = ProfileFragmentDirections.actionProfileToWebview(it)
+                findNavController().navigate(action)
+            }
+        )
     }
 
     override fun onDestroyView() {
