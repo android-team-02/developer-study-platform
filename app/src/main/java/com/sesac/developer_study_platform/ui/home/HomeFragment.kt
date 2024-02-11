@@ -23,12 +23,12 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<HomeViewModel>()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // TODO 채팅 화면으로 이동
+            viewModel.moveToMessage(sid)
         }
     })
-    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,6 +111,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToMyStudy()
+        moveToStudyForm()
+        moveToCategory()
+        moveToMessage()
+    }
+
+    private fun moveToMyStudy() {
         viewModel.moveToMyStudyEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -118,18 +125,34 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
+    }
+
+    private fun moveToStudyForm() {
         viewModel.moveToStudyFormEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().navigate(R.id.action_home_to_study_form)
             }
         )
+    }
+
+    private fun moveToCategory() {
         viewModel.moveToCategoryEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 val action = HomeFragmentDirections.actionGlobalToSearchCategory(
                     getPosition(it)
                 )
+                findNavController().navigate(action)
+            }
+        )
+    }
+
+    private fun moveToMessage() {
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = HomeFragmentDirections.actionGlobalToMessage(it)
                 findNavController().navigate(action)
             }
         )

@@ -30,6 +30,9 @@ class HomeViewModel : ViewModel() {
     private val _moveToCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToCategoryEvent: LiveData<Event<String>> = _moveToCategoryEvent
 
+    private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
+
     suspend fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -57,5 +60,9 @@ class HomeViewModel : ViewModel() {
 
     fun moveToCategory(category: String) {
         _moveToCategoryEvent.value = Event(category)
+    }
+
+    fun moveToMessage(sid: String) {
+        _moveToMessageEvent.value = Event(sid)
     }
 }

@@ -108,22 +108,35 @@ class MyPageFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToBookmark()
+        moveToDialog()
+        moveToMessage()
+    }
+
+    private fun moveToBookmark() {
         viewModel.moveToBookmarkEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().navigate(R.id.action_my_to_bookmark)
             }
         )
+    }
+
+    private fun moveToDialog() {
         viewModel.moveToDialogEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().navigate(R.id.action_my_to_logout_dialog)
             }
         )
+    }
+
+    private fun moveToMessage() {
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                // TODO 채팅방으로 이동
+                val action = MyPageFragmentDirections.actionGlobalToMessage(it)
+                findNavController().navigate(action)
             }
         )
     }

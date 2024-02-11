@@ -119,6 +119,12 @@ interface StudyService {
         @Path("chatRoomId") chatRoomId: String
     ): ChatRoom
 
+    @PATCH("studies/{sid}/members.json")
+    suspend fun addStudyMember(
+        @Path("sid") sid: String,
+        @Body members: Map<String, Boolean>
+    )
+
     @PUT("chatRooms/{chatRoomId}.json")
     suspend fun addChatRoom(
         @Path("chatRoomId") chatRoomId: String,

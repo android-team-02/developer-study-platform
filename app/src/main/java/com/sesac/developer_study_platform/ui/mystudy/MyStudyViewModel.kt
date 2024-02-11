@@ -20,6 +20,9 @@ class MyStudyViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
+    private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
+
     suspend fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -38,5 +41,9 @@ class MyStudyViewModel : ViewModel() {
 
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
+    }
+
+    fun moveToMessage(sid: String) {
+        _moveToMessageEvent.value = Event(sid)
     }
 }
