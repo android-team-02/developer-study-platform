@@ -64,9 +64,9 @@ class MessageFragment : Fragment() {
         loadMenuMemberList()
         setPlusButton()
         setSendButton()
-        setNavigation()
         setExitButton()
         setExitButtonVisibility()
+        setNavigation()
     }
 
     private fun setBackButton() {
@@ -145,15 +145,6 @@ class MessageFragment : Fragment() {
         }
     }
 
-    private fun setNavigation() {
-        viewModel.moveToBackEvent.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                findNavController().popBackStack()
-            }
-        )
-    }
-
     private fun loadMenuMemberList() {
         lifecycleScope.launch {
             kotlin.runCatching {
@@ -185,8 +176,7 @@ class MessageFragment : Fragment() {
 
     private fun setExitButton() {
         binding.ivExit.setOnClickListener {
-            val action = MessageFragmentDirections.actionMessageToExitDialog(args.studyId)
-            findNavController().navigate(action)
+            viewModel.moveToExitDialog(args.studyId)
         }
     }
 
@@ -196,6 +186,30 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 binding.isAdmin = it
+            }
+        )
+    }
+
+    private fun setNavigation() {
+        moveToBack()
+        moveToExitDialog()
+    }
+
+    private fun moveToBack() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToExitDialog() {
+        viewModel.moveToExitDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = MessageFragmentDirections.actionMessageToExitDialog(it)
+                findNavController().navigate(action)
             }
         )
     }

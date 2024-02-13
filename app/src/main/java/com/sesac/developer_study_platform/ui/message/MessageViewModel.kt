@@ -36,6 +36,9 @@ class MessageViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
+    private val _moveToExitDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToExitDialogEvent: LiveData<Event<String>> = _moveToExitDialogEvent
+
     private val _isAdminEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val isAdminEvent: LiveData<Event<Boolean>> = _isAdminEvent
 
@@ -257,5 +260,9 @@ class MessageViewModel : ViewModel() {
 
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
+    }
+
+    fun moveToExitDialog(sid: String) {
+        _moveToExitDialogEvent.value = Event(sid)
     }
 }
