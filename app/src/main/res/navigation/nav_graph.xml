@@ -100,12 +100,35 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
         <argument
+            android:name="studyId"
+            app:argType="string" />
+        <argument
             android:name="uid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_profile_to_ban_dialog"
+            app:destination="@id/dest_ban_dialog" />
         <action
             android:id="@+id/action_profile_to_webview"
             app:destination="@id/dest_webview" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_ban_dialog"
+        android:name="com.sesac.developer_study_platform.ui.profile.BanDialogFragment"
+        android:label="fragment_ban_dialog"
+        tools:layout="@layout/dialog_ban">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+        <argument
+            android:name="uid"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_ban_dialog_to_message"
+            app:destination="@id/dest_message"
+            app:popUpTo="@id/dest_message" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_chat"
