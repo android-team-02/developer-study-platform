@@ -32,7 +32,8 @@ fun setEnabled(view: AppCompatButton, study: Study?) {
     if (study != null) {
         view.isEnabled = !(formatYearMonthDay() > study.endDate
                 || study.members.count() == study.totalMemberCount
-                || study.banUsers.containsKey(Firebase.auth.uid))
+                || study.banUsers.containsKey(Firebase.auth.uid)
+                || study.members.containsKey(Firebase.auth.uid))
     }
 }
 
