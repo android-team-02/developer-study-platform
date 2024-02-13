@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class BanDialogViewModel : ViewModel() {
 
-    private val _moveToMessageEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val moveToMessageEvent: LiveData<Event<Unit>> = _moveToMessageEvent
+    private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
     fun deleteStudyMember(sid: String, uid: String) {
         viewModelScope.launch {
@@ -43,10 +43,14 @@ class BanDialogViewModel : ViewModel() {
             runCatching {
                 studyRepository.addStudyBanMember(sid, uid)
             }.onSuccess {
-                _moveToMessageEvent.value = Event(Unit)
+                moveToMessage(sid)
             }.onFailure {
                 Log.e("BanDialogViewModel-addStudyBanMember", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun moveToMessage(sid: String) {
+        _moveToMessageEvent.value = Event(sid)
     }
 }

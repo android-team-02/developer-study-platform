@@ -52,7 +52,7 @@ class BanDialogFragment : DialogFragment() {
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                val action = BanDialogFragmentDirections.actionBanDialogToMessage(args.studyId)
+                val action = BanDialogFragmentDirections.actionBanDialogToMessage(it)
                 findNavController().navigate(action)
             }
         )
