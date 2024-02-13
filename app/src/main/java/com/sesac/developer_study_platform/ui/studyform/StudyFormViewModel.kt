@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 
 class StudyFormViewModel : ViewModel() {
 
-    private val _imageUri = MutableLiveData<Event<Uri>>()
-    val imageUri: LiveData<Event<Uri>> = _imageUri
+    private val _imageUriEvent: MutableLiveData<Event<Uri>> = MutableLiveData()
+    val imageUriEvent: LiveData<Event<Uri>> = _imageUriEvent
 
     private val _isSelectedImage: MutableLiveData<Boolean> = MutableLiveData(false)
     val isSelectedImage: LiveData<Boolean> = _isSelectedImage
@@ -25,11 +25,20 @@ class StudyFormViewModel : ViewModel() {
     private val _uploadImageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val uploadImageEvent: LiveData<Event<String>> = _uploadImageEvent
 
-    private val _nameValidationEvent = MutableLiveData<Event<Unit>>()
+    private val _selectedCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val selectedCategory: LiveData<Event<String>> = _selectedCategoryEvent
+
+    private val _nameValidationEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val nameValidationEvent: LiveData<Event<Unit>> = _nameValidationEvent
 
-    private val _contentValidationEvent = MutableLiveData<Event<Unit>>()
+    private val _contentValidationEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val contentValidationEvent: LiveData<Event<Unit>> = _contentValidationEvent
+
+    private val _selectedLanguageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val selectedLanguage: LiveData<Event<String>> = _selectedLanguageEvent
+
+    private val _selectedTotalCountEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val selectedTotalCountEvent: LiveData<Event<String>> = _selectedTotalCountEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
@@ -38,8 +47,32 @@ class StudyFormViewModel : ViewModel() {
     val moveToMessageEvent: LiveData<Event<Unit>> = _moveToMessageEvent
 
     fun setImageUri(uri: Uri) {
-        _imageUri.value = Event(uri)
+        _imageUriEvent.value = Event(uri)
         _isSelectedImage.value = true
+    }
+
+    fun selectCategory(category: String) {
+        _selectedCategoryEvent.value = Event(category)
+    }
+
+    fun validateName(name: String) {
+        if (name.length == 20) {
+            _nameValidationEvent.value = Event(Unit)
+        }
+    }
+
+    fun validateContent(content: String) {
+        if (content.length == 150) {
+            _contentValidationEvent.value = Event(Unit)
+        }
+    }
+
+    fun selectLanguage(language: String) {
+        _selectedLanguageEvent.value = Event(language)
+    }
+
+    fun selectTotalCount(language: String) {
+        _selectedTotalCountEvent.value = Event(language)
     }
 
     fun uploadImage(sid: String, name: String, image: Uri) {
@@ -54,18 +87,6 @@ class StudyFormViewModel : ViewModel() {
             }
         }.addOnFailureListener {
             Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
-        }
-    }
-
-    fun validateName(name: String) {
-        if (name.length == 20) {
-            _nameValidationEvent.value = Event(Unit)
-        }
-    }
-
-    fun validateContent(content: String) {
-        if (content.length == 150) {
-            _contentValidationEvent.value = Event(Unit)
         }
     }
 

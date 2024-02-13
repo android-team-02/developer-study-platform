@@ -119,7 +119,7 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun setSelectedImage() {
-        viewModel.imageUri.observe(
+        viewModel.imageUriEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 binding.ivImage.setImageURI(it)
@@ -131,13 +131,13 @@ class StudyFormFragment : Fragment() {
             binding.root.findViewById<AppCompatButton>(id)
         }
         button.setOnClickListener {
+            viewModel.selectCategory(button.text.toString())
             button.isSelected = true
             buttonList.forEach {
                 if (it != button) {
                     it.isSelected = false
                 }
             }
-            category = button.text.toString()
         }
     }
 
@@ -175,7 +175,7 @@ class StudyFormFragment : Fragment() {
         )
         binding.tvLanguageDropdown.setAdapter(arrayAdapter)
         binding.tvLanguageDropdown.setOnItemClickListener { parent, _, position, _ ->
-            language = parent.getItemAtPosition(position).toString()
+            viewModel.selectLanguage(parent.getItemAtPosition(position).toString())
         }
     }
 
@@ -187,7 +187,7 @@ class StudyFormFragment : Fragment() {
         )
         binding.tvPeopleDropdown.setAdapter(arrayAdapter)
         binding.tvPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
-            totalPeopleCount = parent.getItemAtPosition(position).toString()
+            viewModel.selectTotalCount(parent.getItemAtPosition(position).toString())
         }
     }
 
