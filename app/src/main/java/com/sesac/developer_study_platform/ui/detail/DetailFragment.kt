@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
@@ -37,10 +37,11 @@ class DetailFragment : Fragment() {
 
         setBackButton()
         loadStudy()
-        setJoinStudyButton()
         loadBookmarkButtonState()
         setBookmarkButton()
+        setJoinStudyButton()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -65,23 +66,6 @@ class DetailFragment : Fragment() {
                 binding.tvMemberValue.text = it.joinToString("\n")
             }
         )
-    }
-
-    private fun setJoinStudyButton() {
-        binding.btnJoinStudy.setOnClickListener {
-            viewModel.addUserStudy(
-                args.studyId,
-                with(viewModel.study) {
-                    UserStudy(sid, name, image, language, days, startDate, endDate)
-                }
-            )
-            viewModel.addUserStudyEvent.observe(
-                viewLifecycleOwner,
-                EventObserver {
-                    viewModel.moveToMessage(args.studyId)
-                }
-            )
-        }
     }
 
     private fun loadBookmarkButtonState() {
@@ -114,9 +98,15 @@ class DetailFragment : Fragment() {
         }
     }
 
+    private fun setJoinStudyButton() {
+        binding.btnJoinStudy.setOnClickListener {
+            viewModel.moveToJoinStudyDialog(args.studyId)
+        }
+    }
+
     private fun setNavigation() {
         moveToBack()
-        moveToMessage()
+        moveToJoinStudyDialog()
     }
 
     private fun moveToBack() {
@@ -128,11 +118,11 @@ class DetailFragment : Fragment() {
         )
     }
 
-    private fun moveToMessage() {
-        viewModel.moveToMessageEvent.observe(
+    private fun moveToJoinStudyDialog() {
+        viewModel.moveToJoinStudyDialogEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                val action = DetailFragmentDirections.actionGlobalToMessage(it)
+                val action = DetailFragmentDirections.actionDetailToJoinStudyDialog(viewModel.study)
                 findNavController().navigate(action)
             }
         )

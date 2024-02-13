@@ -13,6 +13,7 @@ import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentHomeBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return binding.root
@@ -53,6 +54,7 @@ class HomeFragment : Fragment() {
             setCategoryButton(tvEtc)
         }
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setStudyAdapter() {
@@ -71,7 +73,8 @@ class HomeFragment : Fragment() {
             }
         )
         viewModel.myStudyList.observe(viewLifecycleOwner) {
-            studyAdapter.submitList(it)
+            val limitedList = it.take(3)
+            studyAdapter.submitList(limitedList)
         }
         viewModel.studyFormButtonEvent.observe(
             viewLifecycleOwner,

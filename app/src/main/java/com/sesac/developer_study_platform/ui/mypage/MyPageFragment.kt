@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentMyPageBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
@@ -48,6 +49,7 @@ class MyPageFragment : Fragment() {
         setBookmarkButton()
         setDialogButton()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setStudyAdapter() {

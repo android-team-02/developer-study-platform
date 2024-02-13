@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentSearchBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.home.HomeFragmentDirections
 
 class SearchFragment : Fragment() {
@@ -25,7 +27,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         return binding.root
     }
 
@@ -42,6 +44,7 @@ class SearchFragment : Fragment() {
             setCategoryButton(tvEtc)
         }
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setSearchBar() {

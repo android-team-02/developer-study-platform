@@ -18,7 +18,7 @@ data class Study(
     val endDate: String,
     val members: Map<String, Boolean>,
     val banUsers: Map<String, Boolean>,
-)
+) : java.io.Serializable
 
 @Entity(tableName = "my_studies")
 @Serializable
