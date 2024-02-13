@@ -73,7 +73,8 @@ class HomeFragment : Fragment() {
             }
         )
         viewModel.myStudyList.observe(viewLifecycleOwner) {
-            studyAdapter.submitList(it)
+            val limitedList = it.take(3)
+            studyAdapter.submitList(limitedList)
         }
         viewModel.studyFormButtonEvent.observe(
             viewLifecycleOwner,

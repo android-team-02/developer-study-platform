@@ -48,7 +48,7 @@ class MessageViewModel : ViewModel() {
         }
     }
 
-    fun saveMultipleMedia(sid: String, uriList: List<Uri>, timestamp: String) {
+    fun saveMultipleMedia(sid: String, uriList: List<Uri>, timestamp: Long) {
         if (uriList.isNotEmpty()) {
             uriList.forEach {
                 kotlin.runCatching {
@@ -83,7 +83,7 @@ class MessageViewModel : ViewModel() {
                     studyRepository.getUserById(it)
                 }
             }.onFailure {
-                Log.e("StudyRepository-getUser", it.message ?: "error occurred.")
+                Log.e("MessageViewModel-getUser", it.message ?: "error occurred.")
             }.getOrNull()
         }.await()
     }
@@ -95,7 +95,7 @@ class MessageViewModel : ViewModel() {
                     studyRepository.isAdmin(sid, it)
                 }
             }.onFailure {
-                Log.e("StudyRepository-isAdmin", it.message ?: "error occurred.")
+                Log.e("MessageViewModel-isAdmin", it.message ?: "error occurred.")
             }.getOrDefault(false)
         }.await()
     }
@@ -105,23 +105,22 @@ class MessageViewModel : ViewModel() {
             kotlin.runCatching {
                 studyRepository.getStudyMemberList(sid).count()
             }.onFailure {
-                Log.e("StudyRepository-getStudyMemberCount", it.message ?: "error occurred.")
+                Log.e("MessageViewModel-getStudyMemberCount", it.message ?: "error occurred.")
             }.getOrDefault(0)
         }.await()
     }
 
-    fun sendImage(sid: String, uriList: List<Uri>, timestamp: String) {
+    fun sendImage(sid: String, uriList: List<Uri>, timestamp: Long) {
         viewModelScope.launch {
             val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
-                timestamp = timestamp,
-                type = ViewType.IMAGE
+                type = ViewType.IMAGE,
+                timestamp = timestamp
             )
             kotlin.runCatching {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
-                loadStudyMemberList(sid)
                 updateLastMessage(sid, message)
             }.onFailure {
                 Log.e("MessageViewModel-sendImage", it.message ?: "error occurred.")
@@ -131,12 +130,11 @@ class MessageViewModel : ViewModel() {
 
     fun sendMessage(sid: String, text: String) {
         viewModelScope.launch {
-            val message = getMessage(uid, sid).copy(message = text)
+            val message = getMessage(uid, sid).copy(message = text, timestamp = System.currentTimeMillis())
             kotlin.runCatching {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
-                loadStudyMemberList(sid)
                 updateLastMessage(sid, message)
             }.onFailure {
                 Log.e("MessageViewModel-sendMessage", it.message ?: "error occurred.")
@@ -180,7 +178,7 @@ class MessageViewModel : ViewModel() {
         }
     }
 
-    private fun loadStudyMemberList(sid: String) {
+    fun loadStudyMemberList(sid: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.getStudyMemberList(sid)

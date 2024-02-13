@@ -1,10 +1,7 @@
 package com.sesac.developer_study_platform.data
 
-import android.os.Build
 import com.sesac.developer_study_platform.ui.message.ViewType
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
-import java.util.Date
 
 @Serializable
 data class Message(
@@ -17,9 +14,5 @@ data class Message(
     var message: String = "",
     var images: List<String>? = null,
     var type: ViewType = ViewType.MESSAGE,
-    var timestamp: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now().toString()
-    } else {
-        Date().toString()
-    }
+    var timestamp: Long = 0,
 )

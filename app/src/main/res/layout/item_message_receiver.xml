@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.sesac.developer_study_platform.util.StringExtensionsKt" />
+        <import type="com.sesac.developer_study_platform.util.LongExtensionsKt" />
 
         <variable
             name="previousMessage"
@@ -164,6 +164,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_alto_corners_radius_12dp"
             android:fontFamily="@font/pretendard_medium"
+            android:maxWidth="150dp"
             android:padding="10dp"
             android:text="@{message.message}"
             android:textColor="@color/black"
@@ -176,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_medium"
-            android:text="@{StringExtensionsKt.formatTime(message.timestamp)}"
+            android:text="@{LongExtensionsKt.convertTimestampToTime(message.timestamp)}"
             tools:text="오후 04:58" />
 
         <TextView
