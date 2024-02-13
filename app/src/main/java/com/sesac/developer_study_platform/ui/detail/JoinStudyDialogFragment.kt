@@ -1,4 +1,4 @@
-package com.sesac.developer_study_platform.ui.profile
+package com.sesac.developer_study_platform.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,21 +11,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.databinding.DialogBanBinding
+import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.databinding.DialogJoinStudyBinding
 
-class BanDialogFragment : DialogFragment() {
+class JoinStudyDialogFragment : DialogFragment() {
 
-    private var _binding: DialogBanBinding? = null
+    private var _binding: DialogJoinStudyBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<BanDialogViewModel>()
-    private val args by navArgs<BanDialogFragmentArgs>()
+    private val viewModel by viewModels<JoinStudyDialogViewModel>()
+    private val args by navArgs<JoinStudyDialogFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogBanBinding.inflate(inflater, container, false)
+        _binding = DialogJoinStudyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,11 +35,9 @@ class BanDialogFragment : DialogFragment() {
 
         setDialog()
         setNavigation()
+        setYesButton()
         binding.btnNo.setOnClickListener {
             dismiss()
-        }
-        binding.btnYes.setOnClickListener {
-            viewModel.deleteStudyMember(args.studyId, args.uid)
         }
     }
 
@@ -52,11 +51,28 @@ class BanDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
     }
 
+    private fun setYesButton() {
+        binding.btnYes.setOnClickListener {
+            viewModel.addUserStudy(
+                args.study.sid,
+                with(args.study) {
+                    UserStudy(sid, name, image, language, days, startDate, endDate)
+                }
+            )
+            viewModel.addUserStudyEvent.observe(
+                viewLifecycleOwner,
+                EventObserver {
+                    viewModel.moveToMessage(args.study.sid)
+                }
+            )
+        }
+    }
+
     private fun setNavigation() {
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                val action = BanDialogFragmentDirections.actionBanDialogToMessage(it)
+                val action = JoinStudyDialogFragmentDirections.actionJoinStudyDialogToMessage(it)
                 findNavController().navigate(action)
             }
         )

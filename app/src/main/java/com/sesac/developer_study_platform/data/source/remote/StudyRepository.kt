@@ -6,6 +6,7 @@ import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -77,16 +78,8 @@ class StudyRepository {
         studyService.addStudyMember(sid, mapOf(uid to false))
     }
 
-    fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
-        while (true) {
-            kotlin.runCatching {
-                studyService.getMessageList(sid)
-            }.onSuccess {
-                emit(it)
-            }.onFailure {
-                Log.e("StudyRepository-getMessageList", it.message ?: "error occurred.")
-            }
-        }
+    suspend fun addStudyBanMember(sid: String, uid: String) {
+        studyService.addStudyBanMember(sid, mapOf(uid to true))
     }
 
     suspend fun deleteStudyMember(sid: String, uid: String) {
@@ -95,5 +88,20 @@ class StudyRepository {
 
     suspend fun deleteUserStudy(uid: String, sid: String) {
         studyService.deleteUserStudy(uid, sid)
+    }
+
+    fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
+        while (true) {
+            kotlin.runCatching {
+                studyService.getMessageList(sid)
+            }.onSuccess {
+                if (it.isNotEmpty()) {
+                    emit(it)
+                }
+            }.onFailure {
+                Log.e("StudyRepository-getMessageList", it.message ?: "error occurred.")
+            }
+            delay(10000)
+        }
     }
 }

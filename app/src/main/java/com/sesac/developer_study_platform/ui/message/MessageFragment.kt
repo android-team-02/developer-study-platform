@@ -15,12 +15,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
-import com.sesac.developer_study_platform.util.getTimestamp
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -32,13 +34,14 @@ class MessageFragment : Fragment() {
     private val messageAdapter = MessageAdapter()
     private val viewModel by viewModels<MessageViewModel>()
     private val service = StudyService.create()
+    private var isBottom = true
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
             saveMultipleMedia(it)
         }
     private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
-        override fun onClick(uid: String) {
-            val action = MessageFragmentDirections.actionMessageToProfile(uid)
+        override fun onClick(sid: String, uid: String) {
+            val action = MessageFragmentDirections.actionMessageToProfile(sid, uid)
             findNavController().navigate(action)
         }
     })
@@ -61,13 +64,16 @@ class MessageFragment : Fragment() {
         setMenuButton()
         loadStudyName()
         loadMessageList()
+        setMessageScrolled()
         loadMenuMemberList()
         setPlusButton()
         setSendButton()
         setExitButton()
         setExitButtonVisibility()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
+
 
     private fun setBackButton() {
         binding.toolbar.setNavigationOnClickListener {
@@ -96,13 +102,26 @@ class MessageFragment : Fragment() {
         viewModel.messageListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                messageAdapter.submitList(it.values.toList())
+                messageAdapter.submitList(it.values.toList()) {
+                    if (isBottom) {
+                        binding.rvMessageList.scrollToPosition(messageAdapter.itemCount - 1)
+                    }
+                }
             }
         )
     }
 
+    private fun setMessageScrolled() {
+        binding.rvMessageList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                isBottom = layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1
+            }
+        })
+    }
+
     private fun saveMultipleMedia(uriList: List<Uri>) {
-        val timestamp = getTimestamp()
+        val timestamp = System.currentTimeMillis()
         viewModel.saveMultipleMedia(args.studyId, uriList, timestamp)
         viewModel.addUriListEvent.observe(
             viewLifecycleOwner,
@@ -112,11 +131,12 @@ class MessageFragment : Fragment() {
         )
     }
 
-    private fun sendImage(uriList: List<Uri>, timestamp: String) {
+    private fun sendImage(uriList: List<Uri>, timestamp: Long) {
         viewModel.sendImage(args.studyId, uriList, timestamp)
         viewModel.addMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
@@ -128,6 +148,7 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 binding.etMessageInput.text.clear()
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
@@ -164,7 +185,7 @@ class MessageFragment : Fragment() {
                 kotlin.runCatching {
                     service.getUserById(uid)
                 }.onSuccess { studyUser ->
-                    memberList.add(StudyMember(studyUser, isAdmin, uid))
+                    memberList.add(StudyMember(args.studyId, studyUser, isAdmin, uid))
                 }.onFailure {
                     Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
                 }.getOrNull()

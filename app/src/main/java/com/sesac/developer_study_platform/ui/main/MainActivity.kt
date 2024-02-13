@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.dest_message -> View.GONE
                 R.id.dest_webview -> View.GONE
                 R.id.dest_exit_dialog -> View.GONE
+                R.id.dest_ban_dialog -> View.GONE
+                R.id.dest_join_study_dialog -> View.GONE
                 else -> View.VISIBLE
             }
         }

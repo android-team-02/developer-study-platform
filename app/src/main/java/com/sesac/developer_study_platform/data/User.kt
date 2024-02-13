@@ -18,6 +18,7 @@ data class StudyUser(
 )
 
 data class StudyMember(
+    val sid: String,
     val studyUser: StudyUser,
     val isAdmin: Boolean,
     val userUid: String

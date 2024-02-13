@@ -132,6 +132,12 @@ interface StudyService {
         @Body chatRoom: ChatRoom
     )
 
+    @PATCH("studies/{sid}/banUsers.json")
+    suspend fun addStudyBanMember(
+        @Path("sid") sid: String,
+        @Body banMember: Map<String, Boolean>
+    )
+
     @DELETE("studies/{sid}/members/{uid}.json")
     suspend fun deleteStudyMember(
         @Path("sid") sid: String,

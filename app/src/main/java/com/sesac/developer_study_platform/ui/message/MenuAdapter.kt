@@ -28,7 +28,7 @@ class MenuAdapter(private val clickListener: StudyMemberClickListener) :
             binding.tvUserId.text = studyMember.studyUser.userId
             binding.ivAdmin.visibility = if (studyMember.isAdmin) View.VISIBLE else View.GONE
             itemView.setOnClickListener {
-                clickListener.onClick(studyMember.userUid)
+                clickListener.onClick(studyMember.sid, studyMember.userUid)
             }
         }
 

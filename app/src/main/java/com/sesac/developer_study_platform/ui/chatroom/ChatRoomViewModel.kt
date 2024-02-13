@@ -50,7 +50,8 @@ class ChatRoomViewModel : ViewModel() {
                     Log.e("ChatRoomViewModel-loadChatRoomList", it.message ?: "error occurred.")
                 }
             }
-            _chatRoomListEvent.value = Event(chatRoomList)
+            val sortChatRoomList = chatRoomList.sortedByDescending { it.second.lastMessage.timestamp }
+            _chatRoomListEvent.value = Event(sortChatRoomList)
         }
     }
 

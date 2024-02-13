@@ -139,4 +139,6 @@
     <string name="my_page_icon_bookmark_description">북마크 모양의 아이콘</string>
     <string name="my_page_logout">로그아웃</string>
     <string name="my_page_my_study">나의 스터디</string>
+
+    <string name="offline">네트워크 연결이 끊겼습니다.</string>
 </resources>
