@@ -177,7 +177,8 @@
         <action
             android:id="@+id/action_exit_dialog_to_home"
             app:destination="@id/dest_home"
-            app:popUpTo="@id/dest_home"/>
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
     </dialog>
 
     <fragment

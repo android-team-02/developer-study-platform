@@ -11,16 +11,16 @@ import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import kotlinx.coroutines.launch
 
-class ExitDialogViewModel: ViewModel() {
+class ExitDialogViewModel : ViewModel() {
 
     private val uid = Firebase.auth.uid
 
     private val _moveToHomeEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToHomeEvent: LiveData<Event<Unit>> = _moveToHomeEvent
 
-   fun deleteStudyMember(sid: String) {
+    fun deleteStudyMember(sid: String) {
         viewModelScope.launch {
-            runCatching {
+            kotlin.runCatching {
                 uid?.let {
                     studyRepository.deleteStudyMember(sid, uid)
                 }
@@ -34,7 +34,7 @@ class ExitDialogViewModel: ViewModel() {
 
     private fun deleteUserStudy(sid: String) {
         viewModelScope.launch {
-            runCatching {
+            kotlin.runCatching {
                 uid?.let {
                     studyRepository.deleteUserStudy(uid, sid)
                 }

@@ -13,14 +13,18 @@ import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.DialogExitBinding
 
-class ExitDialogFragment: DialogFragment() {
+class ExitDialogFragment : DialogFragment() {
 
     private var _binding: DialogExitBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<ExitDialogViewModel>()
     private val args by navArgs<ExitDialogFragmentArgs>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = DialogExitBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -28,8 +32,7 @@ class ExitDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDialogSize()
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
+        setDialog()
         setNavigation()
         binding.btnNo.setOnClickListener {
             dismiss()
@@ -39,13 +42,14 @@ class ExitDialogFragment: DialogFragment() {
         }
     }
 
-    private fun setDialogSize() {
+    private fun setDialog() {
         val displayMetrics = resources.displayMetrics
         val widthPixels = displayMetrics.widthPixels
 
         val params = dialog?.window?.attributes
         params?.width = (widthPixels * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
     }
 
     private fun setNavigation() {
