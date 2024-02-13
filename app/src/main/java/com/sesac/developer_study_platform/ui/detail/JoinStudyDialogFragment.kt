@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
@@ -19,7 +20,11 @@ class JoinStudyDialogFragment : DialogFragment() {
     private val viewModel by viewModels<JoinStudyDialogViewModel>()
     private val args by navArgs<DetailFragmentArgs>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = DialogJoinStudyBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -27,8 +32,7 @@ class JoinStudyDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDialogSize()
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
+        setDialog()
         setNavigation()
 
         binding.btnNo.setOnClickListener {
@@ -36,25 +40,26 @@ class JoinStudyDialogFragment : DialogFragment() {
         }
 
         binding.btnYes.setOnClickListener {
-            val sid = args.studyId
-            viewModel.onYesButtonClicked(this, sid)
+            viewModel.moveToMessage(args.studyId)
         }
     }
 
-    private fun setDialogSize() {
+    private fun setDialog() {
         val displayMetrics = resources.displayMetrics
         val widthPixels = displayMetrics.widthPixels
 
         val params = dialog?.window?.attributes
         params?.width = (widthPixels * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
     }
 
     private fun setNavigation() {
-        viewModel.dismissDialogEvent.observe(
+        viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                dismiss()
+                val action = JoinStudyDialogFragmentDirections.actionJoinStudyDialogToMessage(it)
+                findNavController().navigate(action)
             }
         )
     }

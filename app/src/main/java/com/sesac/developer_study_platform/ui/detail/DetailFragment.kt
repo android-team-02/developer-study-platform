@@ -98,21 +98,30 @@ class DetailFragment : Fragment() {
 
     private fun setJoinStudyButton() {
         binding.btnJoinStudy.setOnClickListener {
-            showJoinStudyDialog()
+            viewModel.moveToJoinStudyDialog(args.studyId)
         }
     }
 
-    private fun showJoinStudyDialog() {
-        val action = DetailFragmentDirections.actionDestDetailToDestJoinStudyDialog(args.studyId)
-        findNavController().navigate(action)
+    private fun setNavigation() {
+        moveToBack()
+        moveToJoinStudyDialog()
     }
 
-
-    private fun setNavigation() {
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToJoinStudyDialog() {
+        viewModel.moveToJoinStudyDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = DetailFragmentDirections.actionDetailToJoinStudyDialog(args.studyId)
+                findNavController().navigate(action)
             }
         )
     }

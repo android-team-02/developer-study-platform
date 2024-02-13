@@ -23,6 +23,9 @@ class DetailViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
+    private val _moveToJoinStudyDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToJoinStudyDialogEvent: LiveData<Event<String>> = _moveToJoinStudyDialogEvent
+
     private var _study: Study? = null
     val study get() = _study!!
 
@@ -76,5 +79,9 @@ class DetailViewModel : ViewModel() {
 
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
+    }
+
+    fun moveToJoinStudyDialog(sid: String) {
+        _moveToJoinStudyDialogEvent.value = Event(sid)
     }
 }
