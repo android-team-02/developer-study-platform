@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 
@@ -41,6 +42,7 @@ class BookmarkFragment : Fragment() {
         setNavigation()
         setBookmarkAdapter()
         loadStudyList()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {

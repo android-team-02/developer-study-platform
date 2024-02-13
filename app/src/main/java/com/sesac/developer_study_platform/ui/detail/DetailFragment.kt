@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
@@ -40,6 +41,7 @@ class DetailFragment : Fragment() {
         setBookmarkButton()
         setJoinStudyButton()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +18,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.EventObserver
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -48,7 +51,7 @@ class MessageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
         return binding.root
     }
 
@@ -66,6 +69,7 @@ class MessageFragment : Fragment() {
         setPlusButton()
         setSendButton()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
 
