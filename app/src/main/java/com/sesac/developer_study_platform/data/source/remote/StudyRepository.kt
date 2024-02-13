@@ -77,6 +77,18 @@ class StudyRepository {
         studyService.addStudyMember(sid, mapOf(uid to false))
     }
 
+    suspend fun addStudyBanMember(sid: String, uid: String) {
+        studyService.addStudyBanMember(sid, mapOf(uid to false))
+    }
+
+    suspend fun deleteStudyMember(sid: String, uid: String) {
+        studyService.deleteStudyMember(sid, uid)
+    }
+
+    suspend fun deleteUserStudy(uid: String, sid: String) {
+        studyService.deleteUserStudy(uid, sid)
+    }
+
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
         while (true) {
             kotlin.runCatching {
