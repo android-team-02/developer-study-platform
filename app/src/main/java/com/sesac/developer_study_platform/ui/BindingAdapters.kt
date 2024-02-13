@@ -12,11 +12,9 @@ import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.util.formatDate
-import com.sesac.developer_study_platform.util.formatSystemMessage
-import com.sesac.developer_study_platform.util.formatTime
+import com.sesac.developer_study_platform.util.convertTimestampToDate
+import com.sesac.developer_study_platform.util.convertTimestampToTime
 import com.sesac.developer_study_platform.util.formatYearMonthDay
-import com.sesac.developer_study_platform.util.getTimestamp
 import com.sesac.developer_study_platform.util.setImage
 
 @BindingAdapter("dayTimeList")
@@ -66,18 +64,18 @@ fun loadImageUrl(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("lastMessageTime")
-fun setLastMessageTime(view: TextView, timestamp: String) {
-    if (timestamp <= getTimestamp()) {
-        view.text = timestamp.formatTime()
+fun setLastMessageTime(view: TextView, timestamp: Long) {
+    if (timestamp.convertTimestampToDate() < System.currentTimeMillis().convertTimestampToDate()) {
+        view.text = timestamp.convertTimestampToDate()
     } else {
-        view.text = timestamp.formatDate()
+        view.text = timestamp.convertTimestampToTime()
     }
 }
 
 @BindingAdapter("dateFlowPrevMessage", "dateFlowMessage")
 fun setDateFlowVisibility(view: View, previousMessage: Message?, message: Message) {
     if (previousMessage != null) {
-        if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
+        if (previousMessage.timestamp.convertTimestampToDate() < message.timestamp.convertTimestampToDate()) {
             view.visibility = View.VISIBLE
         } else {
             view.visibility = View.GONE
@@ -102,9 +100,9 @@ fun setStudyMemberFlowVisibility(view: View, previousMessage: Message?, message:
 
 @BindingAdapter("datePrevMessage", "dateMessage")
 fun setDateMessage(view: TextView, previousMessage: Message?, message: Message) {
-    val messageTimestamp = message.timestamp.formatSystemMessage()
+    val messageTimestamp = message.timestamp.convertTimestampToDate()
     if (previousMessage != null) {
-        if (previousMessage.timestamp.formatSystemMessage() < messageTimestamp) {
+        if (previousMessage.timestamp.convertTimestampToDate() < messageTimestamp) {
             view.text = messageTimestamp
         }
     } else {

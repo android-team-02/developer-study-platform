@@ -18,7 +18,6 @@ import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
-import com.sesac.developer_study_platform.util.getTimestamp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -98,7 +97,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun saveMultipleMedia(uriList: List<Uri>) {
-        val timestamp = getTimestamp()
+        val timestamp = System.currentTimeMillis()
         viewModel.saveMultipleMedia(args.studyId, uriList, timestamp)
         viewModel.addUriListEvent.observe(
             viewLifecycleOwner,
@@ -108,11 +107,12 @@ class MessageFragment : Fragment() {
         )
     }
 
-    private fun sendImage(uriList: List<Uri>, timestamp: String) {
+    private fun sendImage(uriList: List<Uri>, timestamp: Long) {
         viewModel.sendImage(args.studyId, uriList, timestamp)
         viewModel.addMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
@@ -124,6 +124,7 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 binding.etMessageInput.text.clear()
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
