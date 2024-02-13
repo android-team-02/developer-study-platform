@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
@@ -46,7 +48,7 @@ class MessageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
         return binding.root
     }
 
@@ -63,6 +65,8 @@ class MessageFragment : Fragment() {
         setPlusButton()
         setSendButton()
         setNavigation()
+        setExitButton()
+        setExitButtonVisibility()
     }
 
     private fun setBackButton() {
@@ -177,6 +181,23 @@ class MessageFragment : Fragment() {
         }.await()
         val sortMembers = memberList.sortedByDescending { it.isAdmin }
         menuAdapter.submitList(sortMembers)
+    }
+
+    private fun setExitButton() {
+        binding.ivExit.setOnClickListener {
+            val action = MessageFragmentDirections.actionMessageToExitDialog(args.studyId)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun setExitButtonVisibility() {
+        viewModel.checkAdmin(args.studyId)
+        viewModel.isAdminEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.isAdmin = it
+            }
+        )
     }
 
     override fun onDestroyView() {
