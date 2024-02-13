@@ -68,6 +68,8 @@ class MessageFragment : Fragment() {
         loadMenuMemberList()
         setPlusButton()
         setSendButton()
+        setExitButton()
+        setExitButtonVisibility()
         setNavigation()
         binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
@@ -164,15 +166,6 @@ class MessageFragment : Fragment() {
         }
     }
 
-    private fun setNavigation() {
-        viewModel.moveToBackEvent.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                findNavController().popBackStack()
-            }
-        )
-    }
-
     private fun loadMenuMemberList() {
         lifecycleScope.launch {
             kotlin.runCatching {
@@ -200,6 +193,46 @@ class MessageFragment : Fragment() {
         }.await()
         val sortMembers = memberList.sortedByDescending { it.isAdmin }
         menuAdapter.submitList(sortMembers)
+    }
+
+    private fun setExitButton() {
+        binding.ivExit.setOnClickListener {
+            viewModel.moveToExitDialog(args.studyId)
+        }
+    }
+
+    private fun setExitButtonVisibility() {
+        viewModel.checkAdmin(args.studyId)
+        viewModel.isAdminEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.isAdmin = it
+            }
+        )
+    }
+
+    private fun setNavigation() {
+        moveToBack()
+        moveToExitDialog()
+    }
+
+    private fun moveToBack() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToExitDialog() {
+        viewModel.moveToExitDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = MessageFragmentDirections.actionMessageToExitDialog(it)
+                findNavController().navigate(action)
+            }
+        )
     }
 
     override fun onDestroyView() {

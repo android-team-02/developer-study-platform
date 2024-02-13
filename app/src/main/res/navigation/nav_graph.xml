@@ -188,7 +188,25 @@
         <action
             android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
+        <action
+            android:id="@+id/action_message_to_exit_dialog"
+            app:destination="@id/dest_exit_dialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_exit_dialog"
+        android:name="com.sesac.developer_study_platform.ui.message.ExitDialogFragment"
+        android:label="fragment_exit_dialog"
+        tools:layout="@layout/dialog_exit">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_exit_dialog_to_home"
+            app:destination="@id/dest_home"
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
+    </dialog>
 
     <dialog
         android:id="@+id/dest_join_study_dialog"

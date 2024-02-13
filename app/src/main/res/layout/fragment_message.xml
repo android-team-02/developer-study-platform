@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isAdmin"
+            type="Boolean" />
+
+        <variable
             name="isNetworkConnected"
             type="Boolean" />
     </data>
@@ -145,6 +149,7 @@
 
             <ImageView
                 android:id="@+id/iv_exit"
+                visible="@{!isAdmin}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/space_median"
