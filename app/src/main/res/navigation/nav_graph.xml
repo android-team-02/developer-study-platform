@@ -60,6 +60,9 @@
         <argument
             android:name="studyId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detail_to_join_study_dialog"
+            app:destination="@id/dest_join_study_dialog" />
     </fragment>
 
     <fragment
@@ -162,6 +165,19 @@
             android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_join_study_dialog"
+        android:name="com.sesac.developer_study_platform.ui.detail.JoinStudyDialogFragment"
+        android:label="JoinStudyDialogFragment"
+        tools:layout="@layout/dialog_join_study">
+        <argument
+            android:name="study"
+            app:argType="com.sesac.developer_study_platform.data.Study" />
+        <action
+            android:id="@+id/action_join_study_dialog_to_message"
+            app:destination="@id/dest_message" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_webview"
