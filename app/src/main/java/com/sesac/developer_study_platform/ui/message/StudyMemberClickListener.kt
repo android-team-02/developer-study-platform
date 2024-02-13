@@ -2,5 +2,5 @@ package com.sesac.developer_study_platform.ui.message
 
 interface StudyMemberClickListener {
 
-    fun onClick(uid: String)
+    fun onClick(sid: String, uid: String)
 }

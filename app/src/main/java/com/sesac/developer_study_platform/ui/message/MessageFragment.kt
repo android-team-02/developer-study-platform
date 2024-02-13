@@ -35,8 +35,8 @@ class MessageFragment : Fragment() {
             saveMultipleMedia(it)
         }
     private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
-        override fun onClick(uid: String) {
-            val action = MessageFragmentDirections.actionMessageToProfile(uid)
+        override fun onClick(sid: String, uid: String) {
+            val action = MessageFragmentDirections.actionMessageToProfile(sid, uid)
             findNavController().navigate(action)
         }
     })
@@ -169,7 +169,7 @@ class MessageFragment : Fragment() {
                 kotlin.runCatching {
                     service.getUserById(uid)
                 }.onSuccess { studyUser ->
-                    memberList.add(StudyMember(studyUser, isAdmin, uid))
+                    memberList.add(StudyMember(args.studyId, studyUser, isAdmin, uid))
                 }.onFailure {
                     Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
                 }.getOrNull()
