@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isNetworkConnected"
+            type="Boolean" />
+
+        <variable
             name="studyUser"
             type="com.sesac.developer_study_platform.data.StudyUser" />
     </data>
@@ -15,15 +19,15 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/networkStatus"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_offline"
+            visible="@{!isNetworkConnected}"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:background="@color/dark"
             android:fontFamily="@font/pretendard_medium"
             android:gravity="center"
             android:text="@string/offline"
             android:textColor="@color/white"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +38,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/networkStatus"
+            app:layout_constraintTop_toBottomOf="@id/tv_offline"
             app:navigationIcon="@drawable/ic_arrow_back" />
 
         <com.google.android.material.imageview.ShapeableImageView

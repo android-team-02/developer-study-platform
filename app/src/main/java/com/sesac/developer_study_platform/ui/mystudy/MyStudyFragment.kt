@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentMyStudyBinding
-import com.sesac.developer_study_platform.isNetworkConnected
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
@@ -31,7 +32,7 @@ class MyStudyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyStudyBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_study, container, false)
         return binding.root
     }
 
@@ -42,7 +43,7 @@ class MyStudyFragment : Fragment() {
         setStudyAdapter()
         loadStudyList()
         setNavigation()
-        networkStatus()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -86,14 +87,6 @@ class MyStudyFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
-    }
-
-    private fun networkStatus() {
-        if (!isNetworkConnected(requireContext())) {
-            binding.networkStatus.visibility = View.VISIBLE
-        } else {
-            binding.networkStatus.visibility = View.GONE
-        }
     }
 
     override fun onDestroyView() {

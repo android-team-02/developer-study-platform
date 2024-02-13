@@ -14,7 +14,7 @@ import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
-import com.sesac.developer_study_platform.isNetworkConnected
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
@@ -42,7 +42,7 @@ class DetailFragment : Fragment() {
         loadBookmarkButtonState()
         setBookmarkButton()
         setNavigation()
-        networkStatus()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -138,14 +138,6 @@ class DetailFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
-    }
-
-    private fun networkStatus() {
-        if (!isNetworkConnected(requireContext())) {
-            binding.networkStatus.visibility = View.VISIBLE
-        } else {
-            binding.networkStatus.visibility = View.GONE
-        }
     }
 
     override fun onDestroyView() {

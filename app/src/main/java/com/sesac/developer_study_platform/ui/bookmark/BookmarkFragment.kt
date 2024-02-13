@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentBookmarkBinding
-import com.sesac.developer_study_platform.isNetworkConnected
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 
@@ -42,7 +42,7 @@ class BookmarkFragment : Fragment() {
         setNavigation()
         setBookmarkAdapter()
         loadStudyList()
-        networkStatus()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -88,14 +88,6 @@ class BookmarkFragment : Fragment() {
                 binding.isBookmarkStudyListEmpty = it
             }
         )
-    }
-
-    private fun networkStatus() {
-        if (!isNetworkConnected(requireContext())) {
-            binding.networkStatus.visibility = View.VISIBLE
-        } else {
-            binding.networkStatus.visibility = View.GONE
-        }
     }
 
     override fun onDestroyView() {
