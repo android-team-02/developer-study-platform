@@ -56,4 +56,9 @@ class ExitDialogFragment: DialogFragment() {
             }
         )
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
