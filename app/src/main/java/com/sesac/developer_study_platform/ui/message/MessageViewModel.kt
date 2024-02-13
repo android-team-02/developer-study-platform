@@ -114,10 +114,9 @@ class MessageViewModel : ViewModel() {
         viewModelScope.launch {
             val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
-                type = ViewType.IMAGE
-            ).apply {
-                this.timestamp = timestamp
-            }
+                type = ViewType.IMAGE,
+                timestamp = timestamp
+            )
             kotlin.runCatching {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
@@ -132,7 +131,7 @@ class MessageViewModel : ViewModel() {
 
     fun sendMessage(sid: String, text: String) {
         viewModelScope.launch {
-            val message = getMessage(uid, sid).copy(message = text)
+            val message = getMessage(uid, sid).copy(message = text, timestamp = System.currentTimeMillis())
             kotlin.runCatching {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
