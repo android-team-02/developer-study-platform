@@ -95,7 +95,13 @@
         android:id="@+id/dest_study_form"
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
-        tools:layout="@layout/fragment_study_form" />
+        tools:layout="@layout/fragment_study_form">
+        <action
+            android:id="@+id/action_study_form_to_message"
+            app:destination="@id/dest_message"
+            app:popUpTo="@id/dest_study_form"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_profile"

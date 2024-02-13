@@ -341,8 +341,6 @@ class StudyFormFragment : Fragment() {
                             saveStudy(sid, formatStudy(sid, uid, fileName))
                             saveUserStudy(uid, sid, formatUserStudy(sid, fileName))
                             saveChatRoom(sid)
-                            val action = StudyFormFragmentDirections.actionGlobalToMessage(sid)
-                            findNavController().navigate(action)
                         }
                     }
                 }
@@ -390,6 +388,9 @@ class StudyFormFragment : Fragment() {
         lifecycleScope.launch {
             kotlin.runCatching {
                 studyService.addChatRoom(sid, ChatRoom())
+            }.onSuccess {
+                val action = StudyFormFragmentDirections.actionStudyFormToMessage(sid)
+                findNavController().navigate(action)
             }.onFailure {
                 Log.e("StudyFormFragment-saveChatRoom", it.message ?: "error occurred.")
             }
