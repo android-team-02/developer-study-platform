@@ -28,6 +28,9 @@ class ProfileViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
+    private val _moveToWebViewEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToWebViewEvent: LiveData<Event<String>> = _moveToWebViewEvent
+
     fun loadUser(uid: String) {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -67,5 +70,9 @@ class ProfileViewModel : ViewModel() {
 
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
+    }
+
+    fun moveToWebView(url: String) {
+        _moveToWebViewEvent.value = Event(url)
     }
 }

@@ -25,7 +25,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
@@ -52,7 +52,11 @@ class ProfileFragment : Fragment() {
         viewModel.languageListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                repositoryAdapter = RepositoryAdapter(it)
+                repositoryAdapter = RepositoryAdapter(it, object : RepositoryClickListener {
+                    override fun onClick(url: String) {
+                        viewModel.moveToWebView(url)
+                    }
+                })
                 setRepositoryAdapter()
             }
         )
@@ -85,10 +89,25 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToBack()
+        moveToWebView()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToWebView() {
+        viewModel.moveToWebViewEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = ProfileFragmentDirections.actionProfileToWebview(it)
+                findNavController().navigate(action)
             }
         )
     }

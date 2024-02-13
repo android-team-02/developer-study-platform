@@ -120,7 +120,7 @@ class DetailFragment : Fragment() {
         viewModel.moveToJoinStudyDialogEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                val action = DetailFragmentDirections.actionDetailToJoinStudyDialog(args.studyId)
+                val action = DetailFragmentDirections.actionDetailToJoinStudyDialog(viewModel.study)
                 findNavController().navigate(action)
             }
         )

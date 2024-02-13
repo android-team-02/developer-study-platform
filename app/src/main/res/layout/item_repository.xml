@@ -8,6 +8,10 @@
         <import type="com.sesac.developer_study_platform.util.StringExtensionsKt" />
 
         <variable
+            name="clickListener"
+            type="com.sesac.developer_study_platform.ui.profile.RepositoryClickListener" />
+
+        <variable
             name="isLanguageNullOrEmpty"
             type="Boolean" />
 
@@ -18,7 +22,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp">
+        android:layout_height="90dp"
+        android:onClick="@{() -> clickListener.onClick(repository.htmlUrl)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="0dp"

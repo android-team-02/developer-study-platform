@@ -31,6 +31,8 @@ class ChatRoomAdapter(private val clickListener: StudyClickListener) :
         fun bind(pair: Pair<UserStudy, ChatRoom>, clickListener: StudyClickListener) {
             binding.userStudy = pair.first
             binding.chatRoom = pair.second
+            binding.isLastMessageImage =
+                pair.second.lastMessage.message.isEmpty() && !pair.second.lastMessage.images.isNullOrEmpty()
             binding.unreadCount = pair.second.unreadUsers.getOrDefault(Firebase.auth.uid, 0)
             binding.clickListener = clickListener
         }

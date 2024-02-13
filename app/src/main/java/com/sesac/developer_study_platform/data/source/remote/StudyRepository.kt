@@ -69,6 +69,14 @@ class StudyRepository {
         return studyService.isAdmin(sid, uid)
     }
 
+    suspend fun addUserStudy(uid: String, sid: String, study: UserStudy) {
+        studyService.putUserStudy(uid, sid, study)
+    }
+
+    suspend fun addStudyMember(sid: String, uid: String) {
+        studyService.addStudyMember(sid, mapOf(uid to false))
+    }
+
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
         while (true) {
             kotlin.runCatching {

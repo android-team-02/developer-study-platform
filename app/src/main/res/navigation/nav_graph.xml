@@ -105,6 +105,9 @@
         <argument
             android:name="uid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_profile_to_webview"
+            app:destination="@id/dest_webview" />
     </fragment>
 
     <fragment
@@ -121,7 +124,22 @@
         <action
             android:id="@+id/action_my_to_bookmark"
             app:destination="@id/dest_bookmark" />
+        <action
+            android:id="@+id/action_my_to_logout_dialog"
+            app:destination="@id/dest_logout_dialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_logout_dialog"
+        android:name="com.sesac.developer_study_platform.ui.mypage.LogoutDialogFragment"
+        android:label="fragment_logout_dialog"
+        tools:layout="@layout/dialog_logout">
+        <action
+            android:id="@+id/action_logout_dialog_to_login"
+            app:destination="@id/dest_login"
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_bookmark"
@@ -151,13 +169,23 @@
     <dialog
         android:id="@+id/dest_join_study_dialog"
         android:name="com.sesac.developer_study_platform.ui.detail.JoinStudyDialogFragment"
-        android:label="JoinStudyDialogFragment">
+        android:label="JoinStudyDialogFragment"
+        tools:layout="@layout/dialog_join_study">
         <argument
-            android:name="studyId"
-            app:argType="string" />
+            android:name="study"
+            app:argType="com.sesac.developer_study_platform.data.Study" />
         <action
             android:id="@+id/action_join_study_dialog_to_message"
             app:destination="@id/dest_message" />
     </dialog>
 
+    <fragment
+        android:id="@+id/dest_webview"
+        android:name="com.sesac.developer_study_platform.ui.profile.WebViewFragment"
+        android:label="fragment_webview"
+        tools:layout="@layout/fragment_webview">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 </navigation>
