@@ -36,6 +36,9 @@ class MessageViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
+    private val _isAdminEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val isAdminEvent: LiveData<Event<Boolean>> = _isAdminEvent
+
     fun loadStudyName(sid: String) {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -232,6 +235,22 @@ class MessageViewModel : ViewModel() {
                 studyRepository.updateLastMessage(sid, message)
             }.onFailure {
                 Log.e("MessageViewModel-updateLastMessage", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    fun checkAdmin(sid: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                uid?.let {
+                    studyRepository.isAdmin(sid, it)
+                }
+            }.onSuccess {
+                it?.let {
+                    _isAdminEvent.value = Event(it)
+                }
+            }.onFailure {
+                Log.e("MessageViewModel-checkAdmin", it.message ?: "error occurred.")
             }
         }
     }
