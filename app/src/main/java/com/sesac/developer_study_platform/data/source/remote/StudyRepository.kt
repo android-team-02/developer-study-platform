@@ -88,4 +88,12 @@ class StudyRepository {
             }
         }
     }
+
+    suspend fun deleteStudyMember(sid: String, uid: String) {
+        studyService.deleteStudyMember(sid, uid)
+    }
+
+    suspend fun deleteUserStudy(uid: String, sid: String) {
+        studyService.deleteUserStudy(uid, sid)
+    }
 }
