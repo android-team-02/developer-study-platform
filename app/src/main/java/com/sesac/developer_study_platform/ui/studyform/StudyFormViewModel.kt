@@ -12,7 +12,11 @@ import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.util.DateFormats
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class StudyFormViewModel : ViewModel() {
 
@@ -36,6 +40,12 @@ class StudyFormViewModel : ViewModel() {
 
     private val _selectedLanguageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val selectedLanguage: LiveData<Event<String>> = _selectedLanguageEvent
+
+    private val _startDateEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val startDateEvent: LiveData<Event<String>> = _startDateEvent
+
+    private val _endDateEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val endDateEvent: LiveData<Event<String>> = _endDateEvent
 
     private val _selectedTotalCountEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val selectedTotalCountEvent: LiveData<Event<String>> = _selectedTotalCountEvent
@@ -69,6 +79,23 @@ class StudyFormViewModel : ViewModel() {
 
     fun selectLanguage(language: String) {
         _selectedLanguageEvent.value = Event(language)
+    }
+
+    fun selectDateRange(start: Long, end: Long) {
+        val calendar = Calendar.getInstance()
+
+        calendar.timeInMillis = start
+        _startDateEvent.value = Event(getDate(calendar))
+
+        calendar.timeInMillis = end
+        _endDateEvent.value = Event(getDate(calendar))
+    }
+
+    private fun getDate(calendar: Calendar): String {
+        return SimpleDateFormat(
+            DateFormats.YEAR_MONTH_DAY_FORMAT.pattern,
+            Locale.getDefault()
+        ).format(calendar.time).toString()
     }
 
     fun selectTotalCount(language: String) {

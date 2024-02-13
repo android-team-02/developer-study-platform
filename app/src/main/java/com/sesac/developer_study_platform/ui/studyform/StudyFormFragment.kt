@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -28,13 +27,9 @@ import com.sesac.developer_study_platform.data.DayTime
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
-import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class StudyFormFragment : Fragment() {
 
@@ -89,6 +84,7 @@ class StudyFormFragment : Fragment() {
         binding.tvStartDate.setOnClickListener {
             showDateRangePicker()
         }
+        setPositiveButton()
         binding.rvDayTime.adapter = dayTimeAdapter
         with(binding) {
             setDayButton(btnMonday)
@@ -199,30 +195,24 @@ class StudyFormFragment : Fragment() {
             .setCalendarConstraints(calendarConstraintBuilder.build())
             .build()
         dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
-        setPositiveButton(dateRangePicker)
-    }
 
-    private fun setPositiveButton(dateRangePicker: MaterialDatePicker<Pair<Long, Long>>) {
         dateRangePicker.addOnPositiveButtonClickListener {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = it.first ?: 0
-            val selectedStartDate = getDate(calendar)
-
-            calendar.timeInMillis = it.second ?: 0
-            val selectedEndDate = getDate(calendar)
-
-            binding.tvStartDate.text = selectedStartDate
-            binding.tvEndDate.text = selectedEndDate
-            startDate = selectedStartDate
-            endDate = selectedEndDate
+            viewModel.selectDateRange(it.first ?: 0, it.second ?: 0)
         }
     }
 
-    private fun getDate(calendar: Calendar): String {
-        return SimpleDateFormat(
-            DateFormats.YEAR_MONTH_DAY_FORMAT.pattern,
-            Locale.getDefault()
-        ).format(calendar.time).toString()
+    private fun setPositiveButton() {
+        viewModel.startDateEvent.observe(
+            viewLifecycleOwner,
+            EventObserver { selectedStartDate ->
+                binding.tvStartDate.text = selectedStartDate
+            })
+
+        viewModel.endDateEvent.observe(
+            viewLifecycleOwner,
+            EventObserver { selectedEndDate ->
+                binding.tvEndDate.text = selectedEndDate
+            })
     }
 
     private fun showTimePicker(isStartTime: Boolean, dayTime: DayTime) {
