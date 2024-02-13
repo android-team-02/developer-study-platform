@@ -20,7 +20,11 @@ class BanDialogFragment : DialogFragment() {
     private val viewModel by viewModels<BanDialogViewModel>()
     private val args by navArgs<BanDialogFragmentArgs>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = DialogBanBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -28,8 +32,7 @@ class BanDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDialogSize()
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
+        setDialog()
         setNavigation()
         binding.btnNo.setOnClickListener {
             dismiss()
@@ -39,13 +42,14 @@ class BanDialogFragment : DialogFragment() {
         }
     }
 
-    private fun setDialogSize() {
+    private fun setDialog() {
         val displayMetrics = resources.displayMetrics
         val widthPixels = displayMetrics.widthPixels
 
         val params = dialog?.window?.attributes
         params?.width = (widthPixels * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
     }
 
     private fun setNavigation() {

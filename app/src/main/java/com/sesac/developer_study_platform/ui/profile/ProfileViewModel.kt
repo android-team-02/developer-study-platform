@@ -51,7 +51,7 @@ class ProfileViewModel : ViewModel() {
                     _isBanButtonVisibleEvent.value = Event(true)
                 }
             }.onFailure {
-                Log.e("MessageViewModel-checkAdmin", it.message ?: "error occurred.")
+                Log.e("ProfileViewModel-checkAdminAndUid", it.message ?: "error occurred.")
             }
         }
     }

@@ -78,7 +78,7 @@ class StudyRepository {
     }
 
     suspend fun addStudyBanMember(sid: String, uid: String) {
-        studyService.addStudyBanMember(sid, mapOf(uid to false))
+        studyService.addStudyBanMember(sid, mapOf(uid to true))
     }
 
     suspend fun deleteStudyMember(sid: String, uid: String) {

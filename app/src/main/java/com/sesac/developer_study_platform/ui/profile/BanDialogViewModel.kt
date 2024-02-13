@@ -16,7 +16,7 @@ class BanDialogViewModel : ViewModel() {
 
     fun deleteStudyMember(sid: String, uid: String) {
         viewModelScope.launch {
-            runCatching {
+            kotlin.runCatching {
                 studyRepository.deleteStudyMember(sid, uid)
             }.onSuccess {
                 deleteUserStudy(sid, uid)
@@ -28,7 +28,7 @@ class BanDialogViewModel : ViewModel() {
 
     private fun deleteUserStudy(sid: String, uid: String) {
         viewModelScope.launch {
-            runCatching {
+            kotlin.runCatching {
                 studyRepository.deleteUserStudy(uid, sid)
             }.onSuccess {
                 addStudyBanMember(sid, uid)
@@ -40,7 +40,7 @@ class BanDialogViewModel : ViewModel() {
 
     private fun addStudyBanMember(sid: String, uid: String) {
         viewModelScope.launch {
-            runCatching {
+            kotlin.runCatching {
                 studyRepository.addStudyBanMember(sid, uid)
             }.onSuccess {
                 moveToMessage(sid)
