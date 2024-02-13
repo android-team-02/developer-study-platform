@@ -114,9 +114,10 @@ class MessageViewModel : ViewModel() {
         viewModelScope.launch {
             val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
-                timestamp = timestamp,
                 type = ViewType.IMAGE
-            )
+            ).apply {
+                this.timestamp = timestamp
+            }
             kotlin.runCatching {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {

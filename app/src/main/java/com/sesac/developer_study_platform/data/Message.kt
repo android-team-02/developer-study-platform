@@ -14,5 +14,6 @@ data class Message(
     var message: String = "",
     var images: List<String>? = null,
     var type: ViewType = ViewType.MESSAGE,
+) {
     var timestamp: Long = System.currentTimeMillis()
-)
+}
