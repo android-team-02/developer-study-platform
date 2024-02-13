@@ -6,6 +6,7 @@ import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -82,10 +83,13 @@ class StudyRepository {
             kotlin.runCatching {
                 studyService.getMessageList(sid)
             }.onSuccess {
-                emit(it)
+                if (it.isNotEmpty()) {
+                    emit(it)
+                }
             }.onFailure {
                 Log.e("StudyRepository-getMessageList", it.message ?: "error occurred.")
             }
+            delay(10000)
         }
     }
 }
