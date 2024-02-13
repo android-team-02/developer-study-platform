@@ -14,6 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
@@ -30,6 +32,7 @@ class MessageFragment : Fragment() {
     private val messageAdapter = MessageAdapter()
     private val viewModel by viewModels<MessageViewModel>()
     private val service = StudyService.create()
+    private var isBottom = true
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
             saveMultipleMedia(it)
@@ -59,11 +62,13 @@ class MessageFragment : Fragment() {
         setMenuButton()
         loadStudyName()
         loadMessageList()
+        setMessageScrolled()
         loadMenuMemberList()
         setPlusButton()
         setSendButton()
         setNavigation()
     }
+
 
     private fun setBackButton() {
         binding.toolbar.setNavigationOnClickListener {
@@ -92,9 +97,22 @@ class MessageFragment : Fragment() {
         viewModel.messageListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                messageAdapter.submitList(it.values.toList())
+                messageAdapter.submitList(it.values.toList()) {
+                    if (isBottom) {
+                        binding.rvMessageList.scrollToPosition(messageAdapter.itemCount - 1)
+                    }
+                }
             }
         )
+    }
+
+    private fun setMessageScrolled() {
+        binding.rvMessageList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                isBottom = layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1
+            }
+        })
     }
 
     private fun saveMultipleMedia(uriList: List<Uri>) {
