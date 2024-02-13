@@ -2,15 +2,16 @@ package com.sesac.developer_study_platform.data.source.remote
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.BuildConfig
+import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
-import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -129,6 +130,24 @@ interface StudyService {
     suspend fun addChatRoom(
         @Path("chatRoomId") chatRoomId: String,
         @Body chatRoom: ChatRoom
+    )
+
+    @PATCH("studies/{sid}/banUsers.json")
+    suspend fun addStudyBanMember(
+        @Path("sid") sid: String,
+        @Body banMember: Map<String, Boolean>
+    )
+
+    @DELETE("studies/{sid}/members/{uid}.json")
+    suspend fun deleteStudyMember(
+        @Path("sid") sid: String,
+        @Path("uid") uid: String
+    )
+
+    @DELETE("userStudyRooms/{uid}/{sid}.json")
+    suspend fun deleteUserStudy(
+        @Path("uid") uid: String,
+        @Path("sid") sid: String
     )
 
     companion object {

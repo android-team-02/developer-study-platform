@@ -36,6 +36,8 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setBackButton()
+        setBanButton()
+        setBanButtonVisibility()
         parseJson()
         loadUser()
         loadRepositoryList()
@@ -47,6 +49,22 @@ class ProfileFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             viewModel.moveToBack()
         }
+    }
+
+    private fun setBanButton() {
+        binding.tvBan.setOnClickListener {
+            viewModel.moveToBanDialog()
+        }
+    }
+
+    private fun setBanButtonVisibility() {
+        viewModel.checkAdminAndUid(args.studyId, args.uid)
+        viewModel.isBanButtonVisibleEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.isBanButtonVisible = it
+            }
+        )
     }
 
     private fun parseJson() {
@@ -92,6 +110,7 @@ class ProfileFragment : Fragment() {
 
     private fun setNavigation() {
         moveToBack()
+        moveToBanDialog()
         moveToWebView()
     }
 
@@ -100,6 +119,16 @@ class ProfileFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToBanDialog() {
+        viewModel.moveToBanDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = ProfileFragmentDirections.actionProfileToBanDialog(args.studyId, args.uid)
+                findNavController().navigate(action)
             }
         )
     }
