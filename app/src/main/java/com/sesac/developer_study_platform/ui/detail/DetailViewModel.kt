@@ -44,7 +44,7 @@ class DetailViewModel : ViewModel() {
                 _study = it
                 loadStudyMemberList(it.members.keys)
             }.onFailure {
-                Log.e("loadStudy", it.message ?: "error occurred.")
+                Log.e("DetailViewModel-loadStudy", it.message ?: "error occurred.")
             }
         }
     }
@@ -58,7 +58,7 @@ class DetailViewModel : ViewModel() {
                 }.onSuccess {
                     studyMemberList.add(it.userId)
                 }.onFailure {
-                    Log.e("loadStudyMemberList", it.message ?: "error occurred.")
+                    Log.e("DetailViewModel-loadStudyMemberList", it.message ?: "error occurred.")
                 }
             }
             _studyMemberListEvent.value = Event(studyMemberList)
