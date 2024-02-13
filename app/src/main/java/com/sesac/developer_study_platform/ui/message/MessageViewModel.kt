@@ -83,7 +83,7 @@ class MessageViewModel : ViewModel() {
                     studyRepository.getUserById(it)
                 }
             }.onFailure {
-                Log.e("StudyRepository-getUser", it.message ?: "error occurred.")
+                Log.e("MessageViewModel-getUser", it.message ?: "error occurred.")
             }.getOrNull()
         }.await()
     }
@@ -95,7 +95,7 @@ class MessageViewModel : ViewModel() {
                     studyRepository.isAdmin(sid, it)
                 }
             }.onFailure {
-                Log.e("StudyRepository-isAdmin", it.message ?: "error occurred.")
+                Log.e("MessageViewModel-isAdmin", it.message ?: "error occurred.")
             }.getOrDefault(false)
         }.await()
     }
@@ -105,7 +105,7 @@ class MessageViewModel : ViewModel() {
             kotlin.runCatching {
                 studyRepository.getStudyMemberList(sid).count()
             }.onFailure {
-                Log.e("StudyRepository-getStudyMemberCount", it.message ?: "error occurred.")
+                Log.e("MessageViewModel-getStudyMemberCount", it.message ?: "error occurred.")
             }.getOrDefault(0)
         }.await()
     }
