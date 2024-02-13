@@ -12,6 +12,7 @@ import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentSearchBinding
+import com.sesac.developer_study_platform.isNetworkConnected
 import com.sesac.developer_study_platform.ui.home.HomeFragmentDirections
 
 class SearchFragment : Fragment() {
@@ -42,6 +43,7 @@ class SearchFragment : Fragment() {
             setCategoryButton(tvEtc)
         }
         setNavigation()
+        networkStatus()
     }
 
     private fun setSearchBar() {
@@ -81,6 +83,14 @@ class SearchFragment : Fragment() {
             Category.valueOf(
                 category.replace("-", "").uppercase()
             ).ordinal
+        }
+    }
+
+    private fun networkStatus() {
+        if (!isNetworkConnected(requireContext())) {
+            binding.networkStatus.visibility = View.VISIBLE
+        } else {
+            binding.networkStatus.visibility = View.GONE
         }
     }
 

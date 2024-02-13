@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentSearchResultBinding
+import com.sesac.developer_study_platform.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.ui.studyform.CustomTextWatcher
@@ -46,6 +47,7 @@ class SearchResultFragment : Fragment() {
         setSearchAdapter()
         searchStudy()
         setSearchStudyList()
+        networkStatus()
     }
 
     private fun showSoftKeyboard(view: TextInputEditText) {
@@ -103,6 +105,14 @@ class SearchResultFragment : Fragment() {
                 searchAdapter.submitList(it)
             }
         )
+    }
+
+    private fun networkStatus() {
+        if (!isNetworkConnected(requireContext())) {
+            binding.networkStatus.visibility = View.VISIBLE
+        } else {
+            binding.networkStatus.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

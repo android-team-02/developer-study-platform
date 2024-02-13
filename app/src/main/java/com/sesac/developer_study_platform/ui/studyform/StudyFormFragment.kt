@@ -30,6 +30,7 @@ import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
+import com.sesac.developer_study_platform.isNetworkConnected
 import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
 import com.sesac.developer_study_platform.util.setImage
@@ -103,6 +104,7 @@ class StudyFormFragment : Fragment() {
         }
         setTotalPeopleCount()
         setValidateAll()
+        networkStatus()
     }
 
     private fun setImageButton() {
@@ -428,6 +430,14 @@ class StudyFormFragment : Fragment() {
             list.add("${it.day} ${it.startTime}~${it.endTime}")
         }
         return list
+    }
+
+    private fun networkStatus() {
+        if (!isNetworkConnected(requireContext())) {
+            binding.networkStatus.visibility = View.VISIBLE
+        } else {
+            binding.networkStatus.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

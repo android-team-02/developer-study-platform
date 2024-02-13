@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sesac.developer_study_platform.Category
 import com.sesac.developer_study_platform.databinding.FragmentSearchCategoryBinding
+import com.sesac.developer_study_platform.isNetworkConnected
 
 class SearchCategoryFragment : Fragment() {
 
@@ -32,6 +33,7 @@ class SearchCategoryFragment : Fragment() {
         binding.tl.post {
             binding.tl.getTabAt(args.position)?.select()
         }
+        networkStatus()
     }
 
     private fun setViewPager() {
@@ -43,6 +45,14 @@ class SearchCategoryFragment : Fragment() {
         TabLayoutMediator(binding.tl, binding.vp) { tab, position ->
             tab.text = getString(Category.entries[position].resId)
         }.attach()
+    }
+
+    private fun networkStatus() {
+        if (!isNetworkConnected(requireContext())) {
+            binding.networkStatus.visibility = View.VISIBLE
+        } else {
+            binding.networkStatus.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

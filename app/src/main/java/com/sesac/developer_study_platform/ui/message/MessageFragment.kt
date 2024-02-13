@@ -18,6 +18,7 @@ import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
+import com.sesac.developer_study_platform.isNetworkConnected
 import com.sesac.developer_study_platform.util.getTimestamp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -63,6 +64,7 @@ class MessageFragment : Fragment() {
         setPlusButton()
         setSendButton()
         setNavigation()
+        networkStatus()
     }
 
     private fun setBackButton() {
@@ -177,6 +179,14 @@ class MessageFragment : Fragment() {
         }.await()
         val sortMembers = memberList.sortedByDescending { it.isAdmin }
         menuAdapter.submitList(sortMembers)
+    }
+
+    private fun networkStatus() {
+        if (!isNetworkConnected(requireContext())) {
+            binding.networkStatus.visibility = View.VISIBLE
+        } else {
+            binding.networkStatus.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

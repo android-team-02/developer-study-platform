@@ -12,6 +12,7 @@ import com.sesac.developer_study_platform.EventObserver
 import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
+import com.sesac.developer_study_platform.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 
 class ProfileFragment : Fragment() {
@@ -39,6 +40,7 @@ class ProfileFragment : Fragment() {
         loadUser()
         loadRepositoryList()
         setNavigation()
+        networkStatus()
     }
 
     private fun setBackButton() {
@@ -110,6 +112,14 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
+    }
+
+    private fun networkStatus() {
+        if (!isNetworkConnected(requireContext())) {
+            binding.networkStatus.visibility = View.VISIBLE
+        } else {
+            binding.networkStatus.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {
