@@ -121,7 +121,6 @@ class MessageViewModel : ViewModel() {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
-                loadStudyMemberList(sid)
                 updateLastMessage(sid, message)
             }.onFailure {
                 Log.e("MessageViewModel-sendImage", it.message ?: "error occurred.")
@@ -136,7 +135,6 @@ class MessageViewModel : ViewModel() {
                 studyRepository.addMessage(sid, message)
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
-                loadStudyMemberList(sid)
                 updateLastMessage(sid, message)
             }.onFailure {
                 Log.e("MessageViewModel-sendMessage", it.message ?: "error occurred.")
@@ -180,7 +178,7 @@ class MessageViewModel : ViewModel() {
         }
     }
 
-    private fun loadStudyMemberList(sid: String) {
+    fun loadStudyMemberList(sid: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.getStudyMemberList(sid)

@@ -112,6 +112,7 @@ class MessageFragment : Fragment() {
         viewModel.addMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
@@ -123,6 +124,7 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 binding.etMessageInput.text.clear()
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
