@@ -18,6 +18,7 @@ import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 import com.sesac.developer_study_platform.ui.studyform.CustomTextWatcher
+import com.sesac.developer_study_platform.util.sortStudyList
 
 class SearchResultFragment : Fragment() {
 
@@ -103,7 +104,7 @@ class SearchResultFragment : Fragment() {
         viewModel.searchStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                searchAdapter.submitList(it)
+                searchAdapter.submitList(it.sortStudyList())
             }
         )
     }
