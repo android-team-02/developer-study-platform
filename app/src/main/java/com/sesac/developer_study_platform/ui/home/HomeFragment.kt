@@ -69,13 +69,10 @@ class HomeFragment : Fragment() {
         viewModel.myStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                viewModel.insertUserStudy(it)
+                studyAdapter.submitList(it)
             }
         )
-        viewModel.myStudyList.observe(viewLifecycleOwner) {
-            val limitedList = it.take(3)
-            studyAdapter.submitList(limitedList)
-        }
+
         viewModel.studyFormButtonEvent.observe(
             viewLifecycleOwner,
             EventObserver {

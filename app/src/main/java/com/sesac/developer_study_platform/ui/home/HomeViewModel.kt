@@ -12,8 +12,13 @@ import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.myStudyRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.UserStudy
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.serialization.SerializationException
 
+@OptIn(FlowPreview::class)
 class HomeViewModel : ViewModel() {
 
     private val _myStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
@@ -34,7 +39,15 @@ class HomeViewModel : ViewModel() {
     private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
-    val myStudyList: LiveData<List<UserStudy>> = myStudyRepository.getMyStudyList()
+    init {
+        viewModelScope.launch {
+            _myStudyListEvent.value = Event(myStudyRepository.myStudyListFlow.first())
+            myStudyRepository.myStudyListFlow.debounce(300).collect {
+                _myStudyListEvent.value = Event(it)
+                _studyFormButtonEvent.value = Event(it.isEmpty())
+            }
+        }
+    }
 
     fun loadStudyList() {
         viewModelScope.launch {
@@ -44,18 +57,31 @@ class HomeViewModel : ViewModel() {
                 }
             }.onSuccess {
                 it?.let {
-                    _myStudyListEvent.value = Event(it.values.toList())
+                    refreshAllMyStudyList(it.values.toList())
                 }
             }.onFailure {
-                if (myStudyList.value.isNullOrEmpty()) {
-                    _studyFormButtonEvent.value = Event(true)
+                if (it is SerializationException) {
+                    refreshAllMyStudyList(emptyList())
+                } else {
                     Log.e("HomeViewModel-loadStudyList", it.message ?: "error occurred.")
                 }
             }
         }
     }
 
-    fun insertUserStudy(userStudyList: List<UserStudy>) {
+    private fun refreshAllMyStudyList(userStudyList: List<UserStudy>) {
+        viewModelScope.launch {
+            runCatching {
+                myStudyRepository.deleteAllMyStudyList()
+            }.onSuccess {
+                insertUserStudy(userStudyList)
+            }.onFailure {
+                Log.e("HomeViewModel-deleteAllMyStudyList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun insertUserStudy(userStudyList: List<UserStudy>) {
         userStudyList.forEach {
             val storageRef = Firebase.storage.reference
             val imageRef = storageRef.child("${it.sid}/${it.image}")
