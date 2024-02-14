@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
         viewModel.myStudyListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                studyAdapter.submitList(it)
+                studyAdapter.submitList(it.take(3))
             }
         )
 
