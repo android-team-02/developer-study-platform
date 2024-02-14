@@ -41,10 +41,12 @@ class HomeViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            _myStudyListEvent.value = Event(myStudyRepository.myStudyListFlow.first())
-            myStudyRepository.myStudyListFlow.debounce(300).collect {
+            val myStudyList = myStudyRepository.myStudyListFlow.first()
+            _myStudyListEvent.value = Event(myStudyList)
+            _studyFormButtonEvent.value = Event(myStudyList.isEmpty())
+
+            myStudyRepository.myStudyListFlow.debounce(500).collect {
                 _myStudyListEvent.value = Event(it)
-                _studyFormButtonEvent.value = Event(it.isEmpty())
             }
         }
     }
@@ -58,10 +60,12 @@ class HomeViewModel : ViewModel() {
             }.onSuccess {
                 it?.let {
                     refreshAllMyStudyList(it.values.toList())
+                    _studyFormButtonEvent.value = Event(false)
                 }
             }.onFailure {
                 if (it is SerializationException) {
                     refreshAllMyStudyList(emptyList())
+                    _studyFormButtonEvent.value = Event(true)
                 } else {
                     Log.e("HomeViewModel-loadStudyList", it.message ?: "error occurred.")
                 }
