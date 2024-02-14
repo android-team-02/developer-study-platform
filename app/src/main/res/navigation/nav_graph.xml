@@ -217,7 +217,7 @@
     <dialog
         android:id="@+id/dest_join_study_dialog"
         android:name="com.sesac.developer_study_platform.ui.detail.JoinStudyDialogFragment"
-        android:label="JoinStudyDialogFragment"
+        android:label="fragment_join_study_dialog"
         tools:layout="@layout/dialog_join_study">
         <argument
             android:name="study"
