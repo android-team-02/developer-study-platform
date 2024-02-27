@@ -4,11 +4,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
-import com.google.firebase.storage.ListResult
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Message
@@ -21,10 +21,23 @@ abstract class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bindin
 
     abstract fun bind(message: Message, previousMessage: Message? = null)
 
-    fun getImageList(message: Message): Task<ListResult> {
-        return Firebase.storage.reference
+    fun setImageAdapter(message: Message, onSuccess: (Int, List<StorageReference>) -> Unit) {
+        Firebase.storage.reference
             .child("${message.sid}/${message.uid}/${message.timestamp}")
             .listAll()
+            .addOnSuccessListener {
+                onSuccess(calculateSpanCount(it.items.count()), it.items)
+            }.addOnFailureListener {
+                Log.e("MessageAdapter-setImageAdapter", it.message ?: "error occurred.")
+            }
+    }
+
+    private fun calculateSpanCount(itemCount: Int): Int {
+        return when {
+            itemCount <= 3 -> 1
+            itemCount <= 6 -> 2
+            else -> 3
+        }
     }
 }
 
@@ -73,17 +86,16 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : V
 
 class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : ViewHolder(binding) {
 
-    private val imageAdapter = ImageAdapter()
-
     override fun bind(message: Message, previousMessage: Message?) {
         binding.message = message
         binding.previousMessage = previousMessage
-        binding.rvImageList.adapter = imageAdapter
 
-        getImageList(message).addOnSuccessListener {
-            imageAdapter.submitList(it.items)
-        }.addOnFailureListener {
-            Log.e("MessageAdapter-getImageList", it.message ?: "error occurred.")
+        val imageAdapter = ImageAdapter()
+        binding.rvImageList.adapter = imageAdapter
+        setImageAdapter(message) { spanCount, imageList ->
+            binding.rvImageList.layoutManager =
+                GridLayoutManager(itemView.context, spanCount, RecyclerView.HORIZONTAL, false)
+            imageAdapter.submitList(imageList)
         }
     }
 
@@ -103,17 +115,16 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
 
 class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewHolder(binding) {
 
-    private val imageAdapter = ImageAdapter()
-
     override fun bind(message: Message, previousMessage: Message?) {
         binding.message = message
         binding.previousMessage = previousMessage
-        binding.rvImageList.adapter = imageAdapter
 
-        getImageList(message).addOnSuccessListener {
-            imageAdapter.submitList(it.items)
-        }.addOnFailureListener {
-            Log.e("MessageAdapter-getImageList", it.message ?: "error occurred.")
+        val imageAdapter = ImageAdapter()
+        binding.rvImageList.adapter = imageAdapter
+        setImageAdapter(message) { spanCount, imageList ->
+            binding.rvImageList.layoutManager =
+                GridLayoutManager(itemView.context, spanCount, RecyclerView.HORIZONTAL, false)
+            imageAdapter.submitList(imageList)
         }
     }
 
