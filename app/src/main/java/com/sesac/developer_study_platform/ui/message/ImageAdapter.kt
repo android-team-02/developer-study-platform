@@ -11,22 +11,24 @@ import com.google.firebase.storage.StorageReference
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.ItemImageBinding
 
-class ImageAdapter : ListAdapter<StorageReference, ImageAdapter.ImageViewHolder>(diffUtil) {
+class ImageAdapter(private val clickListener: ImageClickListener) :
+    ListAdapter<StorageReference, ImageAdapter.ImageViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         return ImageViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(currentList[position], clickListener)
     }
 
     class ImageViewHolder(private val binding: ItemImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(storageRef: StorageReference) {
+        fun bind(storageRef: StorageReference, clickListener: ImageClickListener) {
             storageRef.downloadUrl.addOnSuccessListener {
-                binding.image = it.toString()
+                binding.imageUrl = it.toString()
+                binding.clickListener = clickListener
             }.addOnFailureListener {
                 Log.e("ImageAdapter", it.message ?: "error occurred.")
             }

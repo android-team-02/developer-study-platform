@@ -19,7 +19,7 @@ import com.sesac.developer_study_platform.databinding.ItemMessageSenderBinding
 
 abstract class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    abstract fun bind(message: Message, previousMessage: Message? = null)
+    abstract fun bind(clickListener: ImageClickListener, message: Message, previousMessage: Message? = null)
 
     fun setImageAdapter(message: Message, onSuccess: (Int, List<StorageReference>) -> Unit) {
         Firebase.storage.reference
@@ -44,7 +44,7 @@ abstract class ViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(bindin
 class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding) :
     ViewHolder(binding) {
 
-    override fun bind(message: Message, previousMessage: Message?) {
+    override fun bind(clickListener: ImageClickListener, message: Message, previousMessage: Message?) {
         binding.message = message
         binding.previousMessage = previousMessage
     }
@@ -65,7 +65,7 @@ class MessageReceiverViewHolder(private val binding: ItemMessageReceiverBinding)
 
 class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : ViewHolder(binding) {
 
-    override fun bind(message: Message, previousMessage: Message?) {
+    override fun bind(clickListener: ImageClickListener, message: Message, previousMessage: Message?) {
         binding.message = message
         binding.previousMessage = previousMessage
     }
@@ -86,11 +86,11 @@ class MessageSenderViewHolder(private val binding: ItemMessageSenderBinding) : V
 
 class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : ViewHolder(binding) {
 
-    override fun bind(message: Message, previousMessage: Message?) {
+    override fun bind(clickListener: ImageClickListener, message: Message, previousMessage: Message?) {
         binding.message = message
         binding.previousMessage = previousMessage
 
-        val imageAdapter = ImageAdapter()
+        val imageAdapter = ImageAdapter(clickListener)
         binding.rvImageList.adapter = imageAdapter
         setImageAdapter(message) { spanCount, imageList ->
             binding.rvImageList.layoutManager =
@@ -115,11 +115,11 @@ class ImageReceiverViewHolder(private val binding: ItemImageReceiverBinding) : V
 
 class ImageSenderViewHolder(private val binding: ItemImageSenderBinding) : ViewHolder(binding) {
 
-    override fun bind(message: Message, previousMessage: Message?) {
+    override fun bind(clickListener: ImageClickListener, message: Message, previousMessage: Message?) {
         binding.message = message
         binding.previousMessage = previousMessage
 
-        val imageAdapter = ImageAdapter()
+        val imageAdapter = ImageAdapter(clickListener)
         binding.rvImageList.adapter = imageAdapter
         setImageAdapter(message) { spanCount, imageList ->
             binding.rvImageList.layoutManager =
