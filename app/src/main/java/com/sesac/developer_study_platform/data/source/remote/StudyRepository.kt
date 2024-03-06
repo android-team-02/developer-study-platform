@@ -90,6 +90,14 @@ class StudyRepository {
         studyService.deleteUserStudy(uid, sid)
     }
 
+    suspend fun addNotificationKey(sid: String, notificationKey: String) {
+        studyService.addNotificationKey(sid, notificationKey)
+    }
+
+    suspend fun getNotificationKey(sid: String): String {
+        return studyService.getNotificationKey(sid)
+    }
+
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
         while (true) {
             kotlin.runCatching {

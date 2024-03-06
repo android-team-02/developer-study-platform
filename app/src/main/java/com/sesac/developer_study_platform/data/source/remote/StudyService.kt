@@ -150,6 +150,17 @@ interface StudyService {
         @Path("sid") sid: String
     )
 
+    @PUT("studies/{sid}/notificationKey.json")
+    suspend fun addNotificationKey(
+        @Path("sid") sid: String,
+        @Body notificationKey: String
+    )
+
+    @GET("studies/{sid}/notificationKey.json")
+    suspend fun getNotificationKey(
+        @Path("sid") sid: String,
+    ): String
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()
