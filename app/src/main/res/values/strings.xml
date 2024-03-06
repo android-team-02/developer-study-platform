@@ -3,6 +3,8 @@
 
     <string name="application_pref_file_key">com.sesac.developer_study_platform.DEVELOPER_STUDY_APP</string>
 
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+
     <string name="main_home">홈</string>
     <string name="main_search">검색</string>
     <string name="main_study_form">방만들기</string>
