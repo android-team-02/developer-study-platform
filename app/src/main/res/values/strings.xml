@@ -66,6 +66,7 @@
     <string name="dialog_logout">로그아웃 하시겠습니까?</string>
     <string name="dialog_ban">내보내기 하시겠습니까?</string>
     <string name="dialog_chat_exit">채팅방을 나가시겠습니까?</string>
+    <string name="dialog_notification_permission">채팅 알림 기능을 제공하기 위해 알림 권한이 필요합니다.\n계속 진행하시겠습니까?</string>
 
     <string name="profile_ban">내보내기</string>
     <string name="profile_repository">Repository</string>
