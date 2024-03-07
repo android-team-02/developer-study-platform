@@ -23,6 +23,10 @@ class StudyFormViewModel(private val fcmTokenRepository: FcmTokenRepository) : V
     private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
+    private val _moveToNotificationPermissionDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToNotificationPermissionDialogEvent: LiveData<Event<String>> =
+        _moveToNotificationPermissionDialogEvent
+
     fun createNotificationKey(sid: String) {
         viewModelScope.launch {
             val token = fcmTokenRepository.getToken().first()
@@ -62,6 +66,10 @@ class StudyFormViewModel(private val fcmTokenRepository: FcmTokenRepository) : V
 
     fun moveToMessage(sid: String) {
         _moveToMessageEvent.value = Event(sid)
+    }
+
+    fun moveToNotificationPermissionDialog(sid: String) {
+        _moveToNotificationPermissionDialogEvent.value = Event(sid)
     }
 
     companion object {
