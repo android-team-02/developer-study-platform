@@ -1,18 +1,24 @@
 package com.sesac.developer_study_platform.ui.studyform
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
@@ -24,16 +30,18 @@ import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.DayTime
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.data.source.local.FcmTokenRepository
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
-import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.util.setImage
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch
@@ -51,8 +59,12 @@ class StudyFormFragment : Fragment() {
     private var category = ""
     private var startDate = ""
     private var endDate = ""
+    private var sid = ""
     private lateinit var image: Uri
     private val studyService = StudyService.create()
+    private val viewModel by viewModels<StudyFormViewModel> {
+        StudyFormViewModel.create(FcmTokenRepository(requireContext()))
+    }
     private val dayTimeAdapter = DayTimeAdapter(object : DayTimeClickListener {
         override fun onClick(isStartTime: Boolean, dayTime: DayTime) {
             showTimePicker(isStartTime, dayTime)
@@ -61,6 +73,15 @@ class StudyFormFragment : Fragment() {
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             setSelectedImage(uri)
+        }
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                createNotificationKey()
+            } else {
+                Toast.makeText(context, getString(R.string.all_notification_info), Toast.LENGTH_SHORT).show()
+                viewModel.moveToMessage(sid)
+            }
         }
 
     override fun onCreateView(
@@ -106,6 +127,7 @@ class StudyFormFragment : Fragment() {
         setTotalPeopleCount()
         setValidateAll()
         binding.isNetworkConnected = isNetworkConnected(requireContext())
+        setNavigation()
     }
 
     private fun setImageButton() {
@@ -336,7 +358,7 @@ class StudyFormFragment : Fragment() {
                 else -> {
                     val uid = Firebase.auth.uid
                     uid?.let {
-                        val sid = "@make@$uid@time@${formatTimestamp()}"
+                        sid = "@make@$uid@time@${formatTimestamp()}"
                         uploadImage(sid, image) { fileName ->
                             saveStudy(sid, formatStudy(sid, uid, fileName))
                             saveUserStudy(uid, sid, formatUserStudy(sid, fileName))
@@ -389,8 +411,7 @@ class StudyFormFragment : Fragment() {
             kotlin.runCatching {
                 studyService.addChatRoom(sid, ChatRoom())
             }.onSuccess {
-                val action = StudyFormFragmentDirections.actionStudyFormToMessage(sid)
-                findNavController().navigate(action)
+                askNotificationPermission()
             }.onFailure {
                 Log.e("StudyFormFragment-saveChatRoom", it.message ?: "error occurred.")
             }
@@ -432,6 +453,49 @@ class StudyFormFragment : Fragment() {
             list.add("${it.day} ${it.startTime}~${it.endTime}")
         }
         return list
+    }
+
+    private fun setNavigation() {
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = StudyFormFragmentDirections.actionStudyFormToMessage(it)
+                findNavController().navigate(action)
+            }
+        )
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    createNotificationKey()
+                }
+
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    // TODO 권한 이유 다이얼로그
+                }
+
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        } else {
+            createNotificationKey()
+        }
+    }
+
+    private fun createNotificationKey() {
+        viewModel.createNotificationKey(sid)
+        viewModel.createNotificationKeyEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                viewModel.moveToMessage(sid)
+            }
+        )
     }
 
     override fun onDestroyView() {

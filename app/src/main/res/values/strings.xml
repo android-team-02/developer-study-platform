@@ -33,6 +33,7 @@
     <string name="all_sunday">일</string>
     <string name="all_search_hint">스터디 검색</string>
     <string name="all_icon_person_description">사람 모양의 아이콘</string>
+    <string name="all_notification_info">이 앱은 알림을 표시하지 않습니다. 설정에서 알림 권한을 변경할 수 있습니다.</string>
 
     <string name="login_auto_login_key">AUTO_LOGIN</string>
     <string name="login_github">Login with Github</string>
