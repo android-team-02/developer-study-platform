@@ -94,8 +94,12 @@ class StudyRepository {
         studyService.addNotificationKey(sid, notificationKey)
     }
 
-    suspend fun getNotificationKey(sid: String): String {
+    suspend fun getNotificationKey(sid: String): String? {
         return studyService.getNotificationKey(sid)
+    }
+
+    suspend fun addRegistrationId(sid: String, registrationId: String) {
+        studyService.addRegistrationId(sid, mapOf(registrationId to true))
     }
 
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {

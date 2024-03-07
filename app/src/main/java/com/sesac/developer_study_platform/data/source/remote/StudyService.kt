@@ -159,7 +159,13 @@ interface StudyService {
     @GET("studies/{sid}/notificationKey.json")
     suspend fun getNotificationKey(
         @Path("sid") sid: String,
-    ): String
+    ): String?
+
+    @PATCH("studies/{sid}/registrationIds.json")
+    suspend fun addRegistrationId(
+        @Path("sid") sid: String,
+        @Body registrationId: Map<String, Boolean>
+    )
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
