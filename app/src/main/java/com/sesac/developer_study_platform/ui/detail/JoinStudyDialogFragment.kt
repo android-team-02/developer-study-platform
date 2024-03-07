@@ -87,10 +87,25 @@ class JoinStudyDialogFragment : DialogFragment() {
     }
 
     private fun setNavigation() {
+        moveToMessage()
+        moveToNotificationPermissionDialog()
+    }
+
+    private fun moveToMessage() {
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 val action = JoinStudyDialogFragmentDirections.actionJoinStudyDialogToMessage(it)
+                findNavController().navigate(action)
+            }
+        )
+    }
+
+    private fun moveToNotificationPermissionDialog() {
+        viewModel.moveToNotificationPermissionDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = JoinStudyDialogFragmentDirections.actionGlobalToNotificationPermissionDialog(it)
                 findNavController().navigate(action)
             }
         )
@@ -107,7 +122,7 @@ class JoinStudyDialogFragment : DialogFragment() {
                 }
 
                 shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
-                    // TODO 권한 이유 다이얼로그
+                    viewModel.moveToNotificationPermissionDialog(args.study.sid)
                 }
 
                 else -> {
