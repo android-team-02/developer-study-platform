@@ -10,7 +10,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.Event
+import com.sesac.developer_study_platform.StudyApplication.Companion.fcmRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
+import com.sesac.developer_study_platform.data.FcmMessage
+import com.sesac.developer_study_platform.data.FcmMessageData
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.StudyUser
 import kotlinx.coroutines.SupervisorJob
@@ -128,6 +131,7 @@ class MessageViewModel : ViewModel() {
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
                 updateLastMessage(sid, message)
+                sendNotification(sid, message.message)
             }.onFailure {
                 Log.e("MessageViewModel-sendImage", it.message ?: "error occurred.")
             }
@@ -142,6 +146,7 @@ class MessageViewModel : ViewModel() {
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
                 updateLastMessage(sid, message)
+                sendNotification(sid, message.message)
             }.onFailure {
                 Log.e("MessageViewModel-sendMessage", it.message ?: "error occurred.")
             }
@@ -254,6 +259,33 @@ class MessageViewModel : ViewModel() {
                 Log.e("MessageViewModel-checkAdmin", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun sendNotification(sid: String, message: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                val notificationKey = getNotificationKey(sid)
+                if (!notificationKey.isNullOrEmpty()) {
+                    fcmRepository.sendNotification(
+                        FcmMessage(
+                            FcmMessageData(notificationKey, mapOf("message" to message))
+                        )
+                    )
+                }
+            }.onFailure {
+                Log.e("MessageViewModel-sendNotification", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private suspend fun getNotificationKey(sid: String): String? {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                studyRepository.getNotificationKey(sid)
+            }.onFailure {
+                Log.e("MessageViewModel-getNotificationKey", it.message ?: "error occurred.")
+            }.getOrNull()
+        }.await()
     }
 
     fun moveToBack() {

@@ -74,7 +74,6 @@ class MessageFragment : Fragment() {
         binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
-
     private fun setBackButton() {
         binding.toolbar.setNavigationOnClickListener {
             viewModel.moveToBack()
