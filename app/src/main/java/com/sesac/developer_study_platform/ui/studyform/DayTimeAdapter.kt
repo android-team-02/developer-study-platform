@@ -23,15 +23,8 @@ class DayTimeAdapter(private val clickListener: DayTimeClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(daytime: DayTime, clickListener: DayTimeClickListener) {
-            binding.tvDay.text = daytime.day
-            binding.tvStartTime.text = daytime.startTime ?: "00:00"
-            binding.tvEndTime.text = daytime.endTime ?: "00:00"
-            binding.tvStartTime.setOnClickListener {
-                clickListener.onClick(true, daytime)
-            }
-            binding.tvEndTime.setOnClickListener {
-                clickListener.onClick(false, daytime)
-            }
+            binding.dayTime = daytime
+            binding.clickListener = clickListener
         }
 
         companion object {
