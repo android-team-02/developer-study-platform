@@ -187,7 +187,7 @@ class StudyFormFragment : Fragment() {
         )
         binding.tvLanguageDropdown.setAdapter(arrayAdapter)
         binding.tvLanguageDropdown.setOnItemClickListener { parent, _, position, _ ->
-            language = parent.getItemAtPosition(position).toString()
+            viewModel.selectLanguage(parent.getItemAtPosition(position).toString())
         }
     }
 
