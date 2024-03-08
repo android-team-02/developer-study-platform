@@ -167,11 +167,16 @@ class StudyFormFragment : Fragment() {
     private fun validateContent() {
         binding.etStudyContentInput.addTextChangedListener(
             CustomTextWatcher {
-                if (it.length == 150) {
-                    binding.root.showSnackbar(R.string.study_form_validate_content)
-                }
+                viewModel.validateContent(it)
             }
         )
+        viewModel.isContentValidate.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                if (it) {
+                    binding.root.showSnackbar(R.string.study_form_validate_content)
+                }
+            })
     }
 
     private fun setLanguage() {
