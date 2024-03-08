@@ -99,6 +99,7 @@ class StudyFormFragment : Fragment() {
         binding.tvStartDate.setOnClickListener {
             showDateRangePicker()
         }
+        setPositiveButton()
         binding.rvDayTime.adapter = dayTimeAdapter
         with(binding) {
             setDayButton(btnMonday)
@@ -211,30 +212,27 @@ class StudyFormFragment : Fragment() {
             .setCalendarConstraints(calendarConstraintBuilder.build())
             .build()
         dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
-        setPositiveButton(dateRangePicker)
+        selectedDateRange(dateRangePicker)
     }
 
-    private fun setPositiveButton(dateRangePicker: MaterialDatePicker<Pair<Long, Long>>) {
+    private fun selectedDateRange(dateRangePicker: MaterialDatePicker<Pair<Long, Long>>) {
         dateRangePicker.addOnPositiveButtonClickListener {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = it.first ?: 0
-            val selectedStartDate = getDate(calendar)
-
-            calendar.timeInMillis = it.second ?: 0
-            val selectedEndDate = getDate(calendar)
-
-            binding.tvStartDate.text = selectedStartDate
-            binding.tvEndDate.text = selectedEndDate
-            startDate = selectedStartDate
-            endDate = selectedEndDate
+            viewModel.selectDateRange(it.first, it.second)
         }
     }
 
-    private fun getDate(calendar: Calendar): String {
-        return SimpleDateFormat(
-            DateFormats.YEAR_MONTH_DAY_FORMAT.pattern,
-            Locale.getDefault()
-        ).format(calendar.time).toString()
+    private fun setPositiveButton() {
+        viewModel.startDateEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.tvStartDate.text = it
+            })
+
+        viewModel.endDateEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.tvEndDate.text = it
+            })
     }
 
     private fun showTimePicker(isStartTime: Boolean, dayTime: DayTime) {
