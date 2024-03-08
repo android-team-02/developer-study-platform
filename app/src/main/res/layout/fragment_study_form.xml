@@ -10,7 +10,7 @@
             type="Boolean" />
 
         <variable
-            name="isSelectedImage"
+            name="isSelectImage"
             type="Boolean" />
     </data>
 
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="iv_plus,tv_add_image"
-                    app:visible="@{!isSelectedImage}" />
+                    app:visible="@{!isSelectImage}" />
 
                 <androidx.constraintlayout.helper.widget.Flow
                     android:id="@+id/flow_category"

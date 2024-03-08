@@ -1,7 +1,6 @@
 package com.sesac.developer_study_platform.ui.studyform
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -26,13 +24,10 @@ import com.google.firebase.ktx.Firebase
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.DayTime
-import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
 import com.sesac.developer_study_platform.util.formatTimestamp
 import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.util.showSnackbar
-import kotlinx.coroutines.launch
 
 class StudyFormFragment : Fragment() {
 
@@ -47,7 +42,7 @@ class StudyFormFragment : Fragment() {
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
-                viewModel.setImageUri(uri)
+                viewModel.selectImage(uri)
             }
         }
 
@@ -64,8 +59,8 @@ class StudyFormFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setImageButton()
-        setImageVisibility()
-        setSelectedImage()
+        setAddImageVisibility()
+        setSelectImage()
         with(binding) {
             setCategoryButton(btnAndroid)
             setCategoryButton(btnIos)
@@ -74,13 +69,13 @@ class StudyFormFragment : Fragment() {
             setCategoryButton(btnAi)
             setCategoryButton(btnEtc)
         }
-        validateName()
-        validateContent()
+        nameValidate()
+        contentValidate()
         setLanguage()
         binding.tvStartDate.setOnClickListener {
             showDateRangePicker()
         }
-        setPositiveButton()
+        setDatePositiveButton()
         binding.rvDayTime.adapter = dayTimeAdapter
         with(binding) {
             setDayButton(btnMonday)
@@ -91,7 +86,7 @@ class StudyFormFragment : Fragment() {
             setDayButton(btnSaturday)
             setDayButton(btnSunday)
         }
-        validateTime()
+        timeValidate()
         setTotalPeopleCount()
         setValidateAll()
         setBackButton()
@@ -105,13 +100,13 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun setImageVisibility() {
-        viewModel.isSelectedImage.observe(viewLifecycleOwner, EventObserver {
-            binding.isSelectedImage = it
+    private fun setAddImageVisibility() {
+        viewModel.isSelectImage.observe(viewLifecycleOwner, EventObserver {
+            binding.isSelectImage = it
         })
     }
 
-    private fun setSelectedImage() {
+    private fun setSelectImage() {
         viewModel.imageUriEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -134,10 +129,10 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun validateName() {
+    private fun nameValidate() {
         binding.etStudyNameInput.addTextChangedListener(
             CustomTextWatcher {
-                viewModel.validateName(it)
+                viewModel.nameValidate(it)
             }
         )
         viewModel.isNameValidate.observe(
@@ -149,10 +144,10 @@ class StudyFormFragment : Fragment() {
             })
     }
 
-    private fun validateContent() {
+    private fun contentValidate() {
         binding.etStudyContentInput.addTextChangedListener(
             CustomTextWatcher {
-                viewModel.validateContent(it)
+                viewModel.contentValidate(it)
             }
         )
         viewModel.isContentValidate.observe(
@@ -176,18 +171,6 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun setTotalPeopleCount() {
-        val arrayAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.item_dropdown,
-            resources.getStringArray(R.array.study_form_people)
-        )
-        binding.tvPeopleDropdown.setAdapter(arrayAdapter)
-        binding.tvPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
-            viewModel.selectTotalCount(parent.getItemAtPosition(position).toString().toInt())
-        }
-    }
-
     private fun showDateRangePicker() {
         val calendarConstraintBuilder = CalendarConstraints.Builder().apply {
             setValidator(DateValidatorPointForward.now())
@@ -205,7 +188,7 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun setPositiveButton() {
+    private fun setDatePositiveButton() {
         viewModel.startDateEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -225,15 +208,22 @@ class StudyFormFragment : Fragment() {
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .build()
         timePicker.show(requireActivity().supportFragmentManager, "TimePicker")
+        setTimePositiveButton(timePicker, isStartTime, dayTime)
+    }
 
+    private fun setTimePositiveButton(
+        timePicker: MaterialTimePicker,
+        isStartTime: Boolean,
+        dayTime: DayTime
+    ) {
         timePicker.addOnPositiveButtonClickListener {
             val selectedTime = String.format("%02d:%02d", timePicker.hour, timePicker.minute)
             viewModel.validateTime(isStartTime, dayTime, selectedTime)
         }
     }
 
-    private fun validateTime() {
-        viewModel.dayTimeErrorMessageEvent.observe(viewLifecycleOwner, EventObserver { messageId ->
+    private fun timeValidate() {
+        viewModel.dayTimeValidateEvent.observe(viewLifecycleOwner, EventObserver { messageId ->
             binding.root.showSnackbar(messageId)
         })
 
@@ -244,7 +234,6 @@ class StudyFormFragment : Fragment() {
                 if (index != -1) {
                     dayTimeAdapter.notifyItemChanged(index)
                 }
-                Log.d("DayTimeList", "Day: ${updatedDayTime.day}, StartTime: ${updatedDayTime.startTime}, EndTime: ${updatedDayTime.endTime}")
             }
         })
     }
@@ -256,15 +245,28 @@ class StudyFormFragment : Fragment() {
         }
     }
 
+    private fun setTotalPeopleCount() {
+        val arrayAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.item_dropdown,
+            resources.getStringArray(R.array.study_form_people)
+        )
+        binding.tvPeopleDropdown.setAdapter(arrayAdapter)
+        binding.tvPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
+            viewModel.selectTotalCount(parent.getItemAtPosition(position).toString().toInt())
+        }
+    }
+
+
     private fun setValidateAll() {
         binding.btnCreateStudy.setOnClickListener {
             val dayTimeList = viewModel.dayTimeListEvent.value?.peekContent() ?: emptyList()
             when {
-                viewModel.isSelectedImage.value?.peekContent() == false -> {
+                viewModel.isSelectImage.value?.peekContent() == false -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_image)
                 }
 
-                viewModel.selectedCategory.value == null -> {
+                viewModel.categoryEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_category)
                 }
 
@@ -276,7 +278,7 @@ class StudyFormFragment : Fragment() {
                     binding.root.showSnackbar(R.string.study_form_validate_content_input)
                 }
 
-                viewModel.selectedLanguage.value == null -> {
+                viewModel.languageEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_language)
                 }
 
@@ -300,7 +302,7 @@ class StudyFormFragment : Fragment() {
                     binding.root.showSnackbar(R.string.study_form_validate_select_end_time)
                 }
 
-                viewModel.selectedTotalCountEvent.value == null -> {
+                viewModel.totalCountEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_people)
                 }
 
@@ -309,12 +311,12 @@ class StudyFormFragment : Fragment() {
                     val sid = "@make@$uid@time@${formatTimestamp()}"
                     uploadImage(sid)
 
-                    viewModel.uploadImageEvent.observe(
+                    viewModel.imagePathEvent.observe(
                         viewLifecycleOwner,
                         EventObserver { fileName ->
                             uid?.let {
-                                saveStudy(sid, formatStudy(sid, uid, fileName))
-                                saveUserStudy(uid, sid, formatUserStudy(sid, fileName))
+                                saveStudy(sid, uid, fileName)
+                                saveUserStudy(uid, sid, fileName)
                                 saveChatRoom(sid)
                             }
                         })
@@ -328,23 +330,16 @@ class StudyFormFragment : Fragment() {
         viewModel.uploadImage(sid, fileName)
     }
 
-    private fun saveStudy(sid: String, study: Study) {
-        lifecycleScope.launch {
-            viewModel.saveStudy(sid, study)
-        }
+    private fun saveStudy(sid: String, uid: String, fileName: String) {
+        viewModel.saveStudy(sid, uid, fileName)
     }
 
-    private fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
-        lifecycleScope.launch {
-            viewModel.saveUserStudy(uid, sid, userStudy)
-        }
+    private fun saveUserStudy(sid: String, uid: String, fileName: String) {
+        viewModel.saveUserStudy(uid, sid, fileName)
     }
 
     private fun saveChatRoom(sid: String) {
-        lifecycleScope.launch {
-            viewModel.saveChatRoom(sid)
-        }
-
+        viewModel.saveChatRoom(sid)
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -352,14 +347,6 @@ class StudyFormFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
-    }
-
-    private fun formatStudy(sid: String, uid: String, fileName: String): Study {
-        return viewModel.formatStudy(sid, uid, fileName)
-    }
-
-    private fun formatUserStudy(sid: String, fileName: String): UserStudy {
-        return viewModel.formatUserStudy(sid, fileName)
     }
 
     private fun setBackButton() {

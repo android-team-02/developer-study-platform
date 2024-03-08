@@ -26,14 +26,11 @@ class StudyFormViewModel : ViewModel() {
     private val _imageUriEvent: MutableLiveData<Event<Uri>> = MutableLiveData()
     val imageUriEvent: LiveData<Event<Uri>> = _imageUriEvent
 
-    private val _isSelectedImage: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
-    val isSelectedImage: LiveData<Event<Boolean>> = _isSelectedImage
+    private val _isSelectImage: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val isSelectImage: LiveData<Event<Boolean>> = _isSelectImage
 
-    private val _uploadImageEvent: MutableLiveData<Event<String>> = MutableLiveData()
-    val uploadImageEvent: LiveData<Event<String>> = _uploadImageEvent
-
-    private val _selectedCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
-    val selectedCategory: LiveData<Event<String>> = _selectedCategoryEvent
+    private val _categoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val categoryEvent: LiveData<Event<String>> = _categoryEvent
 
     private val _nameEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val nameEvent: LiveData<Event<String>> = _nameEvent
@@ -47,8 +44,8 @@ class StudyFormViewModel : ViewModel() {
     private val _isContentValidate: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val isContentValidate: LiveData<Event<Boolean>> = _isContentValidate
 
-    private val _selectedLanguageEvent: MutableLiveData<Event<String>> = MutableLiveData()
-    val selectedLanguage: LiveData<Event<String>> = _selectedLanguageEvent
+    private val _languageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val languageEvent: LiveData<Event<String>> = _languageEvent
 
     private val _startDateEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val startDateEvent: LiveData<Event<String>> = _startDateEvent
@@ -59,11 +56,14 @@ class StudyFormViewModel : ViewModel() {
     private val _dayTimeListEvent: MutableLiveData<Event<List<DayTime>>> = MutableLiveData(Event(emptyList()))
     val dayTimeListEvent: LiveData<Event<List<DayTime>>> = _dayTimeListEvent
 
-    private val _dayTimeErrorMessageEvent: MutableLiveData<Event<Int>> = MutableLiveData()
-    val dayTimeErrorMessageEvent: LiveData<Event<Int>> = _dayTimeErrorMessageEvent
+    private val _dayTimeValidateEvent: MutableLiveData<Event<Int>> = MutableLiveData()
+    val dayTimeValidateEvent: LiveData<Event<Int>> = _dayTimeValidateEvent
 
-    private val _selectedTotalCountEvent: MutableLiveData<Event<Int>> = MutableLiveData()
-    val selectedTotalCountEvent: LiveData<Event<Int>> = _selectedTotalCountEvent
+    private val _totalCountEvent: MutableLiveData<Event<Int>> = MutableLiveData()
+    val totalCountEvent: LiveData<Event<Int>> = _totalCountEvent
+
+    private val _imagePathEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val imagePathEvent: LiveData<Event<String>> = _imagePathEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
@@ -71,16 +71,16 @@ class StudyFormViewModel : ViewModel() {
     private val _moveToMessageEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<Unit>> = _moveToMessageEvent
 
-    fun setImageUri(uri: Uri) {
+    fun selectImage(uri: Uri) {
         _imageUriEvent.value = Event(uri)
-        _isSelectedImage.value = Event(true)
+        _isSelectImage.value = Event(true)
     }
 
     fun selectCategory(category: String) {
-        _selectedCategoryEvent.value = Event(category)
+        _categoryEvent.value = Event(category)
     }
 
-    fun validateName(name: String) {
+    fun nameValidate(name: String) {
         if (name.length == 20) {
             _isNameValidate.value = Event(true)
         } else {
@@ -88,7 +88,7 @@ class StudyFormViewModel : ViewModel() {
         }
     }
 
-    fun validateContent(content: String) {
+    fun contentValidate(content: String) {
         if (content.length == 150) {
             _isContentValidate.value = Event(true)
         } else {
@@ -97,7 +97,7 @@ class StudyFormViewModel : ViewModel() {
     }
 
     fun selectLanguage(language: String) {
-        _selectedLanguageEvent.value = Event(language)
+        _languageEvent.value = Event(language)
     }
 
     fun selectDateRange(start: Long, end: Long) {
@@ -129,14 +129,14 @@ class StudyFormViewModel : ViewModel() {
         if (isStartTime) {
             val endTime = foundDayTime.endTime
             if (endTime != null && selectedTime > endTime) {
-                _dayTimeErrorMessageEvent.value = Event(R.string.study_form_validate_start_time)
+                _dayTimeValidateEvent.value = Event(R.string.study_form_validate_start_time)
                 return
             }
             foundDayTime.startTime = selectedTime
         } else {
             val startTime = foundDayTime.startTime
             if (startTime != null && selectedTime < startTime) {
-                _dayTimeErrorMessageEvent.value = Event(R.string.study_form_validate_end_time)
+                _dayTimeValidateEvent.value = Event(R.string.study_form_validate_end_time)
                 return
             }
             foundDayTime.endTime = selectedTime
@@ -169,7 +169,7 @@ class StudyFormViewModel : ViewModel() {
     }
 
     fun selectTotalCount(language: Int) {
-        _selectedTotalCountEvent.value = Event(language)
+        _totalCountEvent.value = Event(language)
     }
 
     fun uploadImage(sid: String, name: String) {
@@ -179,7 +179,7 @@ class StudyFormViewModel : ViewModel() {
         _imageUriEvent.value?.peekContent()?.let {
             storageRef.putFile(it).addOnSuccessListener { taskSnapshot ->
                 taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
-                    _uploadImageEvent.value = Event(name)
+                    _imagePathEvent.value = Event(name)
                 }?.addOnFailureListener {
                     Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
                 }
@@ -189,20 +189,20 @@ class StudyFormViewModel : ViewModel() {
         }
     }
 
-    fun saveStudy(sid: String, study: Study) {
+    fun saveStudy(sid: String, uid: String, fileName: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.putStudy(sid, study)
+                studyRepository.putStudy(sid, formatStudy(sid, uid, fileName))
             }.onFailure {
                 Log.e("StudyFormViewModel-saveStudy", it.message ?: "error occurred.")
             }
         }
     }
 
-    fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
+    fun saveUserStudy(sid: String, uid: String, fileName: String) {
         viewModelScope.launch {
             kotlin.runCatching {
-                studyRepository.putUserStudy(uid, sid, userStudy)
+                studyRepository.putUserStudy(uid, sid, formatUserStudy(sid, fileName))
             }.onFailure {
                 Log.e("StudyFormViewModel-saveUserStudy", it.message ?: "error occurred.")
             }
@@ -221,15 +221,15 @@ class StudyFormViewModel : ViewModel() {
         }
     }
 
-    fun formatStudy(sid: String, uid: String, fileName: String): Study {
+    private fun formatStudy(sid: String, uid: String, fileName: String): Study {
         return Study(
             sid = sid,
             name = _nameEvent.value?.peekContent() ?: "",
             image = fileName,
             content = _contentEvent.value?.peekContent() ?: "",
-            category = _selectedCategoryEvent.value?.peekContent() ?: "",
-            language = _selectedLanguageEvent.value?.peekContent() ?: "",
-            totalMemberCount = _selectedTotalCountEvent.value?.peekContent() ?: 0,
+            category = _categoryEvent.value?.peekContent() ?: "",
+            language = _languageEvent.value?.peekContent() ?: "",
+            totalMemberCount = _totalCountEvent.value?.peekContent() ?: 0,
             days = formatDayTimeList(),
             startDate = _startDateEvent.value?.peekContent() ?: "",
             endDate = _endDateEvent.value?.peekContent() ?: "",
@@ -238,12 +238,12 @@ class StudyFormViewModel : ViewModel() {
         )
     }
 
-    fun formatUserStudy(sid: String, fileName: String): UserStudy {
+    private fun formatUserStudy(sid: String, fileName: String): UserStudy {
         return UserStudy(
             sid = sid,
             name = _nameEvent.value?.peekContent() ?: "",
             image = fileName,
-            language = _selectedLanguageEvent.value?.peekContent() ?: "",
+            language = _languageEvent.value?.peekContent() ?: "",
             days = formatDayTimeList(),
             startDate = _startDateEvent.value?.peekContent() ?: "",
             endDate = _endDateEvent.value?.peekContent() ?: ""
