@@ -20,6 +20,12 @@ class StudyFormViewModel : ViewModel() {
 
     private val _contentEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val contentEvent: LiveData<Event<String>> = _contentEvent
+
+    private val _isNameValidate: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val isNameValidate: LiveData<Event<Boolean>> = _isNameValidate
+
+    private val _isContentValidate: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val isContentValidate: LiveData<Event<Boolean>> = _isContentValidate
     fun setImageUri(uri: Uri) {
         _imageUriEvent.value = Event(uri)
         _isSelectedImage.value = Event(true)
