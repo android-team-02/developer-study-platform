@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
@@ -53,6 +54,7 @@ class StudyFormFragment : Fragment() {
     private var endDate = ""
     private lateinit var image: Uri
     private val studyService = StudyService.create()
+    private val viewModel by viewModels<StudyFormViewModel>()
     private val dayTimeAdapter = DayTimeAdapter(object : DayTimeClickListener {
         override fun onClick(isStartTime: Boolean, dayTime: DayTime) {
             showTimePicker(isStartTime, dayTime)
@@ -60,7 +62,9 @@ class StudyFormFragment : Fragment() {
     })
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            setSelectedImage(uri)
+            if (uri != null) {
+                viewModel.setImageUri(uri)
+            }
         }
 
     override fun onCreateView(
@@ -114,12 +118,18 @@ class StudyFormFragment : Fragment() {
         }
     }
 
-    private fun setSelectedImage(uri: Uri?) {
-        if (uri != null) {
-            binding.ivImage.setImage(uri.toString())
-            binding.groupAddImage.visibility = View.GONE
-            image = uri
-        }
+    private fun setImageVisibility() {
+        viewModel.isSelectedImage.observe(viewLifecycleOwner, EventObserver {
+            binding.isSelectedImage = it
+        })
+    }
+
+    private fun setSelectedImage() {
+        viewModel.imageUriEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.ivImage.setImageURI(it)
+            })
     }
 
     private fun setCategoryButton(button: AppCompatButton) {
