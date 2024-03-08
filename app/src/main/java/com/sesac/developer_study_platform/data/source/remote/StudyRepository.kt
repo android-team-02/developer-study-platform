@@ -9,6 +9,8 @@ import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.http.Body
+import retrofit2.http.Path
 
 class StudyRepository {
 
@@ -16,6 +18,14 @@ class StudyRepository {
 
     suspend fun putUser(uid: String, user: StudyUser) {
         studyService.putUser(uid, user)
+    }
+
+    suspend fun putStudy(sid: String, study: Study) {
+        return studyService.putStudy(sid, study)
+    }
+
+    suspend fun putUserStudy(uid: String, sid: String, userStudy: UserStudy) {
+        return studyService.putUserStudy(uid, sid, userStudy)
     }
 
     suspend fun getStudy(sid: String): Study {
@@ -80,6 +90,10 @@ class StudyRepository {
 
     suspend fun addStudyBanMember(sid: String, uid: String) {
         studyService.addStudyBanMember(sid, mapOf(uid to true))
+    }
+
+    suspend fun addChatRoom(sid: String, chatRoom: ChatRoom) {
+        return studyService.addChatRoom(sid, chatRoom)
     }
 
     suspend fun deleteStudyMember(sid: String, uid: String) {
