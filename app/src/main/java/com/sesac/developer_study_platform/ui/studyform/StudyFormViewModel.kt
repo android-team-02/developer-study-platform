@@ -35,6 +35,12 @@ class StudyFormViewModel : ViewModel() {
 
     private val _endDateEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val endDateEvent: LiveData<Event<String>> = _endDateEvent
+
+    private val _dayTimeListEvent: MutableLiveData<Event<List<DayTime>>> = MutableLiveData(Event(emptyList()))
+    val dayTimeListEvent: LiveData<Event<List<DayTime>>> = _dayTimeListEvent
+
+    private val _dayTimeErrorMessageEvent: MutableLiveData<Event<Int>> = MutableLiveData()
+    val dayTimeErrorMessageEvent: LiveData<Event<Int>> = _dayTimeErrorMessageEvent
     fun setImageUri(uri: Uri) {
         _imageUriEvent.value = Event(uri)
         _isSelectedImage.value = Event(true)
@@ -79,5 +85,56 @@ class StudyFormViewModel : ViewModel() {
             DateFormats.YEAR_MONTH_DAY_FORMAT.pattern,
             Locale.getDefault()
         ).format(calendar.time).toString()
+    }
+
+    fun validateTime(isStartTime: Boolean, dayTime: DayTime, selectedTime: String) {
+        val upDatedList = _dayTimeListEvent.value?.peekContent()?.toMutableList() ?: mutableListOf()
+        var foundDayTime = upDatedList.find { it.day == dayTime.day }
+
+        if (foundDayTime == null) {
+            foundDayTime = dayTime
+            upDatedList.add(foundDayTime)
+        }
+
+        if (isStartTime) {
+            val endTime = foundDayTime.endTime
+            if (endTime != null && selectedTime > endTime) {
+                _dayTimeErrorMessageEvent.value = Event(R.string.study_form_validate_start_time)
+                return
+            }
+            foundDayTime.startTime = selectedTime
+        } else {
+            val startTime = foundDayTime.startTime
+            if (startTime != null && selectedTime < startTime) {
+                _dayTimeErrorMessageEvent.value = Event(R.string.study_form_validate_end_time)
+                return
+            }
+            foundDayTime.endTime = selectedTime
+        }
+        _dayTimeListEvent.value = Event(upDatedList.sortedBy { getDaySort(it.day) })
+    }
+
+    fun addScheduleForDay(day: String) {
+        val upDatedList = _dayTimeListEvent.value?.peekContent()?.toMutableList() ?: mutableListOf()
+        val index = upDatedList.indexOfFirst { it.day == day }
+        if (index == -1) {
+            upDatedList.add(DayTime(day))
+        } else {
+            upDatedList.removeAt(index)
+        }
+        val sortedList = upDatedList.sortedBy { getDaySort(it.day) }
+        _dayTimeListEvent.value = Event(sortedList)
+    }
+
+    private fun getDaySort(day: String): Int {
+        return when (day) {
+            "월" -> 1
+            "화" -> 2
+            "수" -> 3
+            "목" -> 4
+            "금" -> 5
+            "토" -> 6
+            else -> 7
+        }
     }
 }

@@ -110,6 +110,7 @@ class StudyFormFragment : Fragment() {
             setDayButton(btnSaturday)
             setDayButton(btnSunday)
         }
+        validateTime()
         setTotalPeopleCount()
         setValidateAll()
         binding.isNetworkConnected = isNetworkConnected(requireContext())
@@ -241,68 +242,34 @@ class StudyFormFragment : Fragment() {
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .build()
         timePicker.show(requireActivity().supportFragmentManager, "TimePicker")
-        setPositiveButton(timePicker, isStartTime, dayTime)
-    }
 
-    private fun setPositiveButton(
-        timePicker: MaterialTimePicker,
-        isStartTime: Boolean,
-        dayTime: DayTime
-    ) {
         timePicker.addOnPositiveButtonClickListener {
             val selectedTime = String.format("%02d:%02d", timePicker.hour, timePicker.minute)
-            validateTime(isStartTime, dayTime, selectedTime)
+            viewModel.validateTime(isStartTime, dayTime, selectedTime)
         }
     }
 
-    private fun validateTime(isStartTime: Boolean, dayTime: DayTime, selectedTime: String) {
-        val position = dayTimeList.indexOf(dayTime)
-        if (isStartTime) {
-            val endTime = dayTime.endTime
-            if (endTime != null && selectedTime > endTime) {
-                binding.root.showSnackbar(R.string.study_form_validate_start_time)
-                return
+    private fun validateTime() {
+        viewModel.dayTimeErrorMessageEvent.observe(viewLifecycleOwner, EventObserver { messageId ->
+            binding.root.showSnackbar(messageId)
+        })
+
+        viewModel.dayTimeListEvent.observe(viewLifecycleOwner, EventObserver { dayTimeList ->
+            dayTimeAdapter.submitList(dayTimeList)
+            dayTimeList.forEach { updatedDayTime ->
+                val index = dayTimeAdapter.currentList.indexOfFirst { it.day == updatedDayTime.day }
+                if (index != -1) {
+                    dayTimeAdapter.notifyItemChanged(index)
+                }
+                Log.d("DayTimeList", "Day: ${updatedDayTime.day}, StartTime: ${updatedDayTime.startTime}, EndTime: ${updatedDayTime.endTime}")
             }
-            dayTime.startTime = selectedTime
-        } else {
-            val startTime = dayTime.startTime
-            if (startTime != null && selectedTime < startTime) {
-                binding.root.showSnackbar(R.string.study_form_validate_end_time)
-                return
-            }
-            dayTime.endTime = selectedTime
-        }
-        if (position != -1) {
-            dayTimeAdapter.notifyItemChanged(position)
-        }
+        })
     }
 
     private fun setDayButton(button: AppCompatButton) {
         button.setOnClickListener {
             button.isSelected = !button.isSelected
-            addScheduleForDay(button.text.toString())
-        }
-    }
-
-    private fun addScheduleForDay(day: String) {
-        val index = dayTimeList.indexOfFirst { it.day == day }
-        if (index == -1) {
-            dayTimeList.add(DayTime(day))
-        } else {
-            dayTimeList.removeAt(index)
-        }
-        dayTimeAdapter.submitList(dayTimeList.sortedBy { getDaySort(it.day) }.toList())
-    }
-
-    private fun getDaySort(day: String): Int {
-        return when (day) {
-            "월" -> 1
-            "화" -> 2
-            "수" -> 3
-            "목" -> 4
-            "금" -> 5
-            "토" -> 6
-            else -> 7
+            viewModel.addScheduleForDay(button.text.toString())
         }
     }
 
