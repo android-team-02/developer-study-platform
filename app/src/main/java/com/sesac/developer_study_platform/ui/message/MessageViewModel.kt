@@ -37,8 +37,8 @@ class MessageViewModel : ViewModel() {
     private val _studyMemberListEvent: MutableLiveData<Event<Map<String, Boolean>>> = MutableLiveData()
     val studyMemberListEvent: LiveData<Event<Map<String, Boolean>>> = _studyMemberListEvent
 
-    private val _userEvent: MutableLiveData<Event<List<StudyMember>>> = MutableLiveData()
-    val userEvent: LiveData<Event<List<StudyMember>>> = _userEvent
+    private val _userListEvent: MutableLiveData<Event<List<StudyMember>>> = MutableLiveData()
+    val userListEvent: LiveData<Event<List<StudyMember>>> = _userListEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
@@ -255,9 +255,9 @@ class MessageViewModel : ViewModel() {
         }
     }
 
-    suspend fun loadUsers(member: Map<String, Boolean>) {
+    fun loadUserList(member: Map<String, Boolean>) {
         val memberList = mutableListOf<StudyMember>()
-        viewModelScope.async {
+        viewModelScope.launch {
             member.forEach { (uid, isAdmin) ->
                 kotlin.runCatching {
                     studyRepository.getUserById(uid)
@@ -265,11 +265,11 @@ class MessageViewModel : ViewModel() {
                     memberList.add(StudyMember(studyUser, isAdmin, uid))
                 }.onFailure {
                     Log.e("MessageViewModel-loadUsers", it.message ?: "error occurred.")
-                }.getOrNull()
+                }
             }
-        }.await()
-        val sortMembers = memberList.sortedByDescending { it.isAdmin }
-        _userEvent.value = Event(sortMembers)
+        }
+        val sortedMemberList = memberList.sortedByDescending { it.isAdmin }
+        _userListEvent.value = Event(sortedMemberList)
     }
 
     fun moveToBack() {

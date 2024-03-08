@@ -143,10 +143,8 @@ class MessageFragment : Fragment() {
     }
 
     private fun loadUsers(members: Map<String, Boolean>) {
-        lifecycleScope.launch {
-            viewModel.loadUsers(members)
-        }
-        viewModel.userEvent.observe(
+        viewModel.loadUserList(members)
+        viewModel.userListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 menuAdapter.submitList(it)
