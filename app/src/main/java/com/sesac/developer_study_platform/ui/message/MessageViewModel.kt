@@ -53,6 +53,10 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
     private val _moveToExitDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToExitDialogEvent: LiveData<Event<String>> = _moveToExitDialogEvent
 
+    private val _moveToNotificationPermissionDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToNotificationPermissionDialogEvent: LiveData<Event<String>> =
+        _moveToNotificationPermissionDialogEvent
+
     private val _isAdminEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val isAdminEvent: LiveData<Event<Boolean>> = _isAdminEvent
 
@@ -410,6 +414,10 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
 
     fun moveToExitDialog(sid: String) {
         _moveToExitDialogEvent.value = Event(sid)
+    }
+
+    fun moveToNotificationPermissionDialog(sid: String) {
+        _moveToNotificationPermissionDialogEvent.value = Event(sid)
     }
 
     companion object {
