@@ -41,6 +41,9 @@ class StudyFormViewModel : ViewModel() {
 
     private val _dayTimeErrorMessageEvent: MutableLiveData<Event<Int>> = MutableLiveData()
     val dayTimeErrorMessageEvent: LiveData<Event<Int>> = _dayTimeErrorMessageEvent
+
+    private val _selectedTotalCountEvent: MutableLiveData<Event<Int>> = MutableLiveData()
+    val selectedTotalCountEvent: LiveData<Event<Int>> = _selectedTotalCountEvent
     fun setImageUri(uri: Uri) {
         _imageUriEvent.value = Event(uri)
         _isSelectedImage.value = Event(true)
@@ -136,5 +139,9 @@ class StudyFormViewModel : ViewModel() {
             "토" -> 6
             else -> 7
         }
+    }
+
+    fun selectTotalCount(language: Int) {
+        _selectedTotalCountEvent.value = Event(language)
     }
 }

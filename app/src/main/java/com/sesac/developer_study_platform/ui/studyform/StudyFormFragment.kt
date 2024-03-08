@@ -201,7 +201,7 @@ class StudyFormFragment : Fragment() {
         )
         binding.tvPeopleDropdown.setAdapter(arrayAdapter)
         binding.tvPeopleDropdown.setOnItemClickListener { parent, _, position, _ ->
-            totalPeopleCount = parent.getItemAtPosition(position).toString()
+            viewModel.selectTotalCount(parent.getItemAtPosition(position).toString().toInt())
         }
     }
 
