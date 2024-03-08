@@ -275,32 +275,33 @@ class StudyFormFragment : Fragment() {
 
     private fun setValidateAll() {
         binding.btnCreateStudy.setOnClickListener {
+            val dayTimeList = viewModel.dayTimeListEvent.value?.peekContent() ?: emptyList()
             when {
-                binding.ivImage.drawable == null -> {
+                viewModel.isSelectedImage.value?.peekContent() == false -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_image)
                 }
 
-                category.isEmpty() -> {
+                viewModel.selectedCategory.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_category)
                 }
 
-                binding.etStudyNameInput.text.toString().isEmpty() -> {
+                viewModel.nameEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_name_input)
                 }
 
-                binding.etStudyContentInput.text.toString().isEmpty() -> {
+                viewModel.contentEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_content_input)
                 }
 
-                language.isEmpty() -> {
+                viewModel.selectedLanguage.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_language)
                 }
 
-                startDate.isEmpty() -> {
+                viewModel.startDateEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_start_date)
                 }
 
-                endDate.isEmpty() -> {
+                viewModel.endDateEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_end_date)
                 }
 
@@ -308,15 +309,15 @@ class StudyFormFragment : Fragment() {
                     binding.root.showSnackbar(R.string.study_form_validate_select_day)
                 }
 
-                dayTimeList.any { it.startTime == null } -> {
+                dayTimeList.any { it.startTime.isNullOrEmpty() } -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_start_time)
                 }
 
-                dayTimeList.any { it.endTime == null } -> {
+                dayTimeList.any { it.endTime.isNullOrEmpty() } -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_end_time)
                 }
 
-                totalPeopleCount.isEmpty() -> {
+                viewModel.selectedTotalCountEvent.value == null -> {
                     binding.root.showSnackbar(R.string.study_form_validate_select_people)
                 }
 
