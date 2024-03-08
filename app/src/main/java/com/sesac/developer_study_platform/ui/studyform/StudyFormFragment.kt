@@ -83,6 +83,8 @@ class StudyFormFragment : Fragment() {
             findNavController().popBackStack()
         }
         setImageButton()
+        setImageVisibility()
+        setSelectedImage()
         with(binding) {
             setCategoryButton(btnAndroid)
             setCategoryButton(btnIos)
@@ -150,11 +152,16 @@ class StudyFormFragment : Fragment() {
     private fun validateName() {
         binding.etStudyNameInput.addTextChangedListener(
             CustomTextWatcher {
-                if (it.length == 20) {
-                    binding.root.showSnackbar(R.string.study_form_validate_name)
-                }
+                viewModel.validateName(it)
             }
         )
+        viewModel.isNameValidate.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                if (it) {
+                    binding.root.showSnackbar(R.string.study_form_validate_name)
+                }
+            })
     }
 
     private fun validateContent() {
