@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -51,22 +50,11 @@ class JoinStudyDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDialog()
         setNavigation()
         setYesButton()
         binding.btnNo.setOnClickListener {
             dismiss()
         }
-    }
-
-    private fun setDialog() {
-        val displayMetrics = resources.displayMetrics
-        val widthPixels = displayMetrics.widthPixels
-
-        val params = dialog?.window?.attributes
-        params?.width = (widthPixels * 0.9).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.bg_white_radius_18dp)
     }
 
     private fun setYesButton() {
