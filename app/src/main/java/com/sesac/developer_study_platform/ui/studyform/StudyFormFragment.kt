@@ -63,9 +63,6 @@ class StudyFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
         setImageButton()
         setImageVisibility()
         setSelectedImage()
@@ -97,6 +94,8 @@ class StudyFormFragment : Fragment() {
         validateTime()
         setTotalPeopleCount()
         setValidateAll()
+        setBackButton()
+        setNavigation()
         binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
@@ -368,6 +367,14 @@ class StudyFormFragment : Fragment() {
             viewModel.moveToBack()
         }
     }
+
+    private fun setNavigation() {
+        viewModel.moveToBackEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                findNavController().popBackStack()
+            }
+        )
     }
 
     override fun onDestroyView() {

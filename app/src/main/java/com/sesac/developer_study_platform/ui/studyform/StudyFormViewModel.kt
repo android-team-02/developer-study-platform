@@ -257,4 +257,8 @@ class StudyFormViewModel : ViewModel() {
         }
         return list
     }
+
+    fun moveToBack() {
+        _moveToBackEvent.value = Event(Unit)
+    }
 }
