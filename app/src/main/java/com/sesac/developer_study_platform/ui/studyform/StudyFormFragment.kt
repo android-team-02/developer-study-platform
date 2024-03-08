@@ -137,13 +137,13 @@ class StudyFormFragment : Fragment() {
             binding.root.findViewById<AppCompatButton>(id)
         }
         button.setOnClickListener {
+            viewModel.selectCategory(button.text.toString())
             button.isSelected = true
             buttonList.forEach {
                 if (it != button) {
                     it.isSelected = false
                 }
             }
-            category = button.text.toString()
         }
     }
 
