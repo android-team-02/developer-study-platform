@@ -1,6 +1,5 @@
 package com.sesac.developer_study_platform.ui.studyform
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,36 +23,21 @@ import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYB
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.DayTime
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.UserStudy
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentStudyFormBinding
-import com.sesac.developer_study_platform.util.isNetworkConnected
-import com.sesac.developer_study_platform.util.DateFormats
 import com.sesac.developer_study_platform.util.formatTimestamp
-import com.sesac.developer_study_platform.util.setImage
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.util.showSnackbar
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class StudyFormFragment : Fragment() {
 
     private var _binding: FragmentStudyFormBinding? = null
     private val binding get() = _binding!!
-    private val dayTimeList = mutableListOf<DayTime>()
-    private var totalPeopleCount = ""
-    private var language = ""
-    private var category = ""
-    private var startDate = ""
-    private var endDate = ""
-    private lateinit var image: Uri
-    private val studyService = StudyService.create()
     private val viewModel by viewModels<StudyFormViewModel>()
     private val dayTimeAdapter = DayTimeAdapter(object : DayTimeClickListener {
         override fun onClick(isStartTime: Boolean, dayTime: DayTime) {
@@ -323,103 +307,67 @@ class StudyFormFragment : Fragment() {
 
                 else -> {
                     val uid = Firebase.auth.uid
-                    uid?.let {
-                        val sid = "@make@$uid@time@${formatTimestamp()}"
-                        uploadImage(sid, image) { fileName ->
-                            saveStudy(sid, formatStudy(sid, uid, fileName))
-                            saveUserStudy(uid, sid, formatUserStudy(sid, fileName))
-                            saveChatRoom(sid)
-                        }
-                    }
+                    val sid = "@make@$uid@time@${formatTimestamp()}"
+                    uploadImage(sid)
+
+                    viewModel.uploadImageEvent.observe(
+                        viewLifecycleOwner,
+                        EventObserver { fileName ->
+                            uid?.let {
+                                saveStudy(sid, formatStudy(sid, uid, fileName))
+                                saveUserStudy(uid, sid, formatUserStudy(sid, fileName))
+                                saveChatRoom(sid)
+                            }
+                        })
                 }
             }
         }
     }
 
-    private fun uploadImage(sid: String, image: Uri, onUploadSuccess: (String) -> Unit) {
-        val storageRef = Firebase.storage.reference
+    private fun uploadImage(sid: String) {
         val fileName = "image_${binding.etStudyNameInput.text}.jpg"
-        val imageRef = storageRef.child("$sid/$fileName")
-
-        imageRef.putFile(image).addOnSuccessListener { taskSnapshot ->
-            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
-                onUploadSuccess(fileName)
-            }?.addOnFailureListener {
-                Log.e("StudyFormFragment-uploadImage", it.message ?: "error occurred.")
-            }
-        }.addOnFailureListener {
-            Log.e("StudyFormFragment-uploadImage", it.message ?: "error occurred.")
-        }
+        viewModel.uploadImage(sid, fileName)
     }
 
     private fun saveStudy(sid: String, study: Study) {
         lifecycleScope.launch {
-            kotlin.runCatching {
-                studyService.putStudy(sid, study)
-            }.onFailure {
-                Log.e("StudyFormFragment-saveStudy", it.message ?: "error occurred.")
-            }
+            viewModel.saveStudy(sid, study)
         }
     }
 
     private fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
         lifecycleScope.launch {
-            kotlin.runCatching {
-                studyService.putUserStudy(uid, sid, userStudy)
-            }.onFailure {
-                Log.e("StudyFormFragment-saveUserStudy", it.message ?: "error occurred.")
-            }
+            viewModel.saveUserStudy(uid, sid, userStudy)
         }
     }
 
     private fun saveChatRoom(sid: String) {
         lifecycleScope.launch {
-            kotlin.runCatching {
-                studyService.addChatRoom(sid, ChatRoom())
-            }.onSuccess {
+            viewModel.saveChatRoom(sid)
+        }
+
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
                 val action = StudyFormFragmentDirections.actionStudyFormToMessage(sid)
                 findNavController().navigate(action)
-            }.onFailure {
-                Log.e("StudyFormFragment-saveChatRoom", it.message ?: "error occurred.")
             }
-        }
+        )
     }
 
     private fun formatStudy(sid: String, uid: String, fileName: String): Study {
-        return Study(
-            sid = sid,
-            name = binding.etStudyNameInput.text.toString(),
-            image = fileName,
-            content = binding.etStudyContentInput.text.toString(),
-            category = category,
-            language = language,
-            totalMemberCount = totalPeopleCount.toInt(),
-            days = formatDayTimeList(),
-            startDate = binding.tvStartDate.text.toString(),
-            endDate = binding.tvEndDate.text.toString(),
-            members = mapOf(uid to true),
-            banUsers = mapOf("default" to true)
-        )
+        return viewModel.formatStudy(sid, uid, fileName)
     }
 
     private fun formatUserStudy(sid: String, fileName: String): UserStudy {
-        return UserStudy(
-            sid = sid,
-            name = binding.etStudyNameInput.text.toString(),
-            image = fileName,
-            language = language,
-            days = formatDayTimeList(),
-            startDate = startDate,
-            endDate = endDate
-        )
+        return viewModel.formatUserStudy(sid, fileName)
     }
 
-    private fun formatDayTimeList(): List<String> {
-        val list = mutableListOf<String>()
-        dayTimeList.forEach {
-            list.add("${it.day} ${it.startTime}~${it.endTime}")
+    private fun setBackButton() {
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.moveToBack()
         }
-        return list
+    }
     }
 
     override fun onDestroyView() {

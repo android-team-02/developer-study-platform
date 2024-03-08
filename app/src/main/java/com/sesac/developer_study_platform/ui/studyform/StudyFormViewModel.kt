@@ -1,6 +1,26 @@
+package com.sesac.developer_study_platform.ui.studyform
+
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.sesac.developer_study_platform.Event
+import com.sesac.developer_study_platform.R
+import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
+import com.sesac.developer_study_platform.data.ChatRoom
+import com.sesac.developer_study_platform.data.DayTime
+import com.sesac.developer_study_platform.data.Study
+import com.sesac.developer_study_platform.data.UserStudy
+import com.sesac.developer_study_platform.util.DateFormats
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+
 class StudyFormViewModel : ViewModel() {
 
     private val _imageUriEvent: MutableLiveData<Event<Uri>> = MutableLiveData()
@@ -44,6 +64,13 @@ class StudyFormViewModel : ViewModel() {
 
     private val _selectedTotalCountEvent: MutableLiveData<Event<Int>> = MutableLiveData()
     val selectedTotalCountEvent: LiveData<Event<Int>> = _selectedTotalCountEvent
+
+    private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
+
+    private val _moveToMessageEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<Unit>> = _moveToMessageEvent
+
     fun setImageUri(uri: Uri) {
         _imageUriEvent.value = Event(uri)
         _isSelectedImage.value = Event(true)
@@ -143,5 +170,91 @@ class StudyFormViewModel : ViewModel() {
 
     fun selectTotalCount(language: Int) {
         _selectedTotalCountEvent.value = Event(language)
+    }
+
+    fun uploadImage(sid: String, name: String) {
+        val storageRef = Firebase.storage.reference
+            .child("$sid/$name")
+
+        _imageUriEvent.value?.peekContent()?.let {
+            storageRef.putFile(it).addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener {
+                    _uploadImageEvent.value = Event(name)
+                }?.addOnFailureListener {
+                    Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
+                }
+            }.addOnFailureListener {
+                Log.e("StudyFormViewModel-uploadImage", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    fun saveStudy(sid: String, study: Study) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.putStudy(sid, study)
+            }.onFailure {
+                Log.e("StudyFormViewModel-saveStudy", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    fun saveUserStudy(uid: String, sid: String, userStudy: UserStudy) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.putUserStudy(uid, sid, userStudy)
+            }.onFailure {
+                Log.e("StudyFormViewModel-saveUserStudy", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    fun saveChatRoom(sid: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.addChatRoom(sid, ChatRoom())
+            }.onSuccess {
+                _moveToMessageEvent.value = Event(Unit)
+            }.onFailure {
+                Log.e("StudyFormViewModel-saveChatRoom", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    fun formatStudy(sid: String, uid: String, fileName: String): Study {
+        return Study(
+            sid = sid,
+            name = _nameEvent.value?.peekContent() ?: "",
+            image = fileName,
+            content = _contentEvent.value?.peekContent() ?: "",
+            category = _selectedCategoryEvent.value?.peekContent() ?: "",
+            language = _selectedLanguageEvent.value?.peekContent() ?: "",
+            totalMemberCount = _selectedTotalCountEvent.value?.peekContent() ?: 0,
+            days = formatDayTimeList(),
+            startDate = _startDateEvent.value?.peekContent() ?: "",
+            endDate = _endDateEvent.value?.peekContent() ?: "",
+            members = mapOf(uid to true),
+            banUsers = mapOf("default" to true)
+        )
+    }
+
+    fun formatUserStudy(sid: String, fileName: String): UserStudy {
+        return UserStudy(
+            sid = sid,
+            name = _nameEvent.value?.peekContent() ?: "",
+            image = fileName,
+            language = _selectedLanguageEvent.value?.peekContent() ?: "",
+            days = formatDayTimeList(),
+            startDate = _startDateEvent.value?.peekContent() ?: "",
+            endDate = _endDateEvent.value?.peekContent() ?: ""
+        )
+    }
+
+    private fun formatDayTimeList(): List<String> {
+        val list = mutableListOf<String>()
+        _dayTimeListEvent.value?.peekContent()?.forEach {
+            list.add("${it.day} ${it.startTime}~${it.endTime}")
+        }
+        return list
     }
 }
