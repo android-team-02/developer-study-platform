@@ -8,6 +8,10 @@
         <variable
             name="isNetworkConnected"
             type="Boolean" />
+
+        <variable
+            name="isSelectedImage"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,7 +96,8 @@
                     android:id="@+id/group_add_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="iv_plus,tv_add_image" />
+                    app:constraint_referenced_ids="iv_plus,tv_add_image"
+                    app:visible="@{!isSelectedImage}" />
 
                 <androidx.constraintlayout.helper.widget.Flow
                     android:id="@+id/flow_category"
