@@ -172,6 +172,17 @@ interface StudyService {
         @Path("sid") sid: String
     ): Map<String, Boolean>
 
+    @DELETE("studies/{sid}/registrationIds/{registrationId}.json")
+    suspend fun deleteRegistrationId(
+        @Path("sid") sid: String,
+        @Path("registrationId") registrationId: String
+    )
+
+    @DELETE("studies/{sid}/notificationKey.json")
+    suspend fun deleteNotificationKey(
+        @Path("sid") sid: String
+    )
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()

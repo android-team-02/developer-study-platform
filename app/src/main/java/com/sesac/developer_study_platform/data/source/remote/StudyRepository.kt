@@ -106,6 +106,14 @@ class StudyRepository {
         return studyService.getRegistrationIdList(sid)
     }
 
+    suspend fun deleteRegistrationId(sid: String, registrationId: String) {
+        studyService.deleteRegistrationId(sid, registrationId)
+    }
+
+    suspend fun deleteNotificationKey(sid: String) {
+        studyService.deleteNotificationKey(sid)
+    }
+
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
         while (true) {
             kotlin.runCatching {
