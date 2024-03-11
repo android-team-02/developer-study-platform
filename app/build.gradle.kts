@@ -80,6 +80,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("com.google.dagger:hilt-android:2.51")
+    kapt("com.google.dagger:hilt-android-compiler:2.51")
 }
