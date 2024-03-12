@@ -3,7 +3,6 @@ package com.sesac.developer_study_platform.ui.message
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +11,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.EventObserver
-import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.Date
 
@@ -32,7 +26,6 @@ class MessageFragment : Fragment() {
     private val args by navArgs<MessageFragmentArgs>()
     private val messageAdapter = MessageAdapter()
     private val viewModel by viewModels<MessageViewModel>()
-    private val service = StudyService.create()
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
             saveMultipleMedia(it)
