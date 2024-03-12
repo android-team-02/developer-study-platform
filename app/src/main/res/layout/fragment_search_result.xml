@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isNetworkConnected"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_offline"
+            visible="@{!isNetworkConnected}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:background="@color/dark"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/offline"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_arrow_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_median"
+            android:contentDescription="@string/search_result_move_search_description"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toStartOf="@id/et_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            style="@style/SearchBarText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/space_median"
+            android:layout_marginTop="@dimen/space_median"
+            android:background="@drawable/bg_lilac_radius_50dp"
+            android:drawableStart="@drawable/ic_search_24dp"
+            android:drawablePadding="@dimen/space_small"
+            android:hint="@string/all_search_hint"
+            android:maxLines="1"
+            android:padding="@dimen/space_median"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_arrow_back"
+            app:layout_constraintTop_toBottomOf="@id/tv_offline" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_study_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/space_median"
+            android:layout_marginTop="@dimen/space_median"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            tools:listitem="@layout/item_search" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

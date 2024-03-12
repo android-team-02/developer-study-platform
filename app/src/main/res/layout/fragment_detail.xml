@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="study"
+            type="com.sesac.developer_study_platform.data.Study" />
+
+        <variable
+            name="isNetworkConnected"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_offline"
+            visible="@{!isNetworkConnected}"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:background="@color/dark"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:text="@string/offline"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_offline"
+            app:navigationIcon="@drawable/ic_arrow_back" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/space_median"
+            app:layout_constraintBottom_toTopOf="@id/btn_join_study"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/space_x_large"
+                android:layout_marginTop="@dimen/space_median">
+
+                <TextView
+                    android:id="@+id/tv_study_name"
+                    style="@style/BlackText.XLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@{study.name}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="예비 안드로이드 개발자를 위한 스터디" />
+
+                <TextView
+                    android:id="@+id/tv_study_content"
+                    style="@style/RiverBedText.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_median"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{study.content}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_study_name"
+                    tools:text="안드로이드 개발자로서의 취업을 목표로 하고있습니다.\n스터디 마지막에는 협업 프로젝트를 할 계획을 가지고 있어요." />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    app:constraint_referenced_ids="tv_category_label,tv_category_value,tv_language_label,tv_language_value,tv_people_label,tv_people_value,tv_time_label,tv_time_value,tv_period_label,tv_period_value,tv_member_label,tv_member_value"
+                    app:flow_horizontalStyle="packed"
+                    app:flow_maxElementsWrap="2"
+                    app:flow_verticalGap="@dimen/space_x_large"
+                    app:flow_wrapMode="chain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_study_content" />
+
+                <TextView
+                    android:id="@+id/tv_category_label"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/detail_category" />
+
+                <TextView
+                    android:id="@+id/tv_category_value"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{study.category}"
+                    tools:text="Android" />
+
+                <TextView
+                    android:id="@+id/tv_language_label"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/detail_language" />
+
+                <TextView
+                    android:id="@+id/tv_language_value"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{study.language}"
+                    tools:text="Kotlin" />
+
+                <TextView
+                    android:id="@+id/tv_people_label"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/detail_people" />
+
+                <TextView
+                    android:id="@+id/tv_people_value"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{String.valueOf(study.members.size())+'/'+String.valueOf(study.totalMemberCount)}"
+                    tools:text="4/8" />
+
+                <TextView
+                    android:id="@+id/tv_time_label"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="100dp"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/detail_time" />
+
+                <TextView
+                    android:id="@+id/tv_time_value"
+                    style="@style/RiverBedText.Small"
+                    dayTimeList="@{study.days}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    tools:text="월 12:00 ~ 14:00" />
+
+                <TextView
+                    android:id="@+id/tv_period_label"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/detail_period" />
+
+                <TextView
+                    android:id="@+id/tv_period_value"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@{study.startDate+'~'+study.endDate}"
+                    tools:text="2023/10/28 ~ 2023/11/28" />
+
+                <TextView
+                    android:id="@+id/tv_member_label"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="100dp"
+                    android:layout_height="0dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/detail_member" />
+
+                <TextView
+                    android:id="@+id/tv_member_value"
+                    style="@style/RiverBedText.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    tools:text="0se0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_join_study"
+            style="@style/WhiteText.Medium"
+            isEnabled="@{study}"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="@dimen/space_median"
+            android:layout_marginEnd="@dimen/space_x_small"
+            android:layout_marginBottom="@dimen/space_median"
+            android:background="@drawable/selector_join_study"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/detail_join_study"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_bookmark"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space_median"
+            android:contentDescription="@string/detail_bookmark_description"
+            android:src="@drawable/selector_heart"
+            app:layout_constraintBottom_toBottomOf="@id/btn_join_study"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_join_study" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
