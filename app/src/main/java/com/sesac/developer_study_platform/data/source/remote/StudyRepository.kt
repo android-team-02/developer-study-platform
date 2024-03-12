@@ -21,11 +21,11 @@ class StudyRepository {
     }
 
     suspend fun putStudy(sid: String, study: Study) {
-        return studyService.putStudy(sid, study)
+        studyService.putStudy(sid, study)
     }
 
     suspend fun putUserStudy(uid: String, sid: String, userStudy: UserStudy) {
-        return studyService.putUserStudy(uid, sid, userStudy)
+        studyService.putUserStudy(uid, sid, userStudy)
     }
 
     suspend fun getStudy(sid: String): Study {
@@ -93,7 +93,7 @@ class StudyRepository {
     }
 
     suspend fun addChatRoom(sid: String, chatRoom: ChatRoom) {
-        return studyService.addChatRoom(sid, chatRoom)
+        studyService.addChatRoom(sid, chatRoom)
     }
 
     suspend fun deleteStudyMember(sid: String, uid: String) {
