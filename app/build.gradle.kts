@@ -47,6 +47,9 @@ android {
         buildConfig = true
         dataBinding = true
     }
+    packaging {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 fun getProperty(key: String): String {
@@ -67,6 +70,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.23.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
