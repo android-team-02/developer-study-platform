@@ -318,7 +318,7 @@ class StudyFormFragment : Fragment() {
                         EventObserver { image ->
                             uid?.let {
                                 viewModel.saveStudy(sid, uid, image)
-                                viewModel.saveUserStudy(uid, sid, image)
+                                viewModel.saveUserStudy(sid, uid, image)
                                 saveChatRoom(sid)
                             }
                         })
