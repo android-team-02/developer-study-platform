@@ -1,5 +1,7 @@
 package com.sesac.developer_study_platform.data.source.remote
 
+import android.content.Context
+import com.google.auth.oauth2.GoogleCredentials
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sesac.developer_study_platform.BuildConfig
 import com.sesac.developer_study_platform.data.ChatRoom
@@ -9,6 +11,7 @@ import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -152,12 +155,32 @@ interface StudyService {
 
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
+        private const val DATABASE_SCOPES = "https://www.googleapis.com/auth/firebase.database"
+        private const val EMAIL_SCOPES = "https://www.googleapis.com/auth/userinfo.email"
         private val contentType = "application/json".toMediaType()
         private val jsonConfig = Json { ignoreUnknownKeys = true }
 
-        fun create(): StudyService {
+        private fun getClient(context: Context): OkHttpClient {
+            return OkHttpClient.Builder().addInterceptor { chain ->
+                val builder = chain.request().newBuilder()
+                builder.addHeader("Authorization", "Bearer ${getAccessToken(context)}")
+                chain.proceed(builder.build())
+            }.build()
+        }
+
+        private fun getAccessToken(context: Context): String {
+            val inputStream = context.resources.assets.open("service-account.json")
+            val googleCredential = GoogleCredentials
+                .fromStream(inputStream)
+                .createScoped(listOf(DATABASE_SCOPES, EMAIL_SCOPES))
+            googleCredential.refresh()
+            return googleCredential.accessToken.tokenValue
+        }
+
+        fun create(context: Context): StudyService {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .client(getClient(context))
                 .addConverterFactory(jsonConfig.asConverterFactory(contentType))
                 .build()
                 .create(StudyService::class.java)

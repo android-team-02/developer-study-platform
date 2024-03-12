@@ -1,5 +1,6 @@
 package com.sesac.developer_study_platform.data.source.remote
 
+import android.content.Context
 import android.util.Log
 import com.sesac.developer_study_platform.data.ChatRoom
 import com.sesac.developer_study_platform.data.Message
@@ -9,12 +10,10 @@ import com.sesac.developer_study_platform.data.UserStudy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.http.Body
-import retrofit2.http.Path
 
-class StudyRepository {
+class StudyRepository(context: Context) {
 
-    private val studyService = StudyService.create()
+    private val studyService = StudyService.create(context)
 
     suspend fun putUser(uid: String, user: StudyUser) {
         studyService.putUser(uid, user)

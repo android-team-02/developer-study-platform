@@ -23,7 +23,7 @@ class StudyApplication : Application() {
             .build()
         bookmarkDao = db.bookmarkDao()
         githubRepository = GithubRepository()
-        studyRepository = StudyRepository()
+        studyRepository = StudyRepository(this)
         bookmarkRepository = BookmarkRepository()
         myStudyDao = db.myStudyDao()
         myStudyRepository = MyStudyRepository()

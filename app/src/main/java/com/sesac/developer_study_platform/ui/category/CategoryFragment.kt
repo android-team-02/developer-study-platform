@@ -62,7 +62,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun loadStudyList() {
-        val service = StudyService.create()
+        val service = StudyService.create(requireContext())
         lifecycleScope.launch {
             kotlin.runCatching {
                 service.getStudyList("\"${category}\"")
