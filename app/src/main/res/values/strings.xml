@@ -93,7 +93,7 @@
     <string name="study_form_validate_end_date">종료일자는 시작일자보다 뒤에 있어야 합니다.</string>
     <string name="study_form_validate_start_date">시작일자는 종료일자보다 앞에 있어야 합니다.</string>
     <string name="study_form_validate_start_time">시작시간은 종료시간보다 앞에 있어야 합니다.</string>
-    <string name="study_form_validate_end_time">종료시간은 시작시간보다 앞에 있어야 합니다.</string>
+    <string name="study_form_validate_end_time">종료시간은 시작시간보다 뒤에 있어야 합니다.</string>
     <string name="study_form_validate_select_image">스터디 이미지가 선택되지 않았습니다.</string>
     <string name="study_form_validate_select_category">스터디 카테고리가 선택되지 않았습니다.</string>
     <string name="study_form_validate_name_input">스터디 이름이 작성되지 않았습니다.</string>
