@@ -9,7 +9,9 @@ import com.sesac.developer_study_platform.data.source.local.MyStudyDao
 import com.sesac.developer_study_platform.data.source.local.MyStudyRepository
 import com.sesac.developer_study_platform.data.source.remote.GithubRepository
 import com.sesac.developer_study_platform.data.source.remote.StudyRepository
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class StudyApplication : Application() {
 
     private lateinit var db: AppDatabase
