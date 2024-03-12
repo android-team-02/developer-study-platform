@@ -61,37 +61,3 @@ fun String.formatCalendarDate(): Date {
         SimpleDateFormat(DateFormats.YEAR_MONTH_DAY_FORMAT.pattern, Locale.getDefault())
     return dateFormat.parse(this) as Date
 }
-
-fun String.formatTime(): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val dateTime = LocalDateTime.parse(this, ISO_LOCAL_DATE_TIME)
-        val formatter = DateTimeFormatter.ofPattern("a hh:mm")
-        dateTime.format(formatter)
-    } else {
-        val dateFormat = SimpleDateFormat(DateFormats.SIMPLE_DATE_TIME_FORMAT.pattern, Locale.getDefault())
-        val newDateFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())
-        val date = dateFormat.parse(this) ?: Date()
-        newDateFormat.format(date)
-    }
-}
-
-fun String.formatSystemMessage(): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val dateTime = LocalDateTime.parse(this, ISO_LOCAL_DATE_TIME)
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-        dateTime.format(formatter)
-    } else {
-        val dateFormat = SimpleDateFormat(DateFormats.SIMPLE_DATE_TIME_FORMAT.pattern, Locale.getDefault())
-        val newDateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
-        val date = dateFormat.parse(this) ?: Date()
-        newDateFormat.format(date)
-    }
-}
-
-fun getToday(): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now().toString()
-    } else {
-        Date().toString()
-    }
-}

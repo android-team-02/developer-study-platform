@@ -8,11 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.sesac.developer_study_platform.EventObserver
 import androidx.navigation.fragment.navArgs
+import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentProfileBinding
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
+import com.sesac.developer_study_platform.util.isNetworkConnected
 
 class ProfileFragment : Fragment() {
 
@@ -25,7 +26,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         return binding.root
@@ -35,10 +36,13 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setBackButton()
+        setBanButton()
+        setBanButtonVisibility()
         parseJson()
         loadUser()
         loadRepositoryList()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -47,12 +51,32 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun setBanButton() {
+        binding.tvBan.setOnClickListener {
+            viewModel.moveToBanDialog()
+        }
+    }
+
+    private fun setBanButtonVisibility() {
+        viewModel.checkAdminAndUid(args.studyId, args.uid)
+        viewModel.isBanButtonVisibleEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.isBanButtonVisible = it
+            }
+        )
+    }
+
     private fun parseJson() {
         viewModel.parseJson(resources.assets)
         viewModel.languageListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                repositoryAdapter = RepositoryAdapter(it)
+                repositoryAdapter = RepositoryAdapter(it, object : RepositoryClickListener {
+                    override fun onClick(url: String) {
+                        viewModel.moveToWebView(url)
+                    }
+                })
                 setRepositoryAdapter()
             }
         )
@@ -85,10 +109,36 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToBack()
+        moveToBanDialog()
+        moveToWebView()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToBanDialog() {
+        viewModel.moveToBanDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = ProfileFragmentDirections.actionProfileToBanDialog(args.studyId, args.uid)
+                findNavController().navigate(action)
+            }
+        )
+    }
+
+    private fun moveToWebView() {
+        viewModel.moveToWebViewEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = ProfileFragmentDirections.actionProfileToWebview(it)
+                findNavController().navigate(action)
             }
         )
     }

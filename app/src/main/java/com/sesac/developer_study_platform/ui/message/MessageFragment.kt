@@ -1,7 +1,6 @@
 package com.sesac.developer_study_platform.ui.message
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,30 +8,38 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.EventObserver
-import com.sesac.developer_study_platform.data.source.remote.StudyService
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
-import java.time.LocalDateTime
-import java.util.Date
+import com.sesac.developer_study_platform.util.isNetworkConnected
 
 class MessageFragment : Fragment() {
 
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<MessageFragmentArgs>()
-    private val messageAdapter = MessageAdapter()
     private val viewModel by viewModels<MessageViewModel>()
+    private var isBottom = true
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
             saveMultipleMedia(it)
         }
+    private val messageAdapter = MessageAdapter(object : ImageClickListener {
+        override fun onClick(imageUrl: String) {
+            val action = MessageFragmentDirections.actionMessageToImage(imageUrl)
+            findNavController().navigate(action)
+        }
+    })
     private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
-        override fun onClick(uid: String) {
-            val action = MessageFragmentDirections.actionMessageToProfile(uid)
+        override fun onClick(sid: String, uid: String) {
+            val action = MessageFragmentDirections.actionMessageToProfile(sid, uid)
             findNavController().navigate(action)
         }
     })
@@ -42,7 +49,7 @@ class MessageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
         return binding.root
     }
 
@@ -55,11 +62,16 @@ class MessageFragment : Fragment() {
         setMenuButton()
         loadStudyName()
         loadMessageList()
+        setMessageScrolled()
         loadMenuMemberList()
         setPlusButton()
         setSendButton()
+        setExitButton()
+        setExitButtonVisibility()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
+
 
     private fun setBackButton() {
         binding.toolbar.setNavigationOnClickListener {
@@ -88,13 +100,26 @@ class MessageFragment : Fragment() {
         viewModel.messageListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                messageAdapter.submitList(it.values.toList())
+                messageAdapter.submitList(it.values.toList()) {
+                    if (isBottom) {
+                        binding.rvMessageList.scrollToPosition(messageAdapter.itemCount - 1)
+                    }
+                }
             }
         )
     }
 
+    private fun setMessageScrolled() {
+        binding.rvMessageList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                isBottom = layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1
+            }
+        })
+    }
+
     private fun saveMultipleMedia(uriList: List<Uri>) {
-        val timestamp = getTimestamp()
+        val timestamp = System.currentTimeMillis()
         viewModel.saveMultipleMedia(args.studyId, uriList, timestamp)
         viewModel.addUriListEvent.observe(
             viewLifecycleOwner,
@@ -104,11 +129,12 @@ class MessageFragment : Fragment() {
         )
     }
 
-    private fun sendImage(uriList: List<Uri>, timestamp: String) {
+    private fun sendImage(uriList: List<Uri>, timestamp: Long) {
         viewModel.sendImage(args.studyId, uriList, timestamp)
         viewModel.addMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
@@ -120,6 +146,7 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 binding.etMessageInput.text.clear()
+                viewModel.loadStudyMemberList(args.studyId)
                 loadMessageList()
             }
         )
@@ -130,27 +157,19 @@ class MessageFragment : Fragment() {
         viewModel.studyMemberListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
-                loadUsers(it)
+                loadUserList(it)
             }
         )
     }
 
-    private fun loadUsers(members: Map<String, Boolean>) {
-        viewModel.loadUserList(members)
+    private fun loadUserList(members: Map<String, Boolean>) {
+        viewModel.loadUserList(args.studyId, members)
         viewModel.userListEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 menuAdapter.submitList(it)
             }
         )
-    }
-
-    private fun getTimestamp(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().toString()
-        } else {
-            Date().toString()
-        }
     }
 
     private fun setPlusButton() {
@@ -165,11 +184,42 @@ class MessageFragment : Fragment() {
         }
     }
 
+    private fun setExitButton() {
+        binding.ivExit.setOnClickListener {
+            viewModel.moveToExitDialog(args.studyId)
+        }
+    }
+
+    private fun setExitButtonVisibility() {
+        viewModel.checkAdmin(args.studyId)
+        viewModel.isAdminEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.isAdmin = it
+            }
+        )
+    }
+
     private fun setNavigation() {
+        moveToBack()
+        moveToExitDialog()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToExitDialog() {
+        viewModel.moveToExitDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = MessageFragmentDirections.actionMessageToExitDialog(it)
+                findNavController().navigate(action)
             }
         )
     }

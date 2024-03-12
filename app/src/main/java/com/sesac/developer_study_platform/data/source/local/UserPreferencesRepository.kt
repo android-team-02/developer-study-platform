@@ -6,18 +6,20 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(USER_PREFERENCES_NAME)
 
-class UserPreferencesRepository(private val context: Context) {
+class UserPreferencesRepository @Inject constructor(@ApplicationContext private val context: Context) {
 
-    suspend fun setAutoLogin() {
-        context.dataStore.edit { settings ->
-            settings[AUTO_LOGIN] = true
+    suspend fun setAutoLogin(autoLogin: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[AUTO_LOGIN] = autoLogin
         }
     }
 

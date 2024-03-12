@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentDetailBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
@@ -38,7 +39,9 @@ class DetailFragment : Fragment() {
         loadStudy()
         loadBookmarkButtonState()
         setBookmarkButton()
+        setJoinStudyButton()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -95,11 +98,32 @@ class DetailFragment : Fragment() {
         }
     }
 
+    private fun setJoinStudyButton() {
+        binding.btnJoinStudy.setOnClickListener {
+            viewModel.moveToJoinStudyDialog(args.studyId)
+        }
+    }
+
     private fun setNavigation() {
+        moveToBack()
+        moveToJoinStudyDialog()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToJoinStudyDialog() {
+        viewModel.moveToJoinStudyDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = DetailFragmentDirections.actionDetailToJoinStudyDialog(viewModel.study)
+                findNavController().navigate(action)
             }
         )
     }

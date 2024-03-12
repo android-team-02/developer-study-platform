@@ -1,135 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="isAdmin"
+            type="Boolean" />
+
+        <variable
+            name="isNetworkConnected"
+            type="Boolean" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:titleCentered="true"
-            app:titleTextAppearance="@style/ToolbarText"
-            app:titleTextColor="@color/black">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_offline"
+                visible="@{!isNetworkConnected}"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:background="@color/dark"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center"
+                android:text="@string/offline"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_offline"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:titleCentered="true"
+                app:titleTextAppearance="@style/ToolbarText"
+                app:titleTextColor="@color/black">
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/space_median"
+                    android:contentDescription="@string/message_menu_description"
+                    android:src="@drawable/ic_menu" />
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_message_list"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/et_message_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                tools:listitem="@layout/item_message_receiver" />
 
             <ImageView
-                android:id="@+id/iv_menu"
+                android:id="@+id/iv_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_marginHorizontal="@dimen/space_x_small"
+                android:contentDescription="@string/message_select_image"
+                android:padding="@dimen/space_x_small"
+                android:src="@drawable/ic_plus_message"
+                app:layout_constraintBottom_toBottomOf="@id/et_message_input"
+                app:layout_constraintEnd_toStartOf="@id/et_message_input"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_message_input" />
+
+            <EditText
+                android:id="@+id/et_message_input"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="@dimen/space_x_small"
+                android:background="@drawable/bg_stroke_black_radius_16dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:hint="@null"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:paddingHorizontal="@dimen/space_median"
+                android:scrollHorizontally="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_send"
+                app:layout_constraintStart_toEndOf="@id/iv_plus"
+                app:layout_constraintTop_toBottomOf="@id/rv_message_list" />
+
+            <ImageView
+                android:id="@+id/iv_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/space_x_small"
+                android:background="@drawable/bg_oval_black"
+                android:contentDescription="@string/message_send_description"
+                android:padding="5dp"
+                android:src="@drawable/ic_arrow_upward"
+                app:layout_constraintBottom_toBottomOf="@id/et_message_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_message_input"
+                app:layout_constraintTop_toTopOf="@id/et_message_input" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/gallery">
+
+            <TextView
+                android:id="@+id/tv_member"
+                style="@style/BlackText.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_median"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="@string/message_menu_member"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_member_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginTop="@dimen/space_x_small"
                 android:layout_marginEnd="@dimen/space_median"
-                android:contentDescription="@string/message_menu_description"
-                android:src="@drawable/ic_menu" />
-        </com.google.android.material.appbar.MaterialToolbar>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_member"
+                tools:listitem="@layout/item_chat_menu" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_message_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/et_message_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:listitem="@layout/item_message_receiver" />
+            <ImageView
+                android:id="@+id/iv_exit"
+                visible="@{!isAdmin}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_median"
+                android:layout_marginBottom="@dimen/space_x_large"
+                android:contentDescription="@string/message_menu_exit_description"
+                android:src="@drawable/ic_exit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_x_small"
-            android:contentDescription="@string/message_select_image"
-            android:padding="@dimen/space_x_small"
-            android:src="@drawable/ic_plus_message"
-            app:layout_constraintBottom_toBottomOf="@id/et_message_input"
-            app:layout_constraintEnd_toStartOf="@id/et_message_input"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/et_message_input" />
-
-        <EditText
-            android:id="@+id/et_message_input"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginVertical="@dimen/space_x_small"
-            android:background="@drawable/bg_stroke_black_radius_16dp"
-            android:fontFamily="@font/pretendard_medium"
-            android:hint="@null"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:paddingHorizontal="@dimen/space_median"
-            android:scrollHorizontally="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/iv_send"
-            app:layout_constraintStart_toEndOf="@id/iv_plus"
-            app:layout_constraintTop_toBottomOf="@id/rv_message_list" />
-
-        <ImageView
-            android:id="@+id/iv_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/space_x_small"
-            android:background="@drawable/bg_oval_black"
-            android:contentDescription="@string/message_send_description"
-            android:padding="5dp"
-            android:src="@drawable/ic_arrow_upward"
-            app:layout_constraintBottom_toBottomOf="@id/et_message_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/et_message_input"
-            app:layout_constraintTop_toTopOf="@id/et_message_input" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@color/gallery">
-
-        <TextView
-            android:id="@+id/tv_member"
-            style="@style/BlackText.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginTop="@dimen/space_median"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="@string/message_menu_member"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_member_list"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginTop="@dimen/space_x_small"
-            android:layout_marginEnd="@dimen/space_median"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_member"
-            tools:listitem="@layout/item_chat_menu" />
-
-        <ImageView
-            android:id="@+id/iv_exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_median"
-            android:layout_marginBottom="@dimen/space_x_large"
-            android:contentDescription="@string/message_menu_exit_description"
-            android:src="@drawable/ic_exit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.drawerlayout.widget.DrawerLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

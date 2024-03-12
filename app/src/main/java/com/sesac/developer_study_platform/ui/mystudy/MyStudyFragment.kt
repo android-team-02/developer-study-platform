@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentMyStudyBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.SpaceItemDecoration
 import com.sesac.developer_study_platform.ui.common.StudyAdapter
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
-import kotlinx.coroutines.launch
 
 class MyStudyFragment : Fragment() {
 
@@ -23,9 +23,7 @@ class MyStudyFragment : Fragment() {
     private val viewModel by viewModels<MyStudyViewModel>()
     private val studyAdapter = StudyAdapter(object : StudyClickListener {
         override fun onClick(sid: String) {
-            // TODO 채팅 화면으로 이동
-            val action = MyStudyFragmentDirections.actionMyStudyToDetail(sid)
-            findNavController().navigate(action)
+            viewModel.moveToMessage(sid)
         }
     })
 
@@ -34,7 +32,7 @@ class MyStudyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyStudyBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_study, container, false)
         return binding.root
     }
 
@@ -45,6 +43,7 @@ class MyStudyFragment : Fragment() {
         setStudyAdapter()
         loadStudyList()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setBackButton() {
@@ -61,22 +60,31 @@ class MyStudyFragment : Fragment() {
     }
 
     private fun loadStudyList() {
-        lifecycleScope.launch {
-            viewModel.loadStudyList()
+        viewModel.myStudyList.observe(viewLifecycleOwner) {
+            studyAdapter.submitList(it)
         }
-        viewModel.myStudyListEvent.observe(
-            viewLifecycleOwner,
-            EventObserver {
-                studyAdapter.submitList(it)
-            }
-        )
     }
 
     private fun setNavigation() {
+        moveToBack()
+        moveToMessage()
+    }
+
+    private fun moveToBack() {
         viewModel.moveToBackEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 findNavController().popBackStack()
+            }
+        )
+    }
+
+    private fun moveToMessage() {
+        viewModel.moveToMessageEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = MyStudyFragmentDirections.actionGlobalToMessage(it)
+                findNavController().navigate(action)
             }
         )
     }

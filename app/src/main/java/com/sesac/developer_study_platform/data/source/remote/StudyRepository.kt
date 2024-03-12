@@ -6,8 +6,11 @@ import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.UserStudy
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.http.Body
+import retrofit2.http.Path
 
 class StudyRepository {
 
@@ -15,6 +18,14 @@ class StudyRepository {
 
     suspend fun putUser(uid: String, user: StudyUser) {
         studyService.putUser(uid, user)
+    }
+
+    suspend fun putStudy(sid: String, study: Study) {
+        studyService.putStudy(sid, study)
+    }
+
+    suspend fun putUserStudy(uid: String, sid: String, userStudy: UserStudy) {
+        studyService.putUserStudy(uid, sid, userStudy)
     }
 
     suspend fun getStudy(sid: String): Study {
@@ -69,15 +80,42 @@ class StudyRepository {
         return studyService.isAdmin(sid, uid)
     }
 
+    suspend fun addUserStudy(uid: String, sid: String, study: UserStudy) {
+        studyService.putUserStudy(uid, sid, study)
+    }
+
+    suspend fun addStudyMember(sid: String, uid: String) {
+        studyService.addStudyMember(sid, mapOf(uid to false))
+    }
+
+    suspend fun addStudyBanMember(sid: String, uid: String) {
+        studyService.addStudyBanMember(sid, mapOf(uid to true))
+    }
+
+    suspend fun addChatRoom(sid: String, chatRoom: ChatRoom) {
+        studyService.addChatRoom(sid, chatRoom)
+    }
+
+    suspend fun deleteStudyMember(sid: String, uid: String) {
+        studyService.deleteStudyMember(sid, uid)
+    }
+
+    suspend fun deleteUserStudy(uid: String, sid: String) {
+        studyService.deleteUserStudy(uid, sid)
+    }
+
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
         while (true) {
             kotlin.runCatching {
                 studyService.getMessageList(sid)
             }.onSuccess {
-                emit(it)
+                if (it.isNotEmpty()) {
+                    emit(it)
+                }
             }.onFailure {
                 Log.e("StudyRepository-getMessageList", it.message ?: "error occurred.")
             }
+            delay(10000)
         }
     }
 }

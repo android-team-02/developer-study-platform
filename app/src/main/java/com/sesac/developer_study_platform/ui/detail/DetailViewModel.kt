@@ -23,6 +23,9 @@ class DetailViewModel : ViewModel() {
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
+    private val _moveToJoinStudyDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToJoinStudyDialogEvent: LiveData<Event<String>> = _moveToJoinStudyDialogEvent
+
     private var _study: Study? = null
     val study get() = _study!!
 
@@ -35,7 +38,7 @@ class DetailViewModel : ViewModel() {
                 _study = it
                 loadStudyMemberList(it.members.keys)
             }.onFailure {
-                Log.e("loadStudy", it.message ?: "error occurred.")
+                Log.e("DetailViewModel-loadStudy", it.message ?: "error occurred.")
             }
         }
     }
@@ -49,7 +52,7 @@ class DetailViewModel : ViewModel() {
                 }.onSuccess {
                     studyMemberList.add(it.userId)
                 }.onFailure {
-                    Log.e("loadStudyMemberList", it.message ?: "error occurred.")
+                    Log.e("DetailViewModel-loadStudyMemberList", it.message ?: "error occurred.")
                 }
             }
             _studyMemberListEvent.value = Event(studyMemberList)
@@ -76,5 +79,9 @@ class DetailViewModel : ViewModel() {
 
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
+    }
+
+    fun moveToJoinStudyDialog(sid: String) {
+        _moveToJoinStudyDialogEvent.value = Event(sid)
     }
 }

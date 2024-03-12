@@ -12,11 +12,9 @@ import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.Study
-import com.sesac.developer_study_platform.util.formatDate
-import com.sesac.developer_study_platform.util.formatSystemMessage
-import com.sesac.developer_study_platform.util.formatTime
+import com.sesac.developer_study_platform.util.convertTimestampToDate
+import com.sesac.developer_study_platform.util.convertTimestampToTime
 import com.sesac.developer_study_platform.util.formatYearMonthDay
-import com.sesac.developer_study_platform.util.getToday
 import com.sesac.developer_study_platform.util.setImage
 
 @BindingAdapter("dayTimeList")
@@ -34,7 +32,8 @@ fun setEnabled(view: AppCompatButton, study: Study?) {
     if (study != null) {
         view.isEnabled = !(formatYearMonthDay() > study.endDate
                 || study.members.count() == study.totalMemberCount
-                || study.banUsers.containsKey(Firebase.auth.uid))
+                || study.banUsers.containsKey(Firebase.auth.uid)
+                || study.members.containsKey(Firebase.auth.uid))
     }
 }
 
@@ -66,23 +65,18 @@ fun loadImageUrl(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("lastMessageTime")
-fun setLastMessageTime(view: TextView, timestamp: String) {
-    if (timestamp <= getToday()) {
-        view.text = timestamp.formatTime()
+fun setLastMessageTime(view: TextView, timestamp: Long) {
+    if (timestamp.convertTimestampToDate() < System.currentTimeMillis().convertTimestampToDate()) {
+        view.text = timestamp.convertTimestampToDate()
     } else {
-        view.text = timestamp.formatDate()
+        view.text = timestamp.convertTimestampToTime()
     }
 }
 
-@BindingAdapter("previousMessage", "message")
-fun setSystemMessageVisibility(view: View, previousMessage: Message?, message: Message) {
+@BindingAdapter("dateFlowPrevMessage", "dateFlowMessage")
+fun setDateFlowVisibility(view: View, previousMessage: Message?, message: Message) {
     if (previousMessage != null) {
-        if (previousMessage.timestamp.formatSystemMessage() < message.timestamp.formatSystemMessage()) {
-            view.visibility = View.VISIBLE
-        } else {
-            view.visibility = View.GONE
-        }
-        if (previousMessage.totalMemberCount != message.totalMemberCount) {
+        if (previousMessage.timestamp.convertTimestampToDate() < message.timestamp.convertTimestampToDate()) {
             view.visibility = View.VISIBLE
         } else {
             view.visibility = View.GONE
@@ -92,19 +86,38 @@ fun setSystemMessageVisibility(view: View, previousMessage: Message?, message: M
     }
 }
 
-@BindingAdapter("previousMessageText", "messageText")
-fun setSystemMessage(view: TextView, previousMessage: Message?, message: Message) {
-    val messageTimestamp = message.timestamp.formatSystemMessage()
+@BindingAdapter("studyMemberFlowPrevMessage", "studyMemberFlowMessage")
+fun setStudyMemberFlowVisibility(view: View, previousMessage: Message?, message: Message) {
     if (previousMessage != null) {
-        if (previousMessage.timestamp.formatSystemMessage() < messageTimestamp) {
+        if (previousMessage.totalMemberCount != message.totalMemberCount) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
+    } else {
+        view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter("datePrevMessage", "dateMessage")
+fun setDateMessage(view: TextView, previousMessage: Message?, message: Message) {
+    val messageTimestamp = message.timestamp.convertTimestampToDate()
+    if (previousMessage != null) {
+        if (previousMessage.timestamp.convertTimestampToDate() < messageTimestamp) {
             view.text = messageTimestamp
         }
+    } else {
+        view.text = messageTimestamp
+    }
+}
+
+@BindingAdapter("studyMemberPrevMessage", "studyMemberMessage")
+fun setStudyMemberMessage(view: TextView, previousMessage: Message?, message: Message) {
+    if (previousMessage != null) {
         if (previousMessage.totalMemberCount < message.totalMemberCount) {
             view.text = view.context.getString(R.string.message_new_study_member)
         } else if (previousMessage.totalMemberCount > message.totalMemberCount) {
             view.text = view.context.getString(R.string.message_left_study_member)
         }
-    } else {
-        view.text = messageTimestamp
     }
 }

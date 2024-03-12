@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(studyMember.userUid)}">
+        android:onClick="@{() -> clickListener.onClick(studyMember.sid, studyMember.userUid)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_user_image"

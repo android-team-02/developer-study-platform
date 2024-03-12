@@ -6,17 +6,22 @@
     <data>
 
         <variable
-            name="image"
+            name="clickListener"
+            type="com.sesac.developer_study_platform.ui.message.ImageClickListener" />
+
+        <variable
+            name="imageUrl"
             type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="70dp"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:onClick="@{() -> clickListener.onClick(imageUrl)}">
 
         <ImageView
             android:id="@+id/iv_image"
-            imageUrl="@{image}"
+            imageUrl="@{imageUrl}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"

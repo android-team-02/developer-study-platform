@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.githubRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
@@ -15,6 +17,9 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
 class ProfileViewModel : ViewModel() {
+
+    private val _isBanButtonVisibleEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
+    val isBanButtonVisibleEvent: LiveData<Event<Boolean>> = _isBanButtonVisibleEvent
 
     private val _userEvent: MutableLiveData<Event<StudyUser>> = MutableLiveData()
     val userEvent: LiveData<Event<StudyUser>> = _userEvent
@@ -27,6 +32,29 @@ class ProfileViewModel : ViewModel() {
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
+
+    private val _moveToBanDialogEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val moveToBanDialogEvent: LiveData<Event<Unit>> = _moveToBanDialogEvent
+
+    private val _moveToWebViewEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToWebViewEvent: LiveData<Event<String>> = _moveToWebViewEvent
+
+    fun checkAdminAndUid(sid: String, uid: String) {
+        val authUid = Firebase.auth.uid
+        viewModelScope.launch {
+            kotlin.runCatching {
+                authUid?.let {
+                    studyRepository.isAdmin(sid, it)
+                }
+            }.onSuccess {
+                if (it == true && authUid != uid) {
+                    _isBanButtonVisibleEvent.value = Event(true)
+                }
+            }.onFailure {
+                Log.e("ProfileViewModel-checkAdminAndUid", it.message ?: "error occurred.")
+            }
+        }
+    }
 
     fun loadUser(uid: String) {
         viewModelScope.launch {
@@ -67,5 +95,13 @@ class ProfileViewModel : ViewModel() {
 
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
+    }
+
+    fun moveToBanDialog() {
+        _moveToBanDialogEvent.value = Event(Unit)
+    }
+
+    fun moveToWebView(url: String) {
+        _moveToWebViewEvent.value = Event(url)
     }
 }

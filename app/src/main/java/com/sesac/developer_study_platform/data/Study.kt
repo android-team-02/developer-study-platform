@@ -18,11 +18,12 @@ data class Study(
     val endDate: String,
     val members: Map<String, Boolean>,
     val banUsers: Map<String, Boolean>,
-)
+) : java.io.Serializable
 
+@Entity(tableName = "my_studies")
 @Serializable
 data class UserStudy(
-    val sid: String,
+    @PrimaryKey val sid: String,
     val name: String,
     val image: String,
     val language: String,

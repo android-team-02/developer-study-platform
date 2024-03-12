@@ -9,11 +9,12 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.sesac.developer_study_platform.Event
-import com.sesac.developer_study_platform.data.UserStudy
-import kotlinx.coroutines.launch
+import com.sesac.developer_study_platform.StudyApplication.Companion.myStudyRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.UserStudy
 import com.sesac.developer_study_platform.util.formatCalendarDate
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -41,9 +42,11 @@ class MyPageViewModel : ViewModel() {
     private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
 
-    private val studyList = mutableListOf<UserStudy>()
     private val calendar = Calendar.getInstance()
     private val uid = Firebase.auth.uid
+
+    val myStudyList: LiveData<List<UserStudy>> = myStudyRepository.getMyStudyList()
+    var studyList = listOf<UserStudy>()
 
     fun loadUser() {
         viewModelScope.launch {
@@ -61,24 +64,7 @@ class MyPageViewModel : ViewModel() {
         }
     }
 
-    fun loadStudyList() {
-        viewModelScope.launch {
-            kotlin.runCatching {
-                uid?.let {
-                    studyRepository.getUserStudyList(it)
-                }
-            }.onSuccess {
-                it?.let {
-                    setDotSpanDayList(it.values.toList())
-                    studyList.addAll(it.values.toList())
-                }
-            }.onFailure {
-                Log.e("MyPageViewModel-loadStudyList", it.message ?: "error occurred.")
-            }
-        }
-    }
-
-    private fun setDotSpanDayList(studyList: List<UserStudy>) {
+    fun setDotSpanDayList(studyList: List<UserStudy>) {
         val allDayList = mutableSetOf<CalendarDay>()
         studyList.forEach {
             val dayList = getDotSpanDayList(

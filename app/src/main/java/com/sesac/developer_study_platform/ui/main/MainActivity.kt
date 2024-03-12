@@ -13,7 +13,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -56,6 +58,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.dest_detail -> View.GONE
                 R.id.dest_profile -> View.GONE
                 R.id.dest_message -> View.GONE
+                R.id.dest_webview -> View.GONE
+                R.id.dest_exit_dialog -> View.GONE
+                R.id.dest_ban_dialog -> View.GONE
+                R.id.dest_join_study_dialog -> View.GONE
+                R.id.dest_image -> View.GONE
                 else -> View.VISIBLE
             }
         }

@@ -60,6 +60,9 @@
         <argument
             android:name="studyId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detail_to_join_study_dialog"
+            app:destination="@id/dest_join_study_dialog" />
     </fragment>
 
     <fragment
@@ -92,7 +95,13 @@
         android:id="@+id/dest_study_form"
         android:name="com.sesac.developer_study_platform.ui.studyform.StudyFormFragment"
         android:label="fragment_study_form"
-        tools:layout="@layout/fragment_study_form" />
+        tools:layout="@layout/fragment_study_form">
+        <action
+            android:id="@+id/action_study_form_to_message"
+            app:destination="@id/dest_message"
+            app:popUpTo="@id/dest_study_form"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/dest_profile"
@@ -100,9 +109,36 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
         <argument
+            android:name="studyId"
+            app:argType="string" />
+        <argument
             android:name="uid"
             app:argType="string" />
+        <action
+            android:id="@+id/action_profile_to_ban_dialog"
+            app:destination="@id/dest_ban_dialog" />
+        <action
+            android:id="@+id/action_profile_to_webview"
+            app:destination="@id/dest_webview" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_ban_dialog"
+        android:name="com.sesac.developer_study_platform.ui.profile.BanDialogFragment"
+        android:label="fragment_ban_dialog"
+        tools:layout="@layout/dialog_ban">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+        <argument
+            android:name="uid"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_ban_dialog_to_message"
+            app:destination="@id/dest_message"
+            app:popUpTo="@id/dest_message"
+            app:popUpToInclusive="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_chat"
@@ -118,7 +154,22 @@
         <action
             android:id="@+id/action_my_to_bookmark"
             app:destination="@id/dest_bookmark" />
+        <action
+            android:id="@+id/action_my_to_logout_dialog"
+            app:destination="@id/dest_logout_dialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_logout_dialog"
+        android:name="com.sesac.developer_study_platform.ui.mypage.LogoutDialogFragment"
+        android:label="fragment_logout_dialog"
+        tools:layout="@layout/dialog_logout">
+        <action
+            android:id="@+id/action_logout_dialog_to_login"
+            app:destination="@id/dest_login"
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/dest_bookmark"
@@ -143,5 +194,59 @@
         <action
             android:id="@+id/action_message_to_profile"
             app:destination="@id/dest_profile" />
+        <action
+            android:id="@+id/action_message_to_exit_dialog"
+            app:destination="@id/dest_exit_dialog" />
+        <action
+            android:id="@+id/action_message_to_image"
+            app:destination="@id/dest_image" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/dest_exit_dialog"
+        android:name="com.sesac.developer_study_platform.ui.message.ExitDialogFragment"
+        android:label="fragment_exit_dialog"
+        tools:layout="@layout/dialog_exit">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_exit_dialog_to_home"
+            app:destination="@id/dest_home"
+            app:popUpTo="@id/dest_home"
+            app:popUpToInclusive="true" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dest_join_study_dialog"
+        android:name="com.sesac.developer_study_platform.ui.detail.JoinStudyDialogFragment"
+        android:label="fragment_join_study_dialog"
+        tools:layout="@layout/dialog_join_study">
+        <argument
+            android:name="study"
+            app:argType="com.sesac.developer_study_platform.data.Study" />
+        <action
+            android:id="@+id/action_join_study_dialog_to_message"
+            app:destination="@id/dest_message" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/dest_webview"
+        android:name="com.sesac.developer_study_platform.ui.profile.WebViewFragment"
+        android:label="fragment_webview"
+        tools:layout="@layout/fragment_webview">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_image"
+        android:name="com.sesac.developer_study_platform.ui.message.ImageFragment"
+        android:label="fragment_image"
+        tools:layout="@layout/fragment_image">
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
     </fragment>
 </navigation>

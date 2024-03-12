@@ -7,18 +7,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.Event
-import kotlinx.coroutines.launch
+import com.sesac.developer_study_platform.StudyApplication.Companion.myStudyRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.UserStudy
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.serialization.SerializationException
 
+@OptIn(FlowPreview::class)
 class HomeViewModel : ViewModel() {
 
     private val _myStudyListEvent: MutableLiveData<Event<List<UserStudy>>> = MutableLiveData()
     val myStudyListEvent: LiveData<Event<List<UserStudy>>> = _myStudyListEvent
 
-    private val _studyFormButtonEvent: MutableLiveData<Event<Boolean>> =
-        MutableLiveData(Event(false))
+    private val _studyFormButtonEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val studyFormButtonEvent: LiveData<Event<Boolean>> = _studyFormButtonEvent
 
     private val _moveToMyStudyEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
@@ -30,7 +36,22 @@ class HomeViewModel : ViewModel() {
     private val _moveToCategoryEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToCategoryEvent: LiveData<Event<String>> = _moveToCategoryEvent
 
-    suspend fun loadStudyList() {
+    private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
+
+    init {
+        viewModelScope.launch {
+            val myStudyList = myStudyRepository.myStudyListFlow.first()
+            _myStudyListEvent.value = Event(myStudyList)
+            _studyFormButtonEvent.value = Event(myStudyList.isEmpty())
+
+            myStudyRepository.myStudyListFlow.debounce(500).collect {
+                _myStudyListEvent.value = Event(it)
+            }
+        }
+    }
+
+    fun loadStudyList() {
         viewModelScope.launch {
             kotlin.runCatching {
                 Firebase.auth.uid?.let {
@@ -38,11 +59,42 @@ class HomeViewModel : ViewModel() {
                 }
             }.onSuccess {
                 it?.let {
-                    _myStudyListEvent.value = Event(it.values.toList())
+                    refreshAllMyStudyList(it.values.toList())
+                    _studyFormButtonEvent.value = Event(false)
                 }
             }.onFailure {
-                _studyFormButtonEvent.value = Event(true)
-                Log.e("loadStudyList", it.message ?: "error occurred.")
+                if (it is SerializationException) {
+                    refreshAllMyStudyList(emptyList())
+                    _studyFormButtonEvent.value = Event(true)
+                } else {
+                    Log.e("HomeViewModel-loadStudyList", it.message ?: "error occurred.")
+                }
+            }
+        }
+    }
+
+    private fun refreshAllMyStudyList(userStudyList: List<UserStudy>) {
+        viewModelScope.launch {
+            runCatching {
+                myStudyRepository.deleteAllMyStudyList()
+            }.onSuccess {
+                insertUserStudy(userStudyList)
+            }.onFailure {
+                Log.e("HomeViewModel-deleteAllMyStudyList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun insertUserStudy(userStudyList: List<UserStudy>) {
+        userStudyList.forEach {
+            val storageRef = Firebase.storage.reference
+            val imageRef = storageRef.child("${it.sid}/${it.image}")
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                viewModelScope.launch {
+                    myStudyRepository.insertUserStudy(it.copy(image = uri.toString()))
+                }
+            }.addOnFailureListener {
+                Log.e("HomeViewModel-insertUserStudy", it.message ?: "error occurred.")
             }
         }
     }
@@ -57,5 +109,9 @@ class HomeViewModel : ViewModel() {
 
     fun moveToCategory(category: String) {
         _moveToCategoryEvent.value = Event(category)
+    }
+
+    fun moveToMessage(sid: String) {
+        _moveToMessageEvent.value = Event(sid)
     }
 }

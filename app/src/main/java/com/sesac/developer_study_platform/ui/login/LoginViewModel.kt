@@ -6,8 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.firebase.auth.OAuthCredential
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -17,10 +15,14 @@ import com.sesac.developer_study_platform.StudyApplication.Companion.githubRepos
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.StudyUser
 import com.sesac.developer_study_platform.data.source.local.UserPreferencesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val userPreferencesRepository: UserPreferencesRepository) :
+    ViewModel() {
 
     private val _autoLoginEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val autoLoginEvent: LiveData<Event<Boolean>> = _autoLoginEvent
@@ -46,7 +48,7 @@ class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepos
                 .addOnSuccessListener {
                     val accessToken = "Bearer ${(it.credential as OAuthCredential).accessToken}"
                     loadUser(accessToken)
-                    setAutoLogin()
+                    setAutoLoginTrue()
                 }
                 .addOnFailureListener {
                     _loginFailureEvent.value = Event(Unit)
@@ -55,9 +57,9 @@ class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepos
         }
     }
 
-    private fun setAutoLogin() {
+    private fun setAutoLoginTrue() {
         viewModelScope.launch {
-            userPreferencesRepository.setAutoLogin()
+            userPreferencesRepository.setAutoLogin(true)
         }
     }
 
@@ -85,14 +87,6 @@ class LoginViewModel(private val userPreferencesRepository: UserPreferencesRepos
                 }
             }.onFailure {
                 Log.e("LoginViewModel-saveUser", it.message ?: "error occurred.")
-            }
-        }
-    }
-
-    companion object {
-        fun create(repository: UserPreferencesRepository) = viewModelFactory {
-            initializer {
-                LoginViewModel(repository)
             }
         }
     }

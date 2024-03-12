@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.divider.MaterialDividerItemDecoration.VERTICAL
 import com.sesac.developer_study_platform.EventObserver
+import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.databinding.FragmentChatRoomBinding
+import com.sesac.developer_study_platform.util.isNetworkConnected
 import com.sesac.developer_study_platform.ui.common.StudyClickListener
 
 class ChatRoomFragment : Fragment() {
@@ -29,7 +32,7 @@ class ChatRoomFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentChatRoomBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat_room, container, false)
         return binding.root
     }
 
@@ -39,6 +42,7 @@ class ChatRoomFragment : Fragment() {
         setChatRoomAdapter()
         loadChatRoomList()
         setNavigation()
+        binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
 
     private fun setChatRoomAdapter() {
