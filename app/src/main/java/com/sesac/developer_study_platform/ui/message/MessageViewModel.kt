@@ -12,6 +12,7 @@ import com.google.firebase.storage.storage
 import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.Message
+import com.sesac.developer_study_platform.data.StudyMember
 import com.sesac.developer_study_platform.data.StudyUser
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -32,6 +33,12 @@ class MessageViewModel : ViewModel() {
 
     private val _addUriListEvent: MutableLiveData<Event<List<Uri>>> = MutableLiveData()
     val addUriListEvent: LiveData<Event<List<Uri>>> = _addUriListEvent
+
+    private val _studyMemberListEvent: MutableLiveData<Event<Map<String, Boolean>>> = MutableLiveData()
+    val studyMemberListEvent: LiveData<Event<Map<String, Boolean>>> = _studyMemberListEvent
+
+    private val _userListEvent: MutableLiveData<Event<List<StudyMember>>> = MutableLiveData()
+    val userListEvent: LiveData<Event<List<StudyMember>>> = _userListEvent
 
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
@@ -240,6 +247,35 @@ class MessageViewModel : ViewModel() {
             }.onFailure {
                 Log.e("MessageViewModel-updateLastMessage", it.message ?: "error occurred.")
             }
+        }
+    }
+
+    fun loadMemberList(studyId: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.getStudyMemberList(studyId)
+            }.onSuccess {
+                _studyMemberListEvent.value = Event(it)
+            }.onFailure {
+                Log.e("MessageViewModel-loadMenuMemberList", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    fun loadUserList(sid: String, member: Map<String, Boolean>) {
+        viewModelScope.launch {
+            val memberList = mutableListOf<StudyMember>()
+            member.forEach { (uid, isAdmin) ->
+                kotlin.runCatching {
+                    studyRepository.getUserById(uid)
+                }.onSuccess { studyUser ->
+                    memberList.add(StudyMember(sid, studyUser, isAdmin, uid))
+                }.onFailure {
+                    Log.e("MessageViewModel-loadUserList", it.message ?: "error occurred.")
+                }
+            }
+            val sortedMemberList = memberList.sortedByDescending { it.isAdmin }
+            _userListEvent.value = Event(sortedMemberList)
         }
     }
 

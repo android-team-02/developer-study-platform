@@ -2,7 +2,6 @@ package com.sesac.developer_study_platform.ui.message
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +11,14 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
-import com.sesac.developer_study_platform.data.StudyMember
-import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
 import com.sesac.developer_study_platform.util.isNetworkConnected
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class MessageFragment : Fragment() {
 
@@ -32,7 +26,6 @@ class MessageFragment : Fragment() {
     private val binding get() = _binding!!
     private val args by navArgs<MessageFragmentArgs>()
     private val viewModel by viewModels<MessageViewModel>()
-    private val service = StudyService.create()
     private var isBottom = true
     private val pickMultipleMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
@@ -159,6 +152,26 @@ class MessageFragment : Fragment() {
         )
     }
 
+    private fun loadMenuMemberList() {
+        viewModel.loadMemberList(args.studyId)
+        viewModel.studyMemberListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                loadUserList(it)
+            }
+        )
+    }
+
+    private fun loadUserList(members: Map<String, Boolean>) {
+        viewModel.loadUserList(args.studyId, members)
+        viewModel.userListEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                menuAdapter.submitList(it)
+            }
+        )
+    }
+
     private fun setPlusButton() {
         binding.ivPlus.setOnClickListener {
             pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -169,35 +182,6 @@ class MessageFragment : Fragment() {
         binding.ivSend.setOnClickListener {
             sendMessage()
         }
-    }
-
-    private fun loadMenuMemberList() {
-        lifecycleScope.launch {
-            kotlin.runCatching {
-                service.getStudyMemberList(args.studyId)
-            }.onSuccess { member ->
-                loadUsers(member)
-            }.onFailure {
-                Log.e("MessageFragment-loadMenuMemberList", it.message ?: "error occurred.")
-            }
-        }
-    }
-
-    private suspend fun loadUsers(member: Map<String, Boolean>) {
-        val memberList = mutableListOf<StudyMember>()
-        lifecycleScope.async {
-            member.forEach { (uid, isAdmin) ->
-                kotlin.runCatching {
-                    service.getUserById(uid)
-                }.onSuccess { studyUser ->
-                    memberList.add(StudyMember(args.studyId, studyUser, isAdmin, uid))
-                }.onFailure {
-                    Log.e("MessageFragment-loadUsers", it.message ?: "error occurred.")
-                }.getOrNull()
-            }
-        }.await()
-        val sortMembers = memberList.sortedByDescending { it.isAdmin }
-        menuAdapter.submitList(sortMembers)
     }
 
     private fun setExitButton() {
