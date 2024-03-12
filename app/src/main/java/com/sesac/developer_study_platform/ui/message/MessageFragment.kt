@@ -31,7 +31,6 @@ class MessageFragment : Fragment() {
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<MessageFragmentArgs>()
-    private val messageAdapter = MessageAdapter()
     private val viewModel by viewModels<MessageViewModel>()
     private val service = StudyService.create()
     private var isBottom = true
@@ -39,6 +38,12 @@ class MessageFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(MAX_ITEM_COUNT)) {
             saveMultipleMedia(it)
         }
+    private val messageAdapter = MessageAdapter(object : ImageClickListener {
+        override fun onClick(imageUrl: String) {
+            val action = MessageFragmentDirections.actionMessageToImage(imageUrl)
+            findNavController().navigate(action)
+        }
+    })
     private val menuAdapter = MenuAdapter(object : StudyMemberClickListener {
         override fun onClick(sid: String, uid: String) {
             val action = MessageFragmentDirections.actionMessageToProfile(sid, uid)

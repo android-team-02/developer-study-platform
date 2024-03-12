@@ -7,7 +7,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.sesac.developer_study_platform.data.Message
 
-class MessageAdapter : ListAdapter<Message, ViewHolder>(diffUtil) {
+class MessageAdapter(private val clickListener: ImageClickListener) :
+    ListAdapter<Message, ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
@@ -20,9 +21,9 @@ class MessageAdapter : ListAdapter<Message, ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position >= 1) {
-            holder.bind(getItem(position), getItem(position - 1))
+            holder.bind(clickListener, getItem(position), getItem(position - 1))
         } else {
-            holder.bind(getItem(position))
+            holder.bind(clickListener, getItem(position))
         }
     }
 

@@ -56,19 +56,22 @@ class MessageViewModel : ViewModel() {
 
     fun saveMultipleMedia(sid: String, uriList: List<Uri>, timestamp: Long) {
         if (uriList.isNotEmpty()) {
-            uriList.forEach {
-                kotlin.runCatching {
-                    val imagesRef = Firebase.storage.reference
-                        .child("${sid}/${uid}/${timestamp}/${it.lastPathSegment}.jpg")
-                    imagesRef.putFile(it)
-                }.onFailure { exception ->
-                    Log.e(
-                        "MessageViewModel-saveMultipleMedia",
-                        exception.message ?: "error occurred."
-                    )
-                }
+            val totalImageCount = uriList.size
+            var imageCount = 0
+
+            uriList.forEach { uri ->
+                val imagesRef = Firebase.storage.reference
+                    .child("${sid}/${uid}/${timestamp}/${uri.lastPathSegment}.jpg")
+                imagesRef.putFile(uri)
+                    .addOnSuccessListener {
+                        imageCount += 1
+                        if (imageCount == totalImageCount) {
+                            _addUriListEvent.value = Event(uriList)
+                        }
+                    }.addOnFailureListener {
+                        Log.e("MessageViewModel-saveMultipleMedia", it.message ?: "error occurred.")
+                    }
             }
-            _addUriListEvent.value = Event(uriList)
         }
     }
 

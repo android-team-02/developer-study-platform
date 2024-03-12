@@ -146,9 +146,9 @@
             android:id="@+id/rv_image_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
-            tools:listitem="@layout/item_image" />
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/item_image"
+            tools:spanCount="3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

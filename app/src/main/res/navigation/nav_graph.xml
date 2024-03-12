@@ -197,6 +197,9 @@
         <action
             android:id="@+id/action_message_to_exit_dialog"
             app:destination="@id/dest_exit_dialog" />
+        <action
+            android:id="@+id/action_message_to_image"
+            app:destination="@id/dest_image" />
     </fragment>
 
     <dialog
@@ -234,6 +237,16 @@
         tools:layout="@layout/fragment_webview">
         <argument
             android:name="url"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dest_image"
+        android:name="com.sesac.developer_study_platform.ui.message.ImageFragment"
+        android:label="fragment_image"
+        tools:layout="@layout/fragment_image">
+        <argument
+            android:name="imageUrl"
             app:argType="string" />
     </fragment>
 </navigation>

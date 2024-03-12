@@ -6,28 +6,33 @@
     <data>
 
         <variable
-            name="clickListener"
-            type="com.sesac.developer_study_platform.ui.message.ImageClickListener" />
-
-        <variable
             name="imageUrl"
             type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:onClick="@{() -> clickListener.onClick(imageUrl)}">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back" />
 
         <ImageView
             android:id="@+id/iv_image"
             imageUrl="@{imageUrl}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:src="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
