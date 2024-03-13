@@ -1,6 +1,7 @@
 package com.sesac.developer_study_platform.ui.main
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
@@ -18,20 +19,29 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var splashScreen: SplashScreen
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        startSplash()
+//        startSplash()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcv) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
         binding.bnv.setupWithNavController(navController)
 
         hideBottomNavigationView(navController)
+
+        setNewIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        setNewIntent(intent)
     }
 
     private fun startSplash() {
@@ -62,6 +72,16 @@ class MainActivity : AppCompatActivity() {
                 R.id.dest_join_study_dialog -> View.GONE
                 R.id.dest_notification_permission_dialog -> View.GONE
                 else -> View.VISIBLE
+            }
+        }
+    }
+
+    private fun setNewIntent(intent: Intent?) {
+        if (intent != null) {
+            val sid = intent.getStringExtra("sid")
+            if (!sid.isNullOrEmpty()) {
+                val action = MainActivityDirections.actionGlobalToMessage(sid)
+                navController.navigate(action)
             }
         }
     }
