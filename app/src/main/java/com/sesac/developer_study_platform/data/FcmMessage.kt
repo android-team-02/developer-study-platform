@@ -10,5 +10,14 @@ data class FcmMessage(
 @Serializable
 data class FcmMessageData(
     val token: String = "",
-    val data: Map<String, String> = mapOf(),
+    val data: FcmMessageContent,
+)
+
+@Serializable
+data class FcmMessageContent(
+    val uid: String? = "",
+    val sid: String? = "",
+    val title: String = "",
+    val text: String = "",
+    val imageUrl: String = "",
 )
