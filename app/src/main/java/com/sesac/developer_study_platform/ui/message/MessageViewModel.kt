@@ -15,6 +15,7 @@ import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.fcmRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.FcmMessage
+import com.sesac.developer_study_platform.data.FcmMessageContent
 import com.sesac.developer_study_platform.data.FcmMessageData
 import com.sesac.developer_study_platform.data.Message
 import com.sesac.developer_study_platform.data.StudyGroup
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : ViewModel() {
 
     private val uid = Firebase.auth.uid
+    private var studyName = ""
 
     private val _studyNameEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val studyNameEvent: LiveData<Event<String>> = _studyNameEvent
@@ -66,6 +68,7 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
                 studyRepository.getStudyName(sid)
             }.onSuccess {
                 _studyNameEvent.value = Event(it)
+                studyName = it
             }.onFailure {
                 Log.e("MessageViewModel-loadStudyName", it.message ?: "error occurred.")
             }
@@ -134,7 +137,7 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
         }.await()
     }
 
-    fun sendImage(sid: String, uriList: List<Uri>, timestamp: Long) {
+    fun sendImage(sid: String, uriList: List<Uri>, timestamp: Long, text: String) {
         viewModelScope.launch {
             val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
@@ -146,7 +149,7 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
                 updateLastMessage(sid, message)
-                sendNotification(sid, message.message)
+                sendNotification(sid, getFcmMessageContent(sid, message, text))
             }.onFailure {
                 Log.e("MessageViewModel-sendImage", it.message ?: "error occurred.")
             }
@@ -161,11 +164,17 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
                 updateLastMessage(sid, message)
-                sendNotification(sid, message.message)
+                sendNotification(sid, getFcmMessageContent(sid, message, text))
             }.onFailure {
                 Log.e("MessageViewModel-sendMessage", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun getFcmMessageContent(sid: String, message: Message, text: String): FcmMessageContent {
+        val userId = message.studyUser?.userId
+        val imageUrl = message.studyUser?.image.toString()
+        return FcmMessageContent(uid, sid, studyName, "$userId : $text", imageUrl)
     }
 
     fun loadMessageList(sid: String) {
@@ -276,15 +285,13 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
         }
     }
 
-    private fun sendNotification(sid: String, message: String) {
+    private fun sendNotification(sid: String, fcmMessageContent: FcmMessageContent) {
         viewModelScope.launch {
             kotlin.runCatching {
                 val notificationKey = getNotificationKey(sid)
                 if (!notificationKey.isNullOrEmpty()) {
                     fcmRepository.sendNotification(
-                        FcmMessage(
-                            FcmMessageData(notificationKey, mapOf("message" to message))
-                        )
+                        FcmMessage(FcmMessageData(notificationKey, fcmMessageContent))
                     )
                 }
             }.onFailure {

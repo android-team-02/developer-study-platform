@@ -149,7 +149,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun sendImage(uriList: List<Uri>, timestamp: Long) {
-        viewModel.sendImage(args.studyId, uriList, timestamp)
+        viewModel.sendImage(args.studyId, uriList, timestamp, getString(R.string.chat_room_last_message_image))
         viewModel.addMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
