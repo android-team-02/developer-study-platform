@@ -24,8 +24,8 @@ class JoinStudyDialogViewModel(private val fcmTokenRepository: FcmTokenRepositor
     private val _addUserStudyEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val addUserStudyEvent: LiveData<Event<Unit>> = _addUserStudyEvent
 
-    private val _updateStudyGroupEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val updateStudyGroupEvent: LiveData<Event<Unit>> = _updateStudyGroupEvent
+    private val _checkNotificationKeyEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val checkNotificationKeyEvent: LiveData<Event<Unit>> = _checkNotificationKeyEvent
 
     private val _moveToMessageEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToMessageEvent: LiveData<Event<String>> = _moveToMessageEvent
@@ -64,14 +64,26 @@ class JoinStudyDialogViewModel(private val fcmTokenRepository: FcmTokenRepositor
         }
     }
 
-    fun updateStudyGroup(sid: String) {
+    fun checkNotificationKey(sid: String) {
         viewModelScope.launch {
             val token = fcmTokenRepository.getToken().first()
             kotlin.runCatching {
                 val notificationKey = getNotificationKey(sid)
                 if (!notificationKey.isNullOrEmpty()) {
-                    fcmRepository.updateStudyGroup(StudyGroup("add", sid, listOf(token), notificationKey))
+                    updateStudyGroup(sid, token, notificationKey)
+                } else {
+                    createNotificationKey(sid, token)
                 }
+            }.onFailure {
+                Log.e("JoinStudyDialogViewModel-checkNotificationKey", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun updateStudyGroup(sid: String, token: String, notificationKey: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                fcmRepository.updateStudyGroup(StudyGroup("add", sid, listOf(token), notificationKey))
             }.onSuccess {
                 addRegistrationId(sid, token)
             }.onFailure {
@@ -90,12 +102,36 @@ class JoinStudyDialogViewModel(private val fcmTokenRepository: FcmTokenRepositor
         }.await()
     }
 
+    private fun createNotificationKey(sid: String, token: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                fcmRepository.updateStudyGroup(StudyGroup("create", sid, listOf(token)))
+            }.onSuccess {
+                addNotificationKey(sid, it.values.first())
+            }.onFailure {
+                Log.e("JoinStudyDialogViewModel-createNotificationKey", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun addNotificationKey(sid: String, notificationKey: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.addNotificationKey(sid, notificationKey)
+            }.onSuccess {
+                addRegistrationId(sid, fcmTokenRepository.getToken().first())
+            }.onFailure {
+                Log.e("JoinStudyDialogViewModel-addNotificationKey", it.message ?: "error occurred.")
+            }
+        }
+    }
+
     private fun addRegistrationId(sid: String, registrationId: String) {
         viewModelScope.launch {
             kotlin.runCatching {
                 studyRepository.addRegistrationId(sid, registrationId)
             }.onSuccess {
-                _updateStudyGroupEvent.value = Event(Unit)
+                _checkNotificationKeyEvent.value = Event(Unit)
             }.onFailure {
                 Log.e("JoinStudyDialogViewModel-addRegistrationId", it.message ?: "error occurred.")
             }

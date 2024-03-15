@@ -134,6 +134,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_median"
+                android:layout_marginEnd="@dimen/space_median"
+                android:contentDescription="@string/message_menu_notification_description"
+                android:src="@drawable/selector_notification"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_member_list"
                 android:layout_width="0dp"

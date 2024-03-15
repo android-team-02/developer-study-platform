@@ -21,6 +21,12 @@
         android:id="@+id/action_global_to_notification_permission_dialog"
         app:destination="@id/dest_notification_permission_dialog" />
 
+    <activity
+        android:id="@+id/dest_main"
+        android:name="com.sesac.developer_study_platform.ui.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
     <fragment
         android:id="@+id/dest_login"
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"

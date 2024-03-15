@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
@@ -13,16 +15,21 @@ import com.sesac.developer_study_platform.Event
 import com.sesac.developer_study_platform.StudyApplication.Companion.fcmRepository
 import com.sesac.developer_study_platform.StudyApplication.Companion.studyRepository
 import com.sesac.developer_study_platform.data.FcmMessage
+import com.sesac.developer_study_platform.data.FcmMessageContent
 import com.sesac.developer_study_platform.data.FcmMessageData
 import com.sesac.developer_study_platform.data.Message
+import com.sesac.developer_study_platform.data.StudyGroup
 import com.sesac.developer_study_platform.data.StudyUser
+import com.sesac.developer_study_platform.data.source.local.FcmTokenRepository
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class MessageViewModel : ViewModel() {
+class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : ViewModel() {
 
     private val uid = Firebase.auth.uid
+    private var studyName = ""
 
     private val _studyNameEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val studyNameEvent: LiveData<Event<String>> = _studyNameEvent
@@ -36,11 +43,21 @@ class MessageViewModel : ViewModel() {
     private val _addUriListEvent: MutableLiveData<Event<List<Uri>>> = MutableLiveData()
     val addUriListEvent: LiveData<Event<List<Uri>>> = _addUriListEvent
 
+    private val _deleteRegistrationIdEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val deleteRegistrationIdEvent: LiveData<Event<Unit>> = _deleteRegistrationIdEvent
+
+    private val _addRegistrationIdEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val addRegistrationIdEvent: LiveData<Event<Unit>> = _addRegistrationIdEvent
+
     private val _moveToBackEvent: MutableLiveData<Event<Unit>> = MutableLiveData()
     val moveToBackEvent: LiveData<Event<Unit>> = _moveToBackEvent
 
     private val _moveToExitDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
     val moveToExitDialogEvent: LiveData<Event<String>> = _moveToExitDialogEvent
+
+    private val _moveToNotificationPermissionDialogEvent: MutableLiveData<Event<String>> = MutableLiveData()
+    val moveToNotificationPermissionDialogEvent: LiveData<Event<String>> =
+        _moveToNotificationPermissionDialogEvent
 
     private val _isAdminEvent: MutableLiveData<Event<Boolean>> = MutableLiveData(Event(false))
     val isAdminEvent: LiveData<Event<Boolean>> = _isAdminEvent
@@ -51,6 +68,7 @@ class MessageViewModel : ViewModel() {
                 studyRepository.getStudyName(sid)
             }.onSuccess {
                 _studyNameEvent.value = Event(it)
+                studyName = it
             }.onFailure {
                 Log.e("MessageViewModel-loadStudyName", it.message ?: "error occurred.")
             }
@@ -119,7 +137,7 @@ class MessageViewModel : ViewModel() {
         }.await()
     }
 
-    fun sendImage(sid: String, uriList: List<Uri>, timestamp: Long) {
+    fun sendImage(sid: String, uriList: List<Uri>, timestamp: Long, text: String) {
         viewModelScope.launch {
             val message = getMessage(uid, sid).copy(
                 images = uriList.map { it.toString() },
@@ -131,7 +149,7 @@ class MessageViewModel : ViewModel() {
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
                 updateLastMessage(sid, message)
-                sendNotification(sid, message.message)
+                sendNotification(sid, getFcmMessageContent(sid, message, text))
             }.onFailure {
                 Log.e("MessageViewModel-sendImage", it.message ?: "error occurred.")
             }
@@ -146,11 +164,17 @@ class MessageViewModel : ViewModel() {
             }.onSuccess {
                 _addMessageEvent.value = Event(Unit)
                 updateLastMessage(sid, message)
-                sendNotification(sid, message.message)
+                sendNotification(sid, getFcmMessageContent(sid, message, text))
             }.onFailure {
                 Log.e("MessageViewModel-sendMessage", it.message ?: "error occurred.")
             }
         }
+    }
+
+    private fun getFcmMessageContent(sid: String, message: Message, text: String): FcmMessageContent {
+        val userId = message.studyUser?.userId
+        val imageUrl = message.studyUser?.image.toString()
+        return FcmMessageContent(uid, sid, studyName, "$userId : $text", imageUrl)
     }
 
     fun loadMessageList(sid: String) {
@@ -261,16 +285,14 @@ class MessageViewModel : ViewModel() {
         }
     }
 
-    private fun sendNotification(sid: String, message: String) {
+    private fun sendNotification(sid: String, fcmMessageContent: FcmMessageContent) {
         viewModelScope.launch {
             kotlin.runCatching {
                 val notificationKey = getNotificationKey(sid)
                 if (!notificationKey.isNullOrEmpty()) {
-                    fcmRepository.sendNotification(
-                        FcmMessage(
-                            FcmMessageData(notificationKey, mapOf("message" to message))
-                        )
-                    )
+                    val fcmMessageData =
+                        FcmMessageData(notificationKey, fcmMessageContent, mapOf("direct_boot_ok" to true))
+                    fcmRepository.sendNotification(FcmMessage(fcmMessageData))
                 }
             }.onFailure {
                 Log.e("MessageViewModel-sendNotification", it.message ?: "error occurred.")
@@ -288,11 +310,128 @@ class MessageViewModel : ViewModel() {
         }.await()
     }
 
+    fun updateStudyGroup(operation: String, sid: String) {
+        viewModelScope.launch {
+            val token = fcmTokenRepository.getToken().first()
+            kotlin.runCatching {
+                val notificationKey = getNotificationKey(sid)
+                if (!notificationKey.isNullOrEmpty()) {
+                    fcmRepository.updateStudyGroup(StudyGroup(operation, sid, listOf(token), notificationKey))
+                } else {
+                    createNotificationKey(sid, token)
+                }
+            }.onSuccess {
+                if (isRegistrationId(sid)) {
+                    deleteRegistrationId(sid, token)
+                } else {
+                    addRegistrationId(sid, token)
+                }
+            }.onFailure {
+                Log.e("MessageViewModel-updateStudyGroup", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun createNotificationKey(sid: String, token: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                fcmRepository.updateStudyGroup(StudyGroup("create", sid, listOf(token)))
+            }.onSuccess {
+                addNotificationKey(sid, it.values.first())
+            }.onFailure {
+                Log.e("MessageViewModel-createNotificationKey", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun addNotificationKey(sid: String, notificationKey: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.addNotificationKey(sid, notificationKey)
+            }.onFailure {
+                Log.e("MessageViewModel-addNotificationKey", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    suspend fun isRegistrationId(sid: String): Boolean {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                studyRepository.getRegistrationIdList(sid)
+            }.map {
+                it.containsKey(fcmTokenRepository.getToken().first())
+            }.onFailure {
+                Log.e("MessageViewModel-isRegistrationId", it.message ?: "error occurred.")
+            }.getOrDefault(false)
+        }.await()
+    }
+
+    private fun deleteRegistrationId(sid: String, registrationId: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.deleteRegistrationId(sid, registrationId)
+            }.onSuccess {
+                if (isRegistrationIdListEmpty(sid)) {
+                    deleteNotificationKey(sid)
+                }
+                _deleteRegistrationIdEvent.value = Event(Unit)
+            }.onFailure {
+                Log.e("MessageViewModel-deleteRegistrationId", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private suspend fun isRegistrationIdListEmpty(sid: String): Boolean {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                studyRepository.getRegistrationIdList(sid)
+            }.map {
+                it.isEmpty()
+            }.onFailure {
+                Log.e("MessageViewModel-isRegistrationIdListEmpty", it.message ?: "error occurred.")
+            }.getOrDefault(true)
+        }.await()
+    }
+
+    private fun deleteNotificationKey(sid: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.deleteNotificationKey(sid)
+            }.onFailure {
+                Log.e("MessageViewModel-deleteNotificationKey", it.message ?: "error occurred.")
+            }
+        }
+    }
+
+    private fun addRegistrationId(sid: String, registrationId: String) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                studyRepository.addRegistrationId(sid, registrationId)
+            }.onSuccess {
+                _addRegistrationIdEvent.value = Event(Unit)
+            }.onFailure {
+                Log.e("MessageViewModel-addRegistrationId", it.message ?: "error occurred.")
+            }
+        }
+    }
+
     fun moveToBack() {
         _moveToBackEvent.value = Event(Unit)
     }
 
     fun moveToExitDialog(sid: String) {
         _moveToExitDialogEvent.value = Event(sid)
+    }
+
+    fun moveToNotificationPermissionDialog(sid: String) {
+        _moveToNotificationPermissionDialogEvent.value = Event(sid)
+    }
+
+    companion object {
+        fun create(fcmTokenRepository: FcmTokenRepository) = viewModelFactory {
+            initializer {
+                MessageViewModel(fcmTokenRepository)
+            }
+        }
     }
 }

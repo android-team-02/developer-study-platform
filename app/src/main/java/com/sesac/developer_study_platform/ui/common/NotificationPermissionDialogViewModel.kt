@@ -27,17 +27,53 @@ class NotificationPermissionDialogViewModel(private val fcmTokenRepository: FcmT
 
     fun checkNotificationKey(sid: String) {
         viewModelScope.launch {
-            if (getNotificationKey(sid).isNullOrEmpty()) {
-                createNotificationKey(sid)
-            } else if (isRegistrationId(sid, fcmTokenRepository.getToken().first())) {
-                updateStudyGroup(sid)
+            val token = fcmTokenRepository.getToken().first()
+            kotlin.runCatching {
+                val notificationKey = getNotificationKey(sid)
+                if (!notificationKey.isNullOrEmpty()) {
+                    updateStudyGroup(sid, token, notificationKey)
+                } else {
+                    createNotificationKey(sid, token)
+                }
+            }.onFailure {
+                Log.e(
+                    "NotificationPermissionDialogViewModel-checkNotificationKey",
+                    it.message ?: "error occurred."
+                )
             }
         }
     }
 
-    private fun createNotificationKey(sid: String) {
+    private suspend fun getNotificationKey(sid: String): String? {
+        return viewModelScope.async {
+            kotlin.runCatching {
+                studyRepository.getNotificationKey(sid)
+            }.onFailure {
+                Log.e(
+                    "NotificationPermissionDialogViewModel-getNotificationKey",
+                    it.message ?: "error occurred."
+                )
+            }.getOrNull()
+        }.await()
+    }
+
+    private fun updateStudyGroup(sid: String, token: String, notificationKey: String) {
         viewModelScope.launch {
-            val token = fcmTokenRepository.getToken().first()
+            kotlin.runCatching {
+                fcmRepository.updateStudyGroup(StudyGroup("add", sid, listOf(token), notificationKey))
+            }.onSuccess {
+                addRegistrationId(sid, token)
+            }.onFailure {
+                Log.e(
+                    "NotificationPermissionDialogViewModel-updateStudyGroup",
+                    it.message ?: "error occurred."
+                )
+            }
+        }
+    }
+
+    private fun createNotificationKey(sid: String, token: String) {
+        viewModelScope.launch {
             kotlin.runCatching {
                 fcmRepository.updateStudyGroup(StudyGroup("create", sid, listOf(token)))
             }.onSuccess {
@@ -66,38 +102,6 @@ class NotificationPermissionDialogViewModel(private val fcmTokenRepository: FcmT
         }
     }
 
-    private fun updateStudyGroup(sid: String) {
-        viewModelScope.launch {
-            val token = fcmTokenRepository.getToken().first()
-            kotlin.runCatching {
-                val notificationKey = getNotificationKey(sid)
-                if (!notificationKey.isNullOrEmpty()) {
-                    fcmRepository.updateStudyGroup(StudyGroup("add", sid, listOf(token), notificationKey))
-                }
-            }.onSuccess {
-                addRegistrationId(sid, token)
-            }.onFailure {
-                Log.e(
-                    "NotificationPermissionDialogViewModel-updateStudyGroup",
-                    it.message ?: "error occurred."
-                )
-            }
-        }
-    }
-
-    private suspend fun getNotificationKey(sid: String): String? {
-        return viewModelScope.async {
-            kotlin.runCatching {
-                studyRepository.getNotificationKey(sid)
-            }.onFailure {
-                Log.e(
-                    "NotificationPermissionDialogViewModel-getNotificationKey",
-                    it.message ?: "error occurred."
-                )
-            }.getOrNull()
-        }.await()
-    }
-
     private fun addRegistrationId(sid: String, registrationId: String) {
         viewModelScope.launch {
             kotlin.runCatching {
@@ -111,21 +115,6 @@ class NotificationPermissionDialogViewModel(private val fcmTokenRepository: FcmT
                 )
             }
         }
-    }
-
-    private suspend fun isRegistrationId(sid: String, registrationId: String): Boolean {
-        return viewModelScope.async {
-            kotlin.runCatching {
-                studyRepository.getRegistrationIdList(sid)
-            }.map {
-                it.containsKey(registrationId)
-            }.onFailure {
-                Log.e(
-                    "NotificationPermissionDialogViewModel-isRegistrationId",
-                    it.message ?: "error occurred."
-                )
-            }.getOrDefault(false)
-        }.await()
     }
 
     fun moveToMessage(sid: String) {

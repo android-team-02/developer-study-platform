@@ -1,13 +1,18 @@
 package com.sesac.developer_study_platform.ui.message
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sesac.developer_study_platform.EventObserver
 import com.sesac.developer_study_platform.R
 import com.sesac.developer_study_platform.data.StudyMember
+import com.sesac.developer_study_platform.data.source.local.FcmTokenRepository
 import com.sesac.developer_study_platform.data.source.remote.StudyService
 import com.sesac.developer_study_platform.databinding.FragmentMessageBinding
 import com.sesac.developer_study_platform.util.isNetworkConnected
@@ -32,7 +38,9 @@ class MessageFragment : Fragment() {
     private val binding get() = _binding!!
     private val args by navArgs<MessageFragmentArgs>()
     private val messageAdapter = MessageAdapter()
-    private val viewModel by viewModels<MessageViewModel>()
+    private val viewModel by viewModels<MessageViewModel> {
+        MessageViewModel.create(FcmTokenRepository(requireContext()))
+    }
     private val service = StudyService.create()
     private var isBottom = true
     private val pickMultipleMedia =
@@ -45,6 +53,14 @@ class MessageFragment : Fragment() {
             findNavController().navigate(action)
         }
     })
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                addRegistrationId()
+            } else {
+                Toast.makeText(context, getString(R.string.all_notification_info), Toast.LENGTH_SHORT).show()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,6 +86,8 @@ class MessageFragment : Fragment() {
         setSendButton()
         setExitButton()
         setExitButtonVisibility()
+        loadNotificationButtonState()
+        setNotificationButton()
         setNavigation()
         binding.isNetworkConnected = isNetworkConnected(requireContext())
     }
@@ -131,7 +149,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun sendImage(uriList: List<Uri>, timestamp: Long) {
-        viewModel.sendImage(args.studyId, uriList, timestamp)
+        viewModel.sendImage(args.studyId, uriList, timestamp, getString(R.string.chat_room_last_message_image))
         viewModel.addMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
@@ -210,9 +228,69 @@ class MessageFragment : Fragment() {
         )
     }
 
+    private fun loadNotificationButtonState() {
+        lifecycleScope.launch {
+            binding.ivNotification.isSelected = viewModel.isRegistrationId(args.studyId)
+        }
+    }
+
+    private fun setNotificationButton() {
+        binding.ivNotification.setOnClickListener {
+            if (binding.ivNotification.isSelected) {
+                deleteRegistrationId()
+            } else {
+                askNotificationPermission()
+            }
+        }
+    }
+
+    private fun deleteRegistrationId() {
+        viewModel.updateStudyGroup("remove", args.studyId)
+        viewModel.deleteRegistrationIdEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.ivNotification.isSelected = false
+            }
+        )
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    addRegistrationId()
+                }
+
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    viewModel.moveToNotificationPermissionDialog(args.studyId)
+                }
+
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        } else {
+            addRegistrationId()
+        }
+    }
+
+    private fun addRegistrationId() {
+        viewModel.updateStudyGroup("add", args.studyId)
+        viewModel.addRegistrationIdEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                binding.ivNotification.isSelected = true
+            }
+        )
+    }
+
     private fun setNavigation() {
         moveToBack()
         moveToExitDialog()
+        moveToNotificationPermissionDialog()
     }
 
     private fun moveToBack() {
@@ -229,6 +307,16 @@ class MessageFragment : Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 val action = MessageFragmentDirections.actionMessageToExitDialog(it)
+                findNavController().navigate(action)
+            }
+        )
+    }
+
+    private fun moveToNotificationPermissionDialog() {
+        viewModel.moveToNotificationPermissionDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = MessageFragmentDirections.actionGlobalToNotificationPermissionDialog(it)
                 findNavController().navigate(action)
             }
         )
