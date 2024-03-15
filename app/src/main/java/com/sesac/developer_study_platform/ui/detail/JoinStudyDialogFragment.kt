@@ -31,7 +31,7 @@ class JoinStudyDialogFragment : DialogFragment() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                updateStudyGroup()
+                checkNotificationKey()
             } else {
                 Toast.makeText(context, getString(R.string.all_notification_info), Toast.LENGTH_SHORT).show()
                 viewModel.moveToMessage(args.study.sid)
@@ -106,7 +106,7 @@ class JoinStudyDialogFragment : DialogFragment() {
                     requireContext(),
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED -> {
-                    updateStudyGroup()
+                    checkNotificationKey()
                 }
 
                 shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
@@ -118,13 +118,13 @@ class JoinStudyDialogFragment : DialogFragment() {
                 }
             }
         } else {
-            updateStudyGroup()
+            checkNotificationKey()
         }
     }
 
-    private fun updateStudyGroup() {
-        viewModel.updateStudyGroup(args.study.sid)
-        viewModel.updateStudyGroupEvent.observe(
+    private fun checkNotificationKey() {
+        viewModel.checkNotificationKey(args.study.sid)
+        viewModel.checkNotificationKeyEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 viewModel.moveToMessage(args.study.sid)
