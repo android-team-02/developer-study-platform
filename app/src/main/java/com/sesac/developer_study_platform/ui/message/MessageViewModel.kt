@@ -290,9 +290,9 @@ class MessageViewModel(private val fcmTokenRepository: FcmTokenRepository) : Vie
             kotlin.runCatching {
                 val notificationKey = getNotificationKey(sid)
                 if (!notificationKey.isNullOrEmpty()) {
-                    fcmRepository.sendNotification(
-                        FcmMessage(FcmMessageData(notificationKey, fcmMessageContent))
-                    )
+                    val fcmMessageData =
+                        FcmMessageData(notificationKey, fcmMessageContent, mapOf("direct_boot_ok" to true))
+                    fcmRepository.sendNotification(FcmMessage(fcmMessageData))
                 }
             }.onFailure {
                 Log.e("MessageViewModel-sendNotification", it.message ?: "error occurred.")

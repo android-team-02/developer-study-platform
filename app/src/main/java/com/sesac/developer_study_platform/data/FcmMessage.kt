@@ -11,6 +11,7 @@ data class FcmMessage(
 data class FcmMessageData(
     val token: String = "",
     val data: FcmMessageContent,
+    val android: Map<String, Boolean> = mapOf()
 )
 
 @Serializable
