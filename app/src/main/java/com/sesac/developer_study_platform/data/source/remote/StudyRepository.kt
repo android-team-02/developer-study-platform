@@ -102,6 +102,10 @@ class StudyRepository {
         studyService.addRegistrationId(sid, mapOf(registrationId to true))
     }
 
+    suspend fun getRegistrationIdList(sid: String): Map<String, Boolean> {
+        return studyService.getRegistrationIdList(sid)
+    }
+
     fun getMessageList(sid: String): Flow<Map<String, Message>> = flow {
         while (true) {
             kotlin.runCatching {

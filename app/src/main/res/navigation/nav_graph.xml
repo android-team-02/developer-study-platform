@@ -17,6 +17,10 @@
         android:id="@+id/action_global_to_message"
         app:destination="@id/dest_message" />
 
+    <action
+        android:id="@+id/action_global_to_notification_permission_dialog"
+        app:destination="@id/dest_notification_permission_dialog" />
+
     <fragment
         android:id="@+id/dest_login"
         android:name="com.sesac.developer_study_platform.ui.login.LoginFragment"
@@ -236,4 +240,14 @@
             android:name="url"
             app:argType="string" />
     </fragment>
+
+    <dialog
+        android:id="@+id/dest_notification_permission_dialog"
+        android:name="com.sesac.developer_study_platform.ui.common.NotificationPermissionDialogFragment"
+        android:label="fragment_notification_permission_dialog"
+        tools:layout="@layout/dialog_notification_permission">
+        <argument
+            android:name="studyId"
+            app:argType="string" />
+    </dialog>
 </navigation>

@@ -2,6 +2,7 @@
 
     <style name="Base.Theme.Developerstudyplatform" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/black</item>
+        <item name="android:dialogTheme">@style/Theme.App.Dialog</item>
     </style>
 
     <style name="Theme.Developerstudyplatform" parent="Base.Theme.Developerstudyplatform" />
@@ -10,5 +11,9 @@
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/Theme.Developerstudyplatform</item>
+    </style>
+
+    <style name="Theme.App.Dialog" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bg_white_radius_18dp</item>
     </style>
 </resources>

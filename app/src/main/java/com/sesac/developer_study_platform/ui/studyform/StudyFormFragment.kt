@@ -456,10 +456,25 @@ class StudyFormFragment : Fragment() {
     }
 
     private fun setNavigation() {
+        moveToMessage()
+        moveToNotificationPermissionDialog()
+    }
+
+    private fun moveToMessage() {
         viewModel.moveToMessageEvent.observe(
             viewLifecycleOwner,
             EventObserver {
                 val action = StudyFormFragmentDirections.actionStudyFormToMessage(it)
+                findNavController().navigate(action)
+            }
+        )
+    }
+
+    private fun moveToNotificationPermissionDialog() {
+        viewModel.moveToNotificationPermissionDialogEvent.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                val action = StudyFormFragmentDirections.actionGlobalToNotificationPermissionDialog(it)
                 findNavController().navigate(action)
             }
         )
@@ -476,7 +491,7 @@ class StudyFormFragment : Fragment() {
                 }
 
                 shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
-                    // TODO 권한 이유 다이얼로그
+                    viewModel.moveToNotificationPermissionDialog(sid)
                 }
 
                 else -> {

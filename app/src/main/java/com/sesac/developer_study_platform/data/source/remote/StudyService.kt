@@ -167,6 +167,11 @@ interface StudyService {
         @Body registrationId: Map<String, Boolean>
     )
 
+    @GET("studies/{sid}/registrationIds.json")
+    suspend fun getRegistrationIdList(
+        @Path("sid") sid: String
+    ): Map<String, Boolean>
+
     companion object {
         private const val BASE_URL = BuildConfig.FIREBASE_BASE_URL
         private val contentType = "application/json".toMediaType()
